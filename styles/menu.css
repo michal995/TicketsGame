@@ -1,0 +1,48 @@
+.menu-app {
+  grid-template-rows: auto 1fr;
+  align-content: start;
+}
+
+.menu-app .app-header {
+  grid-template-columns: 1fr;
+}
+
+.menu-app .card {
+  gap: 16px;
+}
+
+.menu-form {
+  display: grid;
+  gap: var(--gap);
+}
+
+.menu-form .row {
+  justify-content: space-between;
+}
+
+.menu-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.menu-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .menu-form .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .menu-actions {
+    justify-content: stretch;
+  }
+
+  .menu-actions button {
+    width: 100%;
+  }
+}
