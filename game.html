@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; color: #0b0066; -webkit-text-stroke: #0b0066}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; color: #0b0066; -webkit-text-stroke: #0b0066; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+    span.s2 {font: 14.7px 'Apple Color Emoji'; font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="pl"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta charset="utf-8" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Ticket Rush — PRO&lt;/title&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">:root{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color-scheme: dark;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#0b1018; --panel:#0e1522; --panel2:#0a111c; --border:#223047;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#f3f7ff; --muted:#9fb0c9; --accent:#ffd54a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ok:#35d08a; --bad:#ff5555;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--coin:#ffd54a; --coinText:#1a2232; --bill1:#d6f0c9; --bill2:#b8e3aa;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>/* DUŻE UI */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--baseH: 960px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe: 10px;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r-xl:26px; --r-lg:20px; --r-md:14px; --r-sm:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--gap:18px; --pad:20px;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--h1:44px; --h2:30px; --h3:22px; --meta:17px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--tile:26px; --chip:18px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">*{box-sizing:border-box}</span></p>
+<p class="p1"><span class="s1">html{height:100dvh; -webkit-text-size-adjust:100%}</span></p>
+<p class="p1"><span class="s1">body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0; height:100dvh; overflow:hidden; touch-action:manipulation;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>radial-gradient(1200px 650px at 15% -10%, rgba(255,213,74,.12), transparent 60%),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>linear-gradient(#0a0f17,#0b1018);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-top) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-right) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-bottom) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-left) + var(--safe));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* STAGE */</span></p>
+<p class="p1"><span class="s1">#viewport{position:fixed; inset:0; overflow:hidden}</span></p>
+<p class="p1"><span class="s1">#stage{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute; top:50%; left:50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:calc(var(--baseH) * (16/9)); height:var(--baseH);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transform:translate(-50%,-50%) scale(var(--fit,1));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transform-origin:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>filter: drop-shadow(0 22px 50px rgba(0,0,0,.44));</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* APP GRID */</span></p>
+<p class="p1"><span class="s1">.app{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%; height:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; grid-template-rows: 84px 120px 1fr 200px 150px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:var(--gap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--r-xl);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding: calc(var(--gap) + 6px);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* HEADER */</span></p>
+<p class="p1"><span class="s1">.header{display:grid; grid-template-columns: 1fr auto auto; gap:var(--gap); align-items:center}</span></p>
+<p class="p1"><span class="s1">.brand{display:flex; align-items:center; gap:14px; font-weight:900; font-size:var(--h1); letter-spacing:.02em}</span></p>
+<p class="p1"><span class="s1">.badge{background:var(--accent); color:#0c0f14; border-radius:999px; padding:6px 14px; font-weight:900}</span></p>
+<p class="p1"><span class="s1">.timer{font-weight:900; font-size:var(--h2); background:var(--accent); color:#0c0f14; padding:10px 16px; border-radius:14px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* HUD */</span></p>
+<p class="p1"><span class="s1">.hud{display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:var(--gap)}</span></p>
+<p class="p1"><span class="s1">.card{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel); border:1px solid var(--border); border-radius:var(--r-lg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:var(--pad); display:grid; gap:8px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.meta{color:var(--muted); font-size:var(--meta); letter-spacing:.08em; text-transform:uppercase}</span></p>
+<p class="p1"><span class="s1">.big{font-size:var(--h2); font-weight:900}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* TICKETS */</span></p>
+<p class="p1"><span class="s1">.tickets{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel); border:1px solid var(--border); border-radius:var(--r-lg); padding:var(--pad);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; grid-template-rows: 46px 1fr; gap:var(--gap);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.tbar{display:flex; align-items:center; justify-content:space-between}</span></p>
+<p class="p1"><span class="s1">.clear{border:1px solid var(--border); background:#0f1828; color:#eaf1ff; border-radius:12px; padding:10px 14px; font-weight:800; cursor:pointer}</span></p>
+<p class="p1"><span class="s1">.gridTickets{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; gap:var(--gap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>grid-template-columns:repeat(3,1fr);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>grid-auto-rows:minmax(120px,1fr);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ticket btn */</span></p>
+<p class="p1"><span class="s1">.btn{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; place-items:center; text-align:center; cursor:pointer; user-select:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:0; border-radius:20px; color:#fff; padding:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:900; font-size:var(--tile); line-height:1.1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow: inset 0 -2px 0 rgba(255,255,255,.20), 0 12px 26px rgba(0,0,0,.32);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:transform .06s ease, filter .12s ease, opacity .2s ease;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.btn:active{transform:translateY(1px) scale(.99)}</span></p>
+<p class="p1"><span class="s1">.btn:disabled{opacity:.42; cursor:not-allowed}</span></p>
+<p class="p1"><span class="s1">.sub{font-size:20px; font-weight:800; opacity:.97}</span></p>
+<p class="p1"><span class="s1">.bubble{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute; top:10px; right:10px; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.35);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:4px 10px; border-radius:999px; font-size:var(--chip); font-weight:900</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* COLORS */</span></p>
+<p class="p1"><span class="s1">.t-normal<span class="Apple-converted-space">  </span>{background:linear-gradient(140deg,#22c07a,#139a61)}</span></p>
+<p class="p1"><span class="s1">.t-kid <span class="Apple-converted-space">    </span>{background:linear-gradient(140deg,#4aa7ff,#2c7cff)}</span></p>
+<p class="p1"><span class="s1">.t-luggage {background:linear-gradient(140deg,#ff9650,#ff7828)}</span></p>
+<p class="p1"><span class="s1">.t-senior<span class="Apple-converted-space">  </span>{background:linear-gradient(140deg,#b995ff,#8a6eff)}</span></p>
+<p class="p1"><span class="s1">.t-disabled{background:linear-gradient(140deg,#ff6e9e,#e34a82)}</span></p>
+<p class="p1"><span class="s1">.t-stroller{background:linear-gradient(140deg,#42dede,#23bbbb)}</span></p>
+<p class="p1"><span class="s1">.t-bike<span class="Apple-converted-space">    </span>{background:linear-gradient(140deg,#a2e65a,#82cf35)}</span></p>
+<p class="p1"><span class="s1">.t-tourist {background:linear-gradient(140deg,#ff7167,#ff5348)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* PAY */</span></p>
+<p class="p1"><span class="s1">.pay{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel); border:1px solid var(--border); border-radius:var(--r-lg); padding:var(--pad);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; grid-template-rows: 46px 1fr; gap:var(--gap);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pbar{display:flex; align-items:center; justify-content:space-between}</span></p>
+<p class="p1"><span class="s1">.remain{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:900; font-size:var(--h2); padding:10px 14px; border-radius:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:#0f1828; border:1px solid var(--border); min-width:150px; text-align:center;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.gridCoins{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; gap:var(--gap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>grid-template-columns:repeat(5,1fr); grid-auto-rows:minmax(110px,1fr);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* coin + bill */</span></p>
+<p class="p1"><span class="s1">.coin{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:999px; color:var(--coinText);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:radial-gradient(circle at 30% 25%, #fff5b5 0%, var(--coin) 55%, #f0c63d 100%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:3px solid #e8bf39;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.bill{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:16px; color:#10311d;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:linear-gradient(180deg,var(--bill1),var(--bill2));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:3px solid #9fce8c;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* HISTORY */</span></p>
+<p class="p1"><span class="s1">.footer{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel); border:1px solid var(--border); border-radius:var(--r-lg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:var(--pad); display:grid; grid-template-rows: 22px 1fr; gap:12px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.list{display:grid; gap:12px; grid-auto-rows:minmax(48px,auto); overflow:auto}</span></p>
+<p class="p1"><span class="s1">.item{display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>background:#0b1220; border:1px solid var(--border)}</span></p>
+<p class="p1"><span class="s1">.badge{font-weight:900; padding:6px 10px; border-radius:999px; border:1px solid #2a3346; color:#d9e3f3}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* OVERLAY */</span></p>
+<p class="p1"><span class="s1">.overlay{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute; inset:0; display:none; place-items:center; background:rgba(8,12,20,.70);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>backdrop-filter: blur(6px); z-index:20;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.overlay.show{display:grid}</span></p>
+<p class="p1"><span class="s1">.box{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:#0b1220; border:1px solid var(--border); border-radius:20px; padding:28px 32px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center; width:min(92vw, 800px);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.title{font-size:38px; font-weight:900; margin-bottom:10px}</span></p>
+<p class="p1"><span class="s1">.count{font-size:32px; font-weight:900; color:var(--accent)}</span></p>
+<p class="p1"><span class="s1">.small{color:var(--muted); font-size:18px}</span></p>
+<p class="p1"><span class="s1">.points{font-size:34px; font-weight:900; margin:10px 0}</span></p>
+<p class="p1"><span class="s1">.good{color:var(--ok)} .bad{color:var(--bad)}</span></p>
+<p class="p1"><span class="s1">.summary-list{display:grid; gap:10px; margin-top:14px; max-height:52vh; overflow:auto; text-align:left}</span></p>
+<p class="p1"><span class="s1">.s-item{display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:12px; background:#0b1220; border:1px solid var(--border)}</span></p>
+<p class="p1"><span class="s1">.btn-cta{margin-top:18px; padding:12px 18px; border-radius:12px; border:1px solid var(--border); background:#0f1828; color:#fff; font-weight:900; cursor:pointer}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="viewport"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="stage"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- APP --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="app"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- HEADER --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="brand"&gt;</span><span class="s2">🚌</span><span class="s1"> Ticket Rush &lt;span class="badge"&gt;PRO&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="card"&gt;&lt;div class="meta"&gt;Score&lt;/div&gt;&lt;div class="big" id="score"&gt;0&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="timer" id="timer"&gt;20 s&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- HUD --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="hud"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="card"&gt;&lt;div class="meta"&gt;Passenger needs&lt;/div&gt;&lt;div class="big" id="need"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="card"&gt;&lt;div class="meta"&gt;To pay&lt;/div&gt;&lt;div class="big" id="pays"&gt;$0.00&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="card"&gt;&lt;div class="meta"&gt;Tickets value&lt;/div&gt;&lt;div class="big" id="fare"&gt;$0.00&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="card"&gt;&lt;div class="meta"&gt;Selected value&lt;/div&gt;&lt;div class="big" id="picked"&gt;$0.00&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- TICKETS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;section class="tickets"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="tbar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="meta"&gt;Tickets&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="clear" id="clearTickets"&gt;Clear&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="gridTickets" id="tickets"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- PAYMENT --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;section class="pay"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pbar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="meta"&gt;Change&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="remain" id="remain"&gt;$?&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="gridCoins" id="coins"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- HISTORY --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;section class="footer"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="meta"&gt;History&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="list" id="history"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- OVERLAY --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="overlay" id="overlay"&gt;&lt;div class="box" id="overlayBox"&gt;&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">/* Anti-zoom iOS */</span></p>
+<p class="p1"><span class="s1">(function(){let t=0;document.addEventListener('touchend',e=&gt;{const n=Date.now();if(n-t&lt;350){e.preventDefault()}t=n},{passive:false});document.addEventListener('gesturestart',e=&gt;e.preventDefault(),{passive:false})})();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Fit-to-screen */</span></p>
+<p class="p1"><span class="s1">(function(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const stage=document.getElementById('stage');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function fit(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const vv=window.visualViewport||{width:innerWidth,height:innerHeight};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const vw=vv.width, vh=vv.height, baseH=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--baseH'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const baseW=baseH*(vw/vh);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>stage.style.width=baseW+'px'; stage.style.height=baseH+'px';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const scale=Math.min(vw/baseW, vh/baseH);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>stage.style.setProperty('--fit', scale);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>addEventListener('resize',fit); addEventListener('orientationchange',()=&gt;setTimeout(fit,60));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.fonts?.ready.then(fit); new ResizeObserver(fit).observe(document.getElementById('viewport')); fit();</span></p>
+<p class="p1"><span class="s1">})();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ===== GAME ===== */</span></p>
+<p class="p1"><span class="s1">const ALL_TICKETS=[</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Normal", price:1.2, cls:"t-normal"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Kid", price:0.5, cls:"t-kid"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Luggage", price:0.6, cls:"t-luggage"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Senior", price:0.8, cls:"t-senior"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Disabled", price:0.6, cls:"t-disabled"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Baby Stroller", price:0.7, cls:"t-stroller"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Bike", price:0.9, cls:"t-bike"},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>{name:"Tourist", price:1.5, cls:"t-tourist"}</span></p>
+<p class="p1"><span class="s1">];</span></p>
+<p class="p1"><span class="s1">const COINS=[5,2,1,0.5,0.25,0.1,0.05,0.01];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const $=id=&gt;document.getElementById(id);</span></p>
+<p class="p1"><span class="s1">const timerDisplay=$("timer"), scoreDisplay=$("score"), historyList=$("history"),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>needEl=$("need"), paysEl=$("pays"), fareEl=$("fare"), pickedEl=$("picked"),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>remainEl=$("remain"), overlay=$("overlay"), overlayBox=$("overlayBox"),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ticketsWrap=$("tickets"), coinsWrap=$("coins");</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const TOTAL_ROUNDS=5;</span></p>
+<p class="p1"><span class="s1">let currentRound=0, score=0, timerId=null, overlayId=null;</span></p>
+<p class="p1"><span class="s1">const roundSummaries=[];</span></p>
+<p class="p1"><span class="s1">const state={available:[], request:{}, ticketTotal:0, pays:0,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>selectedTickets:{}, coinsUsed:{}, inserted:0,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>timeLeft:20, history:[], showChange:false};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* losowania */</span></p>
+<p class="p1"><span class="s1">function rollBusConfig(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const minTotal=2, maxTotal=6;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const others=ALL_TICKETS.filter(t=&gt;t.name!=="Normal" &amp;&amp; t.name!=="Kid");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const howMany = Math.floor(Math.random()*(maxTotal-minTotal+1))+minTotal;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const shuffled = others.sort(()=&gt;Math.random()-0.5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>return [ALL_TICKETS.find(t=&gt;t.name==="Normal"), ALL_TICKETS.find(t=&gt;t.name==="Kid"), ...shuffled.slice(0,Math.max(0,howMany-2))];</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function rollRequest(available){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const pool=[...available];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const uniq = Math.min(pool.length, Math.floor(Math.random()*2)+1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const out={};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;uniq;i++){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const pick=Math.floor(Math.random()*pool.length);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const t=pool.splice(pick,1)[0];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const cnt=Math.floor(Math.random()*3)+1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>out[t.name]=cnt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>return out;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">const fareOf=req=&gt;Object.entries(req).reduce((s,[n,c])=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const t=ALL_TICKETS.find(x=&gt;x.name===n); return s+(t?t.price*c:0)</span></p>
+<p class="p1"><span class="s1">},0);</span></p>
+<p class="p1"><span class="s1">const uniqCoins=()=&gt;Object.keys(state.coinsUsed).filter(k=&gt;state.coinsUsed[k]&gt;0).length;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* render */</span></p>
+<p class="p1"><span class="s1">function renderTickets(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ticketsWrap.innerHTML = state.available.map(t=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const count=state.selectedTickets[t.name]||0, need=state.request[t.name]||0, dis=(need&gt;0 &amp;&amp; count&gt;=need);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return `&lt;button class="btn ${t.cls}" ${dis?'disabled':''}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>onclick="addTicket('${t.name}')" oncontextmenu="event.preventDefault(); removeTicket('${t.name}')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>${count?`&lt;span class="bubble"&gt;×${count}&lt;/span&gt;`:''}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;div class="sub"&gt;${t.name}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;div&gt;$${t.price.toFixed(2)}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/button&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}).join("");</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function renderCoins(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>coinsWrap.innerHTML = COINS.map((v,i)=&gt;`</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button class="btn ${i===0?'bill':'coin'}" onclick="insertCoin(${v})"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="sub"&gt;${i===0?'Bill':'Coin'}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div&gt;$${v.toFixed(2)}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>`).join("");</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function updateHud(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>scoreDisplay.text</span></p>
+</body>
+</html>

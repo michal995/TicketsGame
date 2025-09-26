@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; color: #0a0053; -webkit-text-stroke: #0a0053}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; color: #0a0053; -webkit-text-stroke: #0a0053; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="pl"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta charset="utf-8" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Ticket Rush — Menu&lt;/title&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">:root{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color-scheme: dark;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#0b1018; --panel:#0e1522; --panel2:#0a111c; --border:#223047;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#f3f7ff; --muted:#9fb0c9; --accent:#ffd54a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ok:#35d08a; --bad:#ff5555;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--baseH: 960px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe: 10px;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r-xl:26px; --r-lg:20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--gap:18px; --pad:20px;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--h1:44px; --h2:30px; --meta:17px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">*{box-sizing:border-box}</span></p>
+<p class="p1"><span class="s1">html{height:100dvh; -webkit-text-size-adjust:100%}</span></p>
+<p class="p1"><span class="s1">body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0; height:100dvh; overflow:hidden; touch-action:manipulation;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>radial-gradient(1200px 650px at 15% -10%, rgba(255,213,74,.12), transparent 60%),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>linear-gradient(#0a0f17,#0b1018);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-top) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-right) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-bottom) + var(--safe))</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>calc(env(safe-area-inset-left) + var(--safe));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* STAGE */</span></p>
+<p class="p1"><span class="s1">#viewport{position:fixed; inset:0; overflow:hidden}</span></p>
+<p class="p1"><span class="s1">#stage{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute; top:50%; left:50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:calc(var(--baseH) * (16/9)); height:var(--baseH);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transform:translate(-50%,-50%) scale(var(--fit,1));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transform-origin:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>filter: drop-shadow(0 22px 50px rgba(0,0,0,.44));</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* APP CARD */</span></p>
+<p class="p1"><span class="s1">.app{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%; height:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid; gap:var(--gap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--panel2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--r-xl);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding: calc(var(--gap) + 6px);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* HEADER */</span></p>
+<p class="p1"><span class="s1">.header{display:grid; grid-template-columns: 1fr auto; gap:var(--gap); align-items:center}</span></p>
+<p class="p1"><span class="s1">.brand{display:flex; align-items:center; gap:14px; font-weight:900; font-size:var(--h1)}</span></p>
+<p class="p1"><span class="s1">.badge{background:var(--accent); color:#0c0f14; border-radius:999px; padding:6px 14px; font-weight:900}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* FORMS */</span></p>
+<p class="p1"><span class="s1">.card{background:var(--panel); border:1px solid var(--border); border-radius:var(--r-lg); padding:var(--pad); display:grid; gap:12px;}</span></p>
+<p class="p1"><span class="s1">.meta{color:var(--muted); font-size:var(--meta); text-transform:uppercase; letter-spacing:.06em}</span></p>
+<p class="p1"><span class="s1">.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}</span></p>
+<p class="p1"><span class="s1">input, select{background:#0f1828; border:1px solid var(--border); color:#fff; padding:10px 12px; border-radius:10px; font-size:16px}</span></p>
+<p class="p1"><span class="s1">button{cursor:pointer; border-radius:12px; padding:12px 16px; font-weight:900}</span></p>
+<p class="p1"><span class="s1">button.primary{background:var(--accent); color:#0c0f14; border:0}</span></p>
+<p class="p1"><span class="s1">button.tab{background:#0f1828; border:1px solid var(--border); color:#fff}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="viewport"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="stage"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="app"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="brand"&gt;🚌 Ticket Rush &lt;span class="badge"&gt;Menu&lt;/span&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="meta"&gt;Player&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="playerName" placeholder="Your name / nick" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="meta"&gt;Mode&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select id="modeSelect"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;option value="TB1"&gt;Top/Bottom 1&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;option value="TB2"&gt;Top/Bottom 2&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;option value="HR1"&gt;Horizontal 1&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;option value="HR2"&gt;Horizontal 2&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button class="primary" id="startBtn"&gt;Start&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">/* Anti-zoom iOS */</span></p>
+<p class="p1"><span class="s1">(function(){let t=0;document.addEventListener('touchend',e=&gt;{const n=Date.now();if(n-t&lt;350){e.preventDefault()}t=n},{passive:false});document.addEventListener('gesturestart',e=&gt;e.preventDefault(),{passive:false})})();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Fit-to-screen */</span></p>
+<p class="p1"><span class="s1">(function(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const stage=document.getElementById('stage');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function fit(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const vv=window.visualViewport||{width:innerWidth,height:innerHeight};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const vw=vv.width, vh=vv.height, baseH=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--baseH'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const baseW=baseH*(vw/vh);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>stage.style.width=baseW+'px'; stage.style.height=baseH+'px';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const scale=Math.min(vw/baseW, vh/baseH);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>stage.style.setProperty('--fit', scale);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>addEventListener('resize',fit); addEventListener('orientationchange',()=&gt;setTimeout(fit,60));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.fonts?.ready.then(fit); new ResizeObserver(fit).observe(document.getElementById('viewport')); fit();</span></p>
+<p class="p1"><span class="s1">})();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* LOGIKA START */</span></p>
+<p class="p1"><span class="s1">document.getElementById('startBtn').onclick=()=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const nick = document.getElementById('playerName').value.trim() || "Guest";</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const mode = document.getElementById('modeSelect').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// zapisujemy w URL parametry i otwieramy game.html</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const url = `game.html?player=${encodeURIComponent(nick)}&amp;mode=${encodeURIComponent(mode)}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>window.location.href = url;</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
