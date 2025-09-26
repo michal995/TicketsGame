@@ -1,77 +1,83 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>Ticket Rush — PRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ticket Rush PRO — Game</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="stylesheet" href="styles/tokens.css" />
-  <link rel="stylesheet" href="styles/layout.css" />
   <link rel="stylesheet" href="styles/app.css" />
   <link rel="stylesheet" href="styles/game.css" />
-  <script src="scripts/fit.js" defer></script>
   <script type="module" src="js/main.js" defer></script>
   <script type="module" src="js/screens/game.js" defer></script>
 </head>
-<body>
-  <div id="viewport">
-    <div id="stage">
-      <div class="app game-app">
-        <header class="app-header">
-          <div class="brand">🚌 Ticket Rush <span class="badge">PRO</span></div>
-          <div class="card" aria-live="polite">
-            <div class="meta">Score</div>
-            <div class="big" id="score">0</div>
-          </div>
-          <div class="timer" id="timer">20 s</div>
-        </header>
-
-        <section class="hud" aria-live="polite">
-          <div class="card">
-            <div class="meta">Passenger needs</div>
-            <div class="big" id="need">—</div>
-          </div>
-          <div class="card" id="paysCard">
-            <div class="meta">Pays</div>
-            <div class="big" id="pays">—</div>
-          </div>
-          <div class="card">
-            <div class="meta">Tickets value</div>
-            <div class="big" id="fare">$0.00</div>
-          </div>
-          <div class="card">
-            <div class="meta">Selected value</div>
-            <div class="big" id="picked">$0.00</div>
-          </div>
-        </section>
-
-        <section class="tickets" aria-label="Tickets">
-          <div class="tbar">
-            <div class="meta">Tickets</div>
-            <button class="clear" id="clearTickets" type="button">Clear</button>
-          </div>
-          <div class="gridTickets" id="tickets"></div>
-        </section>
-
-        <section class="pay" aria-label="Payment">
-          <div class="pbar">
-            <div class="meta">Change</div>
-            <div class="remain" id="remain">$?</div>
-          </div>
-          <div class="gridCoins" id="coins"></div>
-        </section>
-
-        <section class="footer" aria-label="History">
-          <div class="meta">History</div>
-          <div class="list" id="history"></div>
-        </section>
-
-        <div class="overlay" id="overlay" role="alertdialog" aria-modal="true" aria-labelledby="overlayTitle">
-          <div class="box" id="overlayBox"></div>
+<body class="app-body">
+  <main class="app-screen game-screen" role="main">
+    <header class="top-bar game-bar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">🚌</span>
+        <div class="brand-text">
+          <span class="title">Ticket Rush PRO</span>
+          <span class="subtitle">Arcade mode</span>
         </div>
       </div>
-    </div>
+      <div class="stat-card" aria-live="polite">
+        <span class="label">Score</span>
+        <span class="value" id="score">0</span>
+      </div>
+      <div class="timer" id="timer" aria-live="polite">20 s</div>
+    </header>
+
+    <section class="info-panels" aria-live="polite">
+      <div class="info-stack">
+        <article class="info-card">
+          <span class="label">Passenger needs</span>
+          <span class="value" id="need">—</span>
+        </article>
+        <article class="info-card" id="paysCard">
+          <span class="label">Pays</span>
+          <span class="value" id="pays">—</span>
+        </article>
+      </div>
+      <article class="info-card">
+        <span class="label">Tickets value</span>
+        <span class="value" id="fare">$0.00</span>
+      </article>
+      <article class="info-card">
+        <span class="label">Selected value</span>
+        <span class="value" id="picked">$0.00</span>
+      </article>
+    </section>
+
+    <section class="tickets-panel" aria-label="Tickets">
+      <div class="panel-header">
+        <span class="panel-title">Tickets</span>
+        <button class="btn ghost" id="clearTickets" type="button">Clear</button>
+      </div>
+      <div class="ticket-grid" id="tickets"></div>
+    </section>
+
+    <section class="change-panel" aria-label="Change" data-visible="false">
+      <div class="panel-header">
+        <span class="panel-title">Change</span>
+        <div class="change-summary">
+          <span class="label" id="changeLabel">Change</span>
+          <span class="change-value" id="remain">$?</span>
+        </div>
+      </div>
+      <div class="currency-grid" id="coins"></div>
+    </section>
+
+    <section class="history-panel" aria-label="History">
+      <div class="panel-header">
+        <span class="panel-title">History</span>
+      </div>
+      <div class="history-list" id="history"></div>
+    </section>
+  </main>
+
+  <div class="overlay" id="overlay" role="alertdialog" aria-modal="true" aria-hidden="true">
+    <div class="overlay-box" id="overlayBox"></div>
   </div>
 </body>
 </html>
