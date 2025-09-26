@@ -26,7 +26,7 @@ export function renderTickets(session, elements, handlers) {
   session.available.forEach((ticket) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `btn ${ticket.className}`;
+    button.className = `btn ticket-btn ticket ${ticket.className}`;
     const count = session.selectedTickets[ticket.name] || 0;
     const need = session.request[ticket.name] || 0;
     if (need > 0 && count >= need) {
@@ -35,8 +35,9 @@ export function renderTickets(session, elements, handlers) {
 
     button.innerHTML = `
       ${count ? `<span class="bubble">×${count}</span>` : ''}
+      <div class="ticket-icon" aria-hidden="true">${ticket.icon ?? ''}</div>
       <div class="sub">${ticket.name}</div>
-      <div>${formatMoney(ticket.price)}</div>
+      <div class="ticket-price">${formatMoney(ticket.price)}</div>
     `;
 
     button.addEventListener('click', () => handlers.onAddTicket(ticket.name));
@@ -55,15 +56,24 @@ export function renderCoins(session, elements, handlers) {
   const { coinsWrap } = elements;
   const fragment = document.createDocumentFragment();
 
-  handlers.availableCoins.forEach((value, index) => {
+  const denominations =
+    typeof handlers.getAvailableCoins === 'function' ? handlers.getAvailableCoins() : handlers.availableCoins;
+
+  denominations.forEach((denomination) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `btn ${index === 0 ? 'bill' : 'coin'}`;
+    const classes = ['btn', 'currency-btn', denomination.type];
+    if (denomination.skin) {
+      classes.push(`skin-${denomination.skin}`);
+    }
+    button.className = classes.join(' ');
+    button.dataset.value = String(denomination.value);
     button.innerHTML = `
-      <div class="sub">${index === 0 ? 'Bill' : 'Coin'}</div>
-      <div>${formatMoney(value)}</div>
+      <span class="denom-icon" aria-hidden="true">${denomination.icon ?? ''}</span>
+      <span class="denom-value">${formatMoney(denomination.value)}</span>
+      <span class="denom-label">${denomination.label}</span>
     `;
-    button.addEventListener('click', () => handlers.onInsertCoin(value));
+    button.addEventListener('click', () => handlers.onInsertCoin(denomination.value));
     fragment.appendChild(button);
   });
 
@@ -71,19 +81,56 @@ export function renderCoins(session, elements, handlers) {
 }
 
 export function updateHud(session, elements) {
-  const { scoreDisplay, needEl, paysEl, fareEl, pickedEl, remainEl, timerDisplay } = elements;
+  const { scoreDisplay, needEl, paysEl, fareEl, pickedEl, remainEl, timerDisplay, changeWrap, paysCard } = elements;
   scoreDisplay.textContent = Math.max(0, Math.round(session.score));
   needEl.textContent = formatRequest(session.request);
-  paysEl.textContent = formatMoney(session.pays);
+  if (session.showPays) {
+    paysEl.textContent = formatMoney(session.pays);
+    paysCard?.classList.remove('is-muted');
+  } else {
+    paysEl.textContent = '—';
+    paysCard?.classList.add('is-muted');
+  }
   fareEl.textContent = formatMoney(session.ticketTotal);
   pickedEl.textContent = formatMoney(session.selectedTotal);
-  const delta = session.inserted - session.pays;
-  const label = delta >= 0 ? 'Change' : 'To pay';
-  if (remainEl.dataset.role !== label) {
-    remainEl.dataset.role = label;
-    remainEl.previousElementSibling.textContent = label;
+  const revealChange = session.showChange;
+  if (changeWrap) {
+    changeWrap.dataset.visible = revealChange ? 'true' : 'false';
+    changeWrap.dataset.mode = session.changeDue === 0 ? 'exact' : 'waiting';
   }
-  remainEl.textContent = formatMoney(Math.abs(delta));
+
+  const labelNode = remainEl.previousElementSibling;
+  if (!revealChange) {
+    remainEl.textContent = '$?';
+    remainEl.removeAttribute('data-state');
+    if (labelNode) {
+      labelNode.textContent = session.changeDue === 0 ? 'Exact fare' : 'Change';
+    }
+  } else {
+    const remaining = Math.round((session.changeDue - session.inserted) * 100) / 100;
+    let stateLabel = '';
+    let state = '';
+    if (Math.abs(remaining) < 0.005) {
+      stateLabel = session.changeDue > 0 ? 'Change exact' : 'No change due';
+      remainEl.textContent = formatMoney(0);
+    } else if (remaining > 0) {
+      stateLabel = 'Change due';
+      remainEl.textContent = formatMoney(remaining);
+      state = 'short';
+    } else {
+      stateLabel = 'Extra given';
+      remainEl.textContent = formatMoney(Math.abs(remaining));
+      state = 'over';
+    }
+    if (labelNode && labelNode.textContent !== stateLabel) {
+      labelNode.textContent = stateLabel;
+    }
+    if (state) {
+      remainEl.dataset.state = state;
+    } else {
+      remainEl.removeAttribute('data-state');
+    }
+  }
   timerDisplay.textContent = `${Math.max(0, Math.ceil(session.timeLeft))} s`;
 }
 

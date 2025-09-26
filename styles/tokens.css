@@ -1,0 +1,61 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1018;
+  --panel: #0e1522;
+  --panelAlt: #0a111c;
+  --panelSoft: #111a29;
+  --panelRaised: #141f32;
+  --border: #223047;
+  --borderSoft: rgba(62, 87, 122, 0.6);
+  --borderGlow: rgba(255, 213, 74, 0.3);
+  --text: #f3f7ff;
+  --muted: #9fb0c9;
+  --muted-strong: #d4ddf0;
+  --accent: #ffd54a;
+  --accent-muted: #e9b73a;
+  --ok: #5fddaf;
+  --bad: #ff6f7d;
+  --info: #73b7ff;
+  --safe: 8px;
+  --baseH: 640px;
+  --fit: 1;
+
+  --ticket-normal: linear-gradient(155deg, #1b7a53 0%, #29a06b 100%);
+  --ticket-kid: linear-gradient(155deg, #1f5ba9 0%, #3f8de0 100%);
+  --ticket-luggage: linear-gradient(155deg, #a15b1f 0%, #d77a34 100%);
+  --ticket-senior: linear-gradient(155deg, #6a52c7 0%, #8d73f0 100%);
+  --ticket-disabled: linear-gradient(155deg, #8f2f63 0%, #c74a88 100%);
+  --ticket-stroller: linear-gradient(155deg, #167d88 0%, #2bb2be 100%);
+  --ticket-bike: linear-gradient(155deg, #3b7227 0%, #5c9b39 100%);
+  --ticket-tourist: linear-gradient(155deg, #a3473b 0%, #d06252 100%);
+
+  --coin-brass: linear-gradient(160deg, #c89c3d 0%, #9b7526 100%);
+  --coin-silver: linear-gradient(160deg, #d7dce8 0%, #949bb1 100%);
+  --coin-copper: linear-gradient(160deg, #e7a167 0%, #af6b32 100%);
+  --coin-highlight: radial-gradient(circle at 32% 28%, rgba(255, 249, 236, 0.65), transparent 55%);
+  --coin-shadow: radial-gradient(circle at 70% 78%, rgba(12, 18, 26, 0.32), transparent 62%);
+  --bill-emerald: linear-gradient(160deg, #71c0a1 0%, #2b6f56 100%);
+  --bill-teal: linear-gradient(160deg, #4aa5c9 0%, #1f5b72 100%);
+  --bill-emerald-light: linear-gradient(160deg, #8cd1b2 0%, #357b5f 100%);
+  --bill-border: rgba(143, 207, 184, 0.5);
+  --bill-border-alt: rgba(142, 209, 231, 0.45);
+  --bill-border-light: rgba(178, 230, 206, 0.45);
+
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --shadow-soft: 0 22px 44px rgba(5, 9, 18, 0.55);
+  --shadow-glow: 0 0 0 1px rgba(255, 213, 74, 0.18), 0 12px 32px rgba(0, 0, 0, 0.4);
+
+  --space-xs: 6px;
+  --space-sm: 10px;
+  --space-md: 16px;
+  --space-lg: 20px;
+  --space-xl: 28px;
+
+  --h1: clamp(24px, 3.2vmin, 40px);
+  --h2: clamp(18px, 2.4vmin, 28px);
+  --tileText: clamp(16px, 2.2vmin, 24px);
+  --meta: clamp(12px, 1.8vmin, 18px);
+}

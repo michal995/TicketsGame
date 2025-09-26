@@ -29,6 +29,9 @@ export function addTicket(session, ticketName) {
   }
   session.selectedTickets[ticketName] = current + 1;
   session.selectedTotal = round(session.selectedTotal + ticket.price);
+  if (!session.showPays) {
+    session.showPays = true;
+  }
   logHistory(session, `Added ${ticket.name}`, `+${currency.format(ticket.price)}`);
   return true;
 }
@@ -47,6 +50,9 @@ export function removeTicket(session, ticketName) {
     delete session.selectedTickets[ticketName];
   }
   session.selectedTotal = round(session.selectedTotal - ticket.price);
+  if (session.selectedTotal <= 0) {
+    session.showPays = false;
+  }
   logHistory(session, `Removed ${ticket.name}`, `-${currency.format(ticket.price)}`);
   return true;
 }
@@ -54,6 +60,7 @@ export function removeTicket(session, ticketName) {
 export function clearTickets(session) {
   session.selectedTickets = {};
   session.selectedTotal = 0;
+  session.showPays = false;
   logHistory(session, 'Cleared tickets', '$0.00');
 }
 
@@ -62,12 +69,16 @@ export function insertCoin(session, value) {
   session.coinsUsed[roundedValue] = (session.coinsUsed[roundedValue] || 0) + 1;
   session.inserted = round(session.inserted + roundedValue);
   const formatted = currency.format(roundedValue);
-  logHistory(session, 'Inserted', `+${formatted}`);
+  if (!session.showChange) {
+    session.showChange = true;
+  }
+  logHistory(session, 'Returned', `+${formatted}`);
   return true;
 }
 
 export function resetCoins(session) {
   session.coinsUsed = {};
   session.inserted = 0;
-  logHistory(session, 'Coins returned', '$0.00');
+  session.showChange = false;
+  logHistory(session, 'Change cleared', '$0.00');
 }

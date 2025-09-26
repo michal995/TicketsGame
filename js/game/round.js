@@ -57,9 +57,12 @@ export function startRound(elements, handlers) {
   SESSION.available = rollBusConfig();
   SESSION.request = rollRequest(SESSION.available);
   SESSION.ticketTotal = Number(fareOf(SESSION.request).toFixed(2));
-  SESSION.pays = rollPayment(SESSION.ticketTotal);
+  const payment = rollPayment(SESSION.ticketTotal);
+  SESSION.pays = payment.pays;
+  SESSION.changeDue = Number(payment.change.toFixed(2));
   SESSION.history = [];
   SESSION.showChange = false;
+  SESSION.showPays = false;
 
   hideOverlay(handlers.overlayElements.overlay);
 
@@ -78,7 +81,11 @@ export function finishRound(elements, handlers, reason) {
 
   const perfectTickets = requestsMatch(SESSION.request, SESSION.selectedTickets);
   const ticketValueMatch = Math.abs(SESSION.selectedTotal - SESSION.ticketTotal) < 0.01;
-  const paymentDelta = roundValue(SESSION.inserted - SESSION.pays);
+  const changeDelta = roundValue(SESSION.inserted - SESSION.changeDue);
+  const totalCoinsUsed = Object.values(SESSION.coinsUsed).reduce((sum, count) => sum + count, 0);
+  const uniqueCoinsUsed = Object.keys(SESSION.coinsUsed).filter((key) => SESSION.coinsUsed[key] > 0).length;
+  const hasPerfectChange =
+    Math.abs(changeDelta) < 0.01 && totalCoinsUsed >= 3 && uniqueCoinsUsed >= 2 && SESSION.changeDue > 0;
 
   let points = 0;
   if (perfectTickets) {
@@ -89,10 +96,12 @@ export function finishRound(elements, handlers, reason) {
     points -= 20;
   }
 
-  if (Math.abs(paymentDelta) < 0.01) {
+  if (hasPerfectChange) {
     points += 30;
-  } else if (paymentDelta > 0) {
-    points += 10;
+  } else if (Math.abs(changeDelta) < 0.01) {
+    points += 12;
+  } else if (changeDelta > 0) {
+    points += 6;
   } else {
     points -= 30;
   }
@@ -105,9 +114,10 @@ export function finishRound(elements, handlers, reason) {
     points,
     perfectTickets,
     ticketValueMatch,
-    paymentDelta,
+    changeDelta,
     timeLeft: SESSION.timeLeft,
     reason,
+    coinsUsed: totalCoinsUsed,
   });
 
   const details = [
@@ -116,17 +126,23 @@ export function finishRound(elements, handlers, reason) {
       value: perfectTickets ? 'Perfect match' : ticketValueMatch ? 'Value matched' : 'Mismatch',
     },
     {
-      label: 'Payment',
+      label: 'Change',
       value:
-        paymentDelta === 0
-          ? 'Exact'
-          : paymentDelta > 0
-          ? `${formatMoney(paymentDelta)} change`
-          : `${formatMoney(paymentDelta)} missing`,
+        Math.abs(changeDelta) < 0.01
+          ? hasPerfectChange
+            ? 'Perfect combo'
+            : 'Exact'
+          : changeDelta > 0
+          ? `${formatMoney(changeDelta)} extra`
+          : `${formatMoney(Math.abs(changeDelta))} missing`,
     },
     {
       label: 'Time left',
       value: `${Math.round(SESSION.timeLeft)} s`,
+    },
+    {
+      label: 'Coins used',
+      value: `${totalCoinsUsed} (${uniqueCoinsUsed} types)`,
     },
   ];
 
