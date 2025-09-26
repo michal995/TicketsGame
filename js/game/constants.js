@@ -10,17 +10,15 @@ export const ALL_TICKETS = [
 ];
 
 export const DENOMINATIONS = [
-  { value: 5, type: 'bill', skin: 'emerald', label: 'Transit bill', icon: '⑤', toggleKey: 'allowFive' },
-  { value: 2, type: 'bill', skin: 'teal', label: 'Express bill', icon: '②', toggleKey: 'allowTwo' },
-  { value: 1, type: 'bill', skin: 'emerald-light', label: 'Single ride', icon: '①' },
+  { value: 2, type: 'coin', skin: 'blue', label: 'Express coin', icon: '②', toggleKey: 'allowTwo' },
+  { value: 1, type: 'coin', skin: 'gold', label: 'Dollar coin', icon: '①' },
   { value: 0.5, type: 'coin', skin: 'silver', label: 'Half coin', icon: '◎' },
-  { value: 0.1, type: 'coin', skin: 'silver', label: 'Dime', icon: '◉' },
-  { value: 0.05, type: 'coin', skin: 'copper', label: 'Nickel', icon: '◍' },
-  { value: 0.01, type: 'coin', skin: 'copper', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
+  { value: 0.1, type: 'coin', skin: 'bronze', label: 'Dime', icon: '◉' },
+  { value: 0.05, type: 'coin', skin: 'bronze-dark', label: 'Nickel', icon: '◍' },
+  { value: 0.01, type: 'coin', skin: 'bronze-soft', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
 ];
 
 export const COIN_TOGGLES = {
-  allowFive: true,
   allowTwo: true,
   allowOneCent: true,
 };
