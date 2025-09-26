@@ -6,8 +6,11 @@
   <title>Ticket Rush — PRO</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
   <link rel="stylesheet" href="styles/app.css" />
   <link rel="stylesheet" href="styles/game.css" />
+  <script src="scripts/fit.js" defer></script>
   <script type="module" src="js/main.js" defer></script>
   <script type="module" src="js/screens/game.js" defer></script>
 </head>
@@ -29,9 +32,9 @@
             <div class="meta">Passenger needs</div>
             <div class="big" id="need">—</div>
           </div>
-          <div class="card">
+          <div class="card" id="paysCard">
             <div class="meta">Pays</div>
-            <div class="big" id="pays">$0.00</div>
+            <div class="big" id="pays">—</div>
           </div>
           <div class="card">
             <div class="meta">Tickets value</div>
@@ -54,7 +57,7 @@
         <section class="pay" aria-label="Payment">
           <div class="pbar">
             <div class="meta">Change</div>
-            <div class="remain" id="remain">$0.00</div>
+            <div class="remain" id="remain">$?</div>
           </div>
           <div class="gridCoins" id="coins"></div>
         </section>

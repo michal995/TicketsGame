@@ -1,43 +1,49 @@
 .menu-app {
+  display: grid;
   grid-template-rows: auto 1fr;
   align-content: start;
+  gap: var(--space-lg);
 }
 
 .menu-app .app-header {
   grid-template-columns: 1fr;
 }
 
-.menu-app .card {
-  gap: 16px;
-}
-
 .menu-form {
   display: grid;
-  gap: var(--gap);
+  gap: var(--space-lg);
 }
 
-.menu-form .row {
-  justify-content: space-between;
+.menu-form .card {
+  gap: var(--space-md);
 }
 
 .menu-form label {
   display: grid;
-  gap: 8px;
+  gap: var(--space-xs);
   font-weight: 700;
+  font-size: clamp(16px, 2.2vmin, 22px);
+  color: var(--muted-strong);
+}
+
+.menu-form .row {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
 }
 
 .menu-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--space-md);
 }
 
-@media (max-width: 900px) {
-  .menu-form .row {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.menu-actions button {
+  min-height: 44px;
+  min-width: 160px;
+}
 
+@media (max-width: 980px) {
   .menu-actions {
     justify-content: stretch;
   }

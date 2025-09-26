@@ -16,6 +16,7 @@ const elements = {
   timerDisplay: document.getElementById('timer'),
   needEl: document.getElementById('need'),
   paysEl: document.getElementById('pays'),
+  paysCard: document.getElementById('paysCard'),
   fareEl: document.getElementById('fare'),
   pickedEl: document.getElementById('picked'),
   remainEl: document.getElementById('remain'),

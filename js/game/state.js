@@ -25,6 +25,7 @@ function baseRoundState(timeLimit) {
     timeLeft: timeLimit,
     history: [],
     showChange: false,
+    showPays: false,
   };
 }
 

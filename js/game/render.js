@@ -26,7 +26,7 @@ export function renderTickets(session, elements, handlers) {
   session.available.forEach((ticket) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `btn ticket ${ticket.className}`;
+    button.className = `btn ticket-btn ticket ${ticket.className}`;
     const count = session.selectedTickets[ticket.name] || 0;
     const need = session.request[ticket.name] || 0;
     if (need > 0 && count >= need) {
@@ -62,11 +62,8 @@ export function renderCoins(session, elements, handlers) {
   denominations.forEach((denomination) => {
     const button = document.createElement('button');
     button.type = 'button';
-    const classes = ['btn', 'denomination', denomination.type];
-    if (denomination.size) {
-      classes.push(`size-${denomination.size}`);
-    }
-    if (denomination.skin && (denomination.type === 'bill' || denomination.skin !== 'brass')) {
+    const classes = ['btn', 'currency-btn', denomination.type];
+    if (denomination.skin) {
       classes.push(`skin-${denomination.skin}`);
     }
     button.className = classes.join(' ');
@@ -84,23 +81,30 @@ export function renderCoins(session, elements, handlers) {
 }
 
 export function updateHud(session, elements) {
-  const { scoreDisplay, needEl, paysEl, fareEl, pickedEl, remainEl, timerDisplay, changeWrap } = elements;
+  const { scoreDisplay, needEl, paysEl, fareEl, pickedEl, remainEl, timerDisplay, changeWrap, paysCard } = elements;
   scoreDisplay.textContent = Math.max(0, Math.round(session.score));
   needEl.textContent = formatRequest(session.request);
-  paysEl.textContent = formatMoney(session.pays);
+  if (session.showPays) {
+    paysEl.textContent = formatMoney(session.pays);
+    paysCard?.classList.remove('is-muted');
+  } else {
+    paysEl.textContent = '—';
+    paysCard?.classList.add('is-muted');
+  }
   fareEl.textContent = formatMoney(session.ticketTotal);
   pickedEl.textContent = formatMoney(session.selectedTotal);
-  const revealChange = session.showChange || session.changeDue === 0;
+  const revealChange = session.showChange;
   if (changeWrap) {
     changeWrap.dataset.visible = revealChange ? 'true' : 'false';
+    changeWrap.dataset.mode = session.changeDue === 0 ? 'exact' : 'waiting';
   }
 
   const labelNode = remainEl.previousElementSibling;
   if (!revealChange) {
-    remainEl.textContent = '— —';
+    remainEl.textContent = '$?';
     remainEl.removeAttribute('data-state');
     if (labelNode) {
-      labelNode.textContent = 'Change';
+      labelNode.textContent = session.changeDue === 0 ? 'Exact fare' : 'Change';
     }
   } else {
     const remaining = Math.round((session.changeDue - session.inserted) * 100) / 100;

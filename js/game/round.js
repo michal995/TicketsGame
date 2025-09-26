@@ -61,7 +61,8 @@ export function startRound(elements, handlers) {
   SESSION.pays = payment.pays;
   SESSION.changeDue = Number(payment.change.toFixed(2));
   SESSION.history = [];
-  SESSION.showChange = SESSION.changeDue === 0;
+  SESSION.showChange = false;
+  SESSION.showPays = false;
 
   hideOverlay(handlers.overlayElements.overlay);
 
