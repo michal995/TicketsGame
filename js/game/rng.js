@@ -1,28 +1,89 @@
-import { ALL_TICKETS, COINS } from './constants.js';
+import { ALL_TICKETS } from './constants.js';
+
+const ALWAYS_INCLUDED = new Set(['Normal', 'Kid']);
+
+function triangular(min, max, mode) {
+  if (max <= min) {
+    return min;
+  }
+  const clampedMode = Math.min(Math.max(mode, min), max);
+  const u = Math.random();
+  const c = (clampedMode - min) / (max - min);
+  if (u === c) {
+    return clampedMode;
+  }
+  if (u < c) {
+    return min + Math.sqrt(u * (max - min) * (clampedMode - min));
+  }
+  return max - Math.sqrt((1 - u) * (max - min) * (max - clampedMode));
+}
+
+function triangularInt(min, max, mode) {
+  return Math.round(triangular(min, max, mode));
+}
+
+function clampInt(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function roundToCents(value) {
+  return Math.round(value * 100) / 100;
+}
 
 export function rollBusConfig() {
-  const minTotal = 2;
-  const maxTotal = 6;
-  const base = ALL_TICKETS.filter((ticket) => ticket.name === 'Normal' || ticket.name === 'Kid');
-  const others = ALL_TICKETS.filter((ticket) => ticket.name !== 'Normal' && ticket.name !== 'Kid');
-  const howMany = Math.floor(Math.random() * (maxTotal - minTotal + 1)) + minTotal;
-  const shuffled = others
-    .map((ticket) => ({ sort: Math.random(), ticket }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ ticket }) => ticket);
-  return [...base, ...shuffled.slice(0, Math.max(0, howMany - base.length))];
+  const minTypes = 2;
+  const maxTypes = Math.min(7, ALL_TICKETS.length);
+  const desired = clampInt(triangularInt(minTypes, maxTypes, 4), minTypes, maxTypes);
+
+  const base = ALL_TICKETS.filter((ticket) => ALWAYS_INCLUDED.has(ticket.name));
+  const others = shuffle(ALL_TICKETS.filter((ticket) => !ALWAYS_INCLUDED.has(ticket.name)));
+  const result = [...base];
+
+  for (const ticket of others) {
+    if (result.length >= desired) {
+      break;
+    }
+    result.push(ticket);
+  }
+
+  return shuffle(result);
 }
 
 export function rollRequest(available) {
-  const pool = [...available];
-  const unique = Math.min(pool.length, Math.floor(Math.random() * 2) + 1);
-  const request = {};
-  for (let i = 0; i < unique; i += 1) {
-    const index = Math.floor(Math.random() * pool.length);
-    const ticket = pool.splice(index, 1)[0];
-    const count = Math.floor(Math.random() * 3) + 1;
-    request[ticket.name] = count;
+  const pool = shuffle(available);
+  const minTypes = Math.min(2, pool.length);
+  const maxTypes = Math.min(7, pool.length);
+  const desired = clampInt(triangularInt(minTypes, maxTypes, Math.min(5, maxTypes)), minTypes, maxTypes);
+
+  const requestTickets = [];
+  const remaining = [...pool];
+
+  for (let i = remaining.length - 1; i >= 0; i -= 1) {
+    const ticket = remaining[i];
+    if (ALWAYS_INCLUDED.has(ticket.name) && !requestTickets.some((item) => item.name === ticket.name)) {
+      requestTickets.push(ticket);
+      remaining.splice(i, 1);
+    }
   }
+
+  while (requestTickets.length < desired && remaining.length) {
+    requestTickets.push(remaining.shift());
+  }
+
+  const request = {};
+  requestTickets.forEach((ticket) => {
+    const count = clampInt(triangularInt(2, 7, 4), 2, 7);
+    request[ticket.name] = count;
+  });
   return request;
 }
 
@@ -36,31 +97,14 @@ export function fareOf(request) {
   }, 0);
 }
 
-export function uniqCoins(coinsUsed) {
-  return Object.keys(coinsUsed).filter((key) => coinsUsed[key] > 0).length;
-}
-
-function pickRandomCoin() {
-  const index = Math.floor(Math.random() * COINS.length);
-  return COINS[index];
-}
-
 export function rollPayment(fare) {
-  const minTarget = Math.max(0, fare);
-  let amount = 0;
-  let coins = 0;
-  while (amount < minTarget || (amount === minTarget && coins < 2)) {
-    amount = Math.round((amount + pickRandomCoin()) * 100) / 100;
-    coins += 1;
-    if (coins > 24) {
-      break;
-    }
-  }
-
-  // Occasionally add extra change to keep things interesting.
-  if (Math.random() < 0.5) {
-    amount = Math.round((amount + pickRandomCoin()) * 100) / 100;
-  }
-
-  return Number(amount.toFixed(2));
+  const minChange = 0.16;
+  const maxChange = 7;
+  const preferredMode = 0.84;
+  const change = clampInt(roundToCents(triangular(minChange, maxChange, preferredMode)), minChange, maxChange);
+  const pays = roundToCents(fare + change);
+  return {
+    pays,
+    change,
+  };
 }

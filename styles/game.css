@@ -1,29 +1,31 @@
 .game-app {
-  grid-template-rows: 84px 120px 1fr 200px 150px;
+  grid-template-rows: minmax(88px, auto) minmax(120px, auto) 1fr minmax(220px, min(32vh, 260px)) minmax(160px, min(26vh, 220px));
 }
 
 .game-app .app-header {
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
+  gap: clamp(12px, 2vw, 24px);
 }
 
 .timer {
   font-weight: 900;
   font-size: var(--h2);
-  background: var(--accent);
-  color: #0c0f14;
-  padding: 10px 16px;
-  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(244, 182, 64, 0.95), rgba(244, 182, 64, 0.7));
+  color: #0c1118;
+  padding: 12px 20px;
+  border-radius: 18px;
   text-align: center;
+  box-shadow: 0 16px 36px rgba(8, 12, 18, 0.45);
 }
 
 .big {
-  font-size: var(--h2);
+  font-size: clamp(26px, 2.8vw, var(--h2));
   font-weight: 900;
 }
 
 .hud {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--gap);
 }
 
@@ -31,15 +33,17 @@
 .pay,
 .footer {
   background: var(--panel);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(86, 115, 156, 0.32);
   border-radius: var(--r-lg);
   padding: var(--pad);
   display: grid;
   gap: var(--gap);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 36px rgba(5, 10, 16, 0.55);
 }
 
 .tickets {
-  grid-template-rows: 46px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: clamp(240px, 34vh, 320px);
 }
 
 .tbar,
@@ -47,110 +51,271 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .clear {
-  border: 1px solid var(--border);
-  background: #0f1828;
-  color: #eaf1ff;
-  border-radius: 12px;
-  padding: 10px 14px;
+  border: 1px solid rgba(132, 168, 214, 0.35);
+  background: var(--panel-soft);
+  color: var(--muted-strong);
+  border-radius: 14px;
+  padding: 10px 16px;
   font-weight: 800;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.clear:active,
+.clear:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .gridTickets {
   display: grid;
   gap: var(--gap);
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(120px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-content: start;
 }
 
 .gridCoins {
   display: grid;
   gap: var(--gap);
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: minmax(110px, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  justify-items: center;
+  align-items: start;
 }
 
 .btn {
   position: relative;
   display: grid;
   place-items: center;
+  gap: 8px;
   text-align: center;
   cursor: pointer;
   user-select: none;
   height: 100%;
   border: 0;
-  border-radius: 20px;
+  border-radius: 24px;
   color: #fff;
-  padding: 14px;
-  font-weight: 900;
-  font-size: var(--tile);
+  padding: 18px;
+  font-weight: 800;
+  font-size: clamp(18px, 2vw, var(--tile));
   line-height: 1.1;
-  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.2), 0 12px 26px rgba(0, 0, 0, 0.32);
-  transition: transform 0.06s ease, filter 0.12s ease, opacity 0.2s ease;
-  background: #1a2232;
-}
-
-.btn:active {
-  transform: translateY(1px) scale(0.99);
+  background: linear-gradient(160deg, rgba(33, 45, 66, 0.92), rgba(20, 32, 48, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 28px rgba(2, 6, 14, 0.55);
+  min-width: 140px;
+  min-height: 140px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .btn:disabled {
-  opacity: 0.42;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
+.btn:not(:disabled):hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 40px rgba(2, 6, 14, 0.68);
+}
+
 .sub {
-  font-size: 20px;
-  font-weight: 800;
-  opacity: 0.97;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 700;
+  opacity: 0.9;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .bubble {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  top: 12px;
+  right: 12px;
+  background: rgba(7, 11, 17, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   padding: 4px 10px;
   border-radius: 999px;
   font-size: var(--chip);
   font-weight: 900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-.t-normal { background: linear-gradient(140deg, #22c07a, #139a61); }
-.t-kid { background: linear-gradient(140deg, #4aa7ff, #2c7cff); }
-.t-luggage { background: linear-gradient(140deg, #ff9650, #ff7828); }
-.t-senior { background: linear-gradient(140deg, #b995ff, #8a6eff); }
-.t-disabled { background: linear-gradient(140deg, #ff6e9e, #e34a82); }
-.t-stroller { background: linear-gradient(140deg, #42dede, #23bbbb); }
-.t-bike { background: linear-gradient(140deg, #a2e65a, #82cf35); }
-.t-tourist { background: linear-gradient(140deg, #ff7167, #ff5348); }
+.ticket {
+  overflow: hidden;
+  border-radius: 26px;
+  padding-inline: clamp(16px, 2.5vw, 26px);
+  padding-block: clamp(16px, 2vw, 24px);
+  aspect-ratio: 1.35 / 1;
+  align-content: center;
+}
+
+.ticket::before,
+.ticket::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.ticket::before {
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(circle at 0% 50%, transparent 8px, rgba(255, 255, 255, 0.18) 9px, transparent 11px) left center / 24px 100% repeat-y,
+    radial-gradient(circle at 100% 50%, transparent 8px, rgba(255, 255, 255, 0.18) 9px, transparent 11px) right center / 24px 100% repeat-y;
+  opacity: 0.6;
+}
+
+.ticket::after {
+  inset-inline: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0.45;
+}
+
+.ticket .ticket-icon {
+  font-size: clamp(26px, 3.2vw, 36px);
+  filter: drop-shadow(0 4px 10px rgba(5, 8, 14, 0.35));
+}
+
+.ticket .ticket-price {
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 800;
+}
+
+.t-normal { background: linear-gradient(155deg, #24b378 0%, #128559 100%); }
+.t-kid { background: linear-gradient(155deg, #4ba7ff 0%, #2b6fcc 100%); }
+.t-luggage { background: linear-gradient(155deg, #ff9345 0%, #d35b16 100%); }
+.t-senior { background: linear-gradient(155deg, #b795ff 0%, #7854e3 100%); }
+.t-disabled { background: linear-gradient(155deg, #ff6991 0%, #cf3d69 100%); }
+.t-stroller { background: linear-gradient(155deg, #4ad9d9 0%, #218a9c 100%); }
+.t-bike { background: linear-gradient(155deg, #b7f169 0%, #4f9a26 100%); }
+.t-tourist { background: linear-gradient(155deg, #ff8172 0%, #cc4030 100%); }
+
+.pay {
+  min-height: clamp(200px, 32vh, 260px);
+  position: relative;
+}
+
+.pay[data-visible='false'] .remain {
+  filter: blur(4px);
+  opacity: 0.35;
+}
+
+.pay[data-visible='false']::after {
+  content: 'Tap a coin to reveal change';
+  position: absolute;
+  inset: auto 18px 18px 18px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+  pointer-events: none;
+}
 
 .remain {
   font-weight: 900;
-  font-size: var(--h2);
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: #0f1828;
-  border: 1px solid var(--border);
-  min-width: 150px;
+  font-size: clamp(26px, 3vw, var(--h2));
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: var(--panel-soft);
+  border: 1px solid rgba(132, 168, 214, 0.32);
+  min-width: 170px;
   text-align: center;
+  transition: filter 0.2s ease, opacity 0.2s ease, color 0.2s ease;
 }
 
-.coin {
-  border-radius: 999px;
-  color: var(--coinText);
-  background: radial-gradient(circle at 30% 25%, #fff5b5 0%, var(--coin) 55%, #f0c63d 100%);
-  border: 3px solid #e8bf39;
+.remain[data-state='over'] {
+  color: var(--accent);
 }
 
-.bill {
-  border-radius: 16px;
-  color: #10311d;
-  background: linear-gradient(180deg, var(--bill1), var(--bill2));
-  border: 3px solid #9fce8c;
+.remain[data-state='short'] {
+  color: var(--bad);
+}
+
+.denomination {
+  border-radius: 32px;
+  padding: clamp(18px, 2.4vw, 26px);
+  aspect-ratio: 1 / 1;
+  min-width: 118px;
+  min-height: 118px;
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  gap: 4px;
+}
+
+.denomination.bill {
+  aspect-ratio: 1.65 / 1;
+  justify-items: center;
+  border-radius: 26px;
+  color: #06130e;
+  background: linear-gradient(160deg, var(--bill-emerald), var(--bill-emerald-dark));
+  border: 2px solid var(--bill-emerald-border);
+}
+
+.denomination.bill.skin-emerald {
+  background: linear-gradient(160deg, var(--bill-emerald), var(--bill-emerald-dark));
+  border-color: var(--bill-emerald-border);
+}
+
+.denomination.bill.skin-teal {
+  background: linear-gradient(160deg, var(--bill-teal), var(--bill-teal-dark));
+  border-color: var(--bill-teal-border);
+}
+
+.denomination.coin {
+  border-radius: 50%;
+  padding: clamp(14px, 2vw, 22px);
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 55%),
+    radial-gradient(circle at 70% 80%, rgba(0, 0, 0, 0.25), transparent 65%),
+    linear-gradient(160deg, var(--coin-brass), var(--coin-brass-dark));
+  border: 3px solid var(--coin-brass-border);
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.22), 0 12px 22px rgba(0, 0, 0, 0.45);
+}
+
+.denomination.coin.skin-silver {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0) 58%),
+    radial-gradient(circle at 70% 80%, rgba(19, 28, 42, 0.25), transparent 65%),
+    linear-gradient(160deg, var(--coin-silver), var(--coin-silver-dark));
+  border-color: var(--coin-silver-border);
+}
+
+.denomination.coin.skin-copper {
+  background: radial-gradient(circle at 35% 30%, rgba(255, 211, 180, 0.68), rgba(255, 211, 180, 0) 60%),
+    radial-gradient(circle at 70% 80%, rgba(71, 32, 16, 0.32), transparent 65%),
+    linear-gradient(160deg, var(--coin-copper), var(--coin-copper-dark));
+  border-color: var(--coin-copper-border);
+}
+
+.denomination .denom-value {
+  font-size: clamp(18px, 2.1vw, 26px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.denomination .denom-label {
+  font-size: clamp(12px, 1.3vw, 16px);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.72;
+}
+
+.denomination .denom-icon {
+  font-size: clamp(20px, 2.4vw, 30px);
+  opacity: 0.85;
+}
+
+.denomination.size-lg {
+  aspect-ratio: 1.1 / 1;
+}
+
+.denomination.size-sm {
+  min-width: 108px;
+  min-height: 108px;
+}
+
+.denomination.size-xs {
+  min-width: 96px;
+  min-height: 96px;
 }
 
 .footer {
@@ -179,8 +344,8 @@
   font-weight: 900;
   padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid #2a3346;
-  color: #d9e3f3;
+  border: 1px solid rgba(132, 168, 214, 0.4);
+  color: var(--muted-strong);
 }
 
 .overlay {
@@ -265,14 +430,26 @@
 
 @media (max-width: 1200px) {
   .hud {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .gridTickets {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 
   .gridCoins {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+}
+
+@media (orientation: portrait) {
+  .game-app {
+    grid-template-rows: auto auto minmax(320px, 1fr) minmax(260px, 1fr) minmax(200px, 1fr);
+  }
+
+  .btn,
+  .ticket {
+    min-width: 120px;
+    min-height: 120px;
   }
 }

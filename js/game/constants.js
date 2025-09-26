@@ -1,15 +1,39 @@
 export const ALL_TICKETS = [
-  { name: 'Normal', price: 1.2, className: 't-normal' },
-  { name: 'Kid', price: 0.5, className: 't-kid' },
-  { name: 'Luggage', price: 0.6, className: 't-luggage' },
-  { name: 'Senior', price: 0.8, className: 't-senior' },
-  { name: 'Disabled', price: 0.6, className: 't-disabled' },
-  { name: 'Baby Stroller', price: 0.7, className: 't-stroller' },
-  { name: 'Bike', price: 0.9, className: 't-bike' },
-  { name: 'Tourist', price: 1.5, className: 't-tourist' },
+  { name: 'Normal', price: 1.2, className: 't-normal', icon: '🧍' },
+  { name: 'Kid', price: 0.5, className: 't-kid', icon: '🧒' },
+  { name: 'Luggage', price: 0.6, className: 't-luggage', icon: '🧳' },
+  { name: 'Senior', price: 0.8, className: 't-senior', icon: '👴' },
+  { name: 'Disabled', price: 0.6, className: 't-disabled', icon: '♿' },
+  { name: 'Baby Stroller', price: 0.7, className: 't-stroller', icon: '👶' },
+  { name: 'Bike', price: 0.9, className: 't-bike', icon: '🚲' },
+  { name: 'Tourist', price: 1.5, className: 't-tourist', icon: '🧭' },
 ];
 
-export const COINS = [5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01];
+export const DENOMINATIONS = [
+  { value: 5, type: 'bill', size: 'lg', skin: 'emerald', label: 'Transit bill', icon: '💵', toggleKey: 'allowFive' },
+  { value: 2, type: 'bill', size: 'lg', skin: 'teal', label: 'Express bill', icon: '💴', toggleKey: 'allowTwo' },
+  { value: 1, type: 'coin', size: 'lg', skin: 'brass', label: 'Dollar coin', icon: '●' },
+  { value: 0.5, type: 'coin', size: 'lg', skin: 'silver', label: 'Half coin', icon: '◎' },
+  { value: 0.1, type: 'coin', size: 'sm', skin: 'silver', label: 'Dime', icon: '◉' },
+  { value: 0.05, type: 'coin', size: 'sm', skin: 'copper', label: 'Nickel', icon: '◍' },
+  { value: 0.01, type: 'coin', size: 'xs', skin: 'copper', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
+];
+
+export const COIN_TOGGLES = {
+  allowFive: true,
+  allowTwo: true,
+  allowOneCent: true,
+};
+
+export function getAvailableDenominations(overrides = {}) {
+  const toggles = { ...COIN_TOGGLES, ...overrides };
+  return DENOMINATIONS.filter((item) => {
+    if (!item.toggleKey) {
+      return true;
+    }
+    return toggles[item.toggleKey] !== false;
+  });
+}
 
 export const GAME_MODES = {
   TB1: { label: 'Top/Bottom 1', timeLimit: 20, description: 'Classic rush with single passenger focus.' },

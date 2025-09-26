@@ -1,4 +1,4 @@
-import { COINS, GAME_MODES } from '../game/constants.js';
+import { GAME_MODES, getAvailableDenominations } from '../game/constants.js';
 import { SESSION, startSession, endSession } from '../game/state.js';
 import { startRound, finishRound, stopRound } from '../game/round.js';
 import { addTicket, removeTicket, clearTickets, insertCoin } from '../game/actions.js';
@@ -22,6 +22,7 @@ const elements = {
   ticketsWrap: document.getElementById('tickets'),
   coinsWrap: document.getElementById('coins'),
   historyList: document.getElementById('history'),
+  changeWrap: document.querySelector('.pay'),
 };
 
 const overlayElements = {
@@ -50,7 +51,7 @@ const ticketHandlers = {
 };
 
 const coinHandlers = {
-  availableCoins: COINS,
+  getAvailableCoins: () => getAvailableDenominations(SESSION.coinOptions),
   onInsertCoin: (value) => {
     if (!roundActive) return;
     insertCoin(SESSION, value);
@@ -79,8 +80,9 @@ function maybeFinishRound() {
   }
   const ticketsMatch = requestEntries.every(([name, count]) => (SESSION.selectedTickets[name] || 0) === count);
   const noExtraTickets = Object.keys(SESSION.selectedTickets).every((name) => (SESSION.request[name] || 0) === SESSION.selectedTickets[name]);
-  const paymentEnough = SESSION.inserted >= SESSION.pays && SESSION.pays > 0;
-  if (ticketsMatch && noExtraTickets && paymentEnough) {
+  const remainingChange = SESSION.changeDue - SESSION.inserted;
+  const changeSettled = SESSION.changeDue === 0 ? SESSION.inserted === 0 : remainingChange <= 0.01;
+  if (ticketsMatch && noExtraTickets && changeSettled) {
     finishing = true;
     finishRound(elements, roundHandlers, 'completed');
     roundActive = false;
