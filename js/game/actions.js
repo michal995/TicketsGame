@@ -1,0 +1,73 @@
+import { ALL_TICKETS } from './constants.js';
+
+const currency = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const round = (value) => Math.round(value * 100) / 100;
+
+function ticketByName(name) {
+  return ALL_TICKETS.find((ticket) => ticket.name === name);
+}
+
+function logHistory(session, message, value) {
+  session.history.push({ message, value });
+}
+
+export function addTicket(session, ticketName) {
+  const ticket = ticketByName(ticketName);
+  if (!ticket) {
+    return false;
+  }
+  const limit = session.request[ticketName] || Infinity;
+  const current = session.selectedTickets[ticketName] || 0;
+  if (current >= limit) {
+    return false;
+  }
+  session.selectedTickets[ticketName] = current + 1;
+  session.selectedTotal = round(session.selectedTotal + ticket.price);
+  logHistory(session, `Added ${ticket.name}`, `+${currency.format(ticket.price)}`);
+  return true;
+}
+
+export function removeTicket(session, ticketName) {
+  const ticket = ticketByName(ticketName);
+  if (!ticket) {
+    return false;
+  }
+  const current = session.selectedTickets[ticketName] || 0;
+  if (current <= 0) {
+    return false;
+  }
+  session.selectedTickets[ticketName] = current - 1;
+  if (session.selectedTickets[ticketName] === 0) {
+    delete session.selectedTickets[ticketName];
+  }
+  session.selectedTotal = round(session.selectedTotal - ticket.price);
+  logHistory(session, `Removed ${ticket.name}`, `-${currency.format(ticket.price)}`);
+  return true;
+}
+
+export function clearTickets(session) {
+  session.selectedTickets = {};
+  session.selectedTotal = 0;
+  logHistory(session, 'Cleared tickets', '$0.00');
+}
+
+export function insertCoin(session, value) {
+  const roundedValue = round(value);
+  session.coinsUsed[roundedValue] = (session.coinsUsed[roundedValue] || 0) + 1;
+  session.inserted = round(session.inserted + roundedValue);
+  const formatted = currency.format(roundedValue);
+  logHistory(session, 'Inserted', `+${formatted}`);
+  return true;
+}
+
+export function resetCoins(session) {
+  session.coinsUsed = {};
+  session.inserted = 0;
+  logHistory(session, 'Coins returned', '$0.00');
+}
