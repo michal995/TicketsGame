@@ -1,4 +1,8 @@
-import { GAME_MODES, DEFAULT_MODE, TOTAL_ROUNDS } from './constants.js';
+import { GAME_MODES, DEFAULT_MODE, TOTAL_ROUNDS, COIN_TOGGLES } from './constants.js';
+
+function defaultCoinOptions() {
+  return { ...COIN_TOGGLES };
+}
 
 function resolveMode(mode) {
   if (mode && GAME_MODES[mode]) {
@@ -13,6 +17,7 @@ function baseRoundState(timeLimit) {
     request: {},
     ticketTotal: 0,
     pays: 0,
+    changeDue: 0,
     selectedTickets: {},
     selectedTotal: 0,
     coinsUsed: {},
@@ -30,6 +35,7 @@ export const SESSION = {
   totalRounds: TOTAL_ROUNDS,
   score: 0,
   roundSummaries: [],
+  coinOptions: defaultCoinOptions(),
   ...baseRoundState(GAME_MODES[DEFAULT_MODE].timeLimit),
 };
 
@@ -44,6 +50,7 @@ export function startSession(player, mode) {
   SESSION.score = 0;
   SESSION.roundSummaries = [];
   SESSION.totalRounds = TOTAL_ROUNDS;
+  SESSION.coinOptions = defaultCoinOptions();
 
   Object.assign(SESSION, baseRoundState(timeLimit));
 
@@ -52,7 +59,8 @@ export function startSession(player, mode) {
 
 export function resetRoundState() {
   const timeLimit = GAME_MODES[SESSION.mode].timeLimit;
-  Object.assign(SESSION, baseRoundState(timeLimit));
+  const nextState = baseRoundState(timeLimit);
+  Object.assign(SESSION, nextState, { coinOptions: SESSION.coinOptions });
 }
 
 export function endSession() {

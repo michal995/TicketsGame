@@ -62,12 +62,16 @@ export function insertCoin(session, value) {
   session.coinsUsed[roundedValue] = (session.coinsUsed[roundedValue] || 0) + 1;
   session.inserted = round(session.inserted + roundedValue);
   const formatted = currency.format(roundedValue);
-  logHistory(session, 'Inserted', `+${formatted}`);
+  if (!session.showChange) {
+    session.showChange = true;
+  }
+  logHistory(session, 'Returned', `+${formatted}`);
   return true;
 }
 
 export function resetCoins(session) {
   session.coinsUsed = {};
   session.inserted = 0;
-  logHistory(session, 'Coins returned', '$0.00');
+  session.showChange = false;
+  logHistory(session, 'Change cleared', '$0.00');
 }

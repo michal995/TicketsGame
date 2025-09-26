@@ -1,30 +1,46 @@
 :root {
   color-scheme: dark;
-  --bg: #0b1018;
-  --panel: #0e1522;
-  --panel2: #0a111c;
-  --border: #223047;
-  --text: #f3f7ff;
-  --muted: #9fb0c9;
-  --accent: #ffd54a;
-  --ok: #35d08a;
-  --bad: #ff5555;
-  --coin: #ffd54a;
-  --coinText: #1a2232;
-  --bill1: #d6f0c9;
-  --bill2: #b8e3aa;
+  --bg: #05090f;
+  --panel: #101a2a;
+  --panel2: #0b141f;
+  --panel-elevated: #142033;
+  --panel-soft: #0f1826;
+  --border: rgba(86, 115, 156, 0.42);
+  --border-strong: rgba(132, 168, 214, 0.65);
+  --text: #f4f7ff;
+  --muted: #8f9fbf;
+  --muted-strong: #cad6ec;
+  --accent: #f4b640;
+  --accent-soft: #4ba7ff;
+  --ok: #48dcb0;
+  --bad: #ff6f6f;
+  --coin-brass: #d5ab4b;
+  --coin-brass-dark: #9a7120;
+  --coin-brass-border: rgba(154, 113, 32, 0.55);
+  --coin-silver: #d7dce8;
+  --coin-silver-dark: #8890a1;
+  --coin-silver-border: rgba(164, 176, 198, 0.6);
+  --coin-copper: #f3a36b;
+  --coin-copper-dark: #a46433;
+  --coin-copper-border: rgba(208, 132, 84, 0.6);
+  --bill-emerald: #6cc5aa;
+  --bill-emerald-dark: #296d55;
+  --bill-emerald-border: rgba(203, 255, 234, 0.55);
+  --bill-teal: #4aa5c9;
+  --bill-teal-dark: #1f5b72;
+  --bill-teal-border: rgba(196, 242, 255, 0.55);
   --baseH: 960px;
-  --safe: 10px;
-  --r-xl: 26px;
-  --r-lg: 20px;
-  --r-md: 14px;
-  --r-sm: 10px;
-  --gap: 18px;
-  --pad: 20px;
+  --safe: 12px;
+  --r-xl: 28px;
+  --r-lg: 22px;
+  --r-md: 16px;
+  --r-sm: 12px;
+  --gap: 20px;
+  --pad: 22px;
   --h1: 44px;
   --h2: 30px;
   --h3: 22px;
-  --meta: 17px;
+  --meta: 16px;
   --tile: 26px;
   --chip: 18px;
 }
@@ -46,8 +62,9 @@ body {
   font-family: -apple-system, "SF Pro Text", Inter, system-ui, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(1200px 650px at 15% -10%, rgba(255, 213, 74, 0.12), transparent 60%),
-    linear-gradient(#0a0f17, #0b1018);
+    radial-gradient(1200px 650px at 15% -10%, rgba(244, 182, 64, 0.08), transparent 55%),
+    radial-gradient(900px 520px at 90% 120%, rgba(75, 167, 255, 0.1), transparent 65%),
+    linear-gradient(180deg, #03060a 0%, #060a11 48%, #05090f 100%);
   padding:
     calc(env(safe-area-inset-top) + var(--safe))
     calc(env(safe-area-inset-right) + var(--safe))
@@ -79,15 +96,17 @@ body {
   display: grid;
   gap: var(--gap);
   background: var(--panel2);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(86, 115, 156, 0.28);
   border-radius: var(--r-xl);
   padding: calc(var(--gap) + 6px);
+  backdrop-filter: blur(18px);
 }
 
 .app-header {
   display: grid;
   gap: var(--gap);
   align-items: center;
+  grid-template-columns: auto 1fr auto;
 }
 
 .brand {
@@ -97,11 +116,12 @@ body {
   font-weight: 900;
   font-size: var(--h1);
   letter-spacing: 0.02em;
+  color: var(--muted-strong);
 }
 
 .badge {
-  background: var(--accent);
-  color: #0c0f14;
+  background: linear-gradient(160deg, rgba(244, 182, 64, 0.95), rgba(255, 221, 146, 0.9));
+  color: #0c1118;
   border-radius: 999px;
   padding: 6px 14px;
   font-weight: 900;
@@ -116,11 +136,12 @@ body {
 
 .card {
   background: var(--panel);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(86, 115, 156, 0.32);
   border-radius: var(--r-lg);
   padding: var(--pad);
   display: grid;
   gap: 12px;
+  box-shadow: 0 22px 44px rgba(4, 8, 14, 0.45);
 }
 
 .row {
@@ -146,6 +167,8 @@ button {
   padding: 12px 16px;
   font-weight: 900;
   font-family: inherit;
+  transition: transform 0.12s ease, filter 0.18s ease, box-shadow 0.18s ease;
+  transform-origin: center;
 }
 
 button.primary {
@@ -158,6 +181,10 @@ button.secondary {
   background: #0f1828;
   color: #fff;
   border: 1px solid var(--border);
+}
+
+button:active {
+  transform: scale(1.03);
 }
 
 h1,
