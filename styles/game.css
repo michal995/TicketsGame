@@ -1,11 +1,18 @@
 .game-screen {
-  grid-template-rows: 0.14fr 0.17fr 0.36fr 0.22fr 0.11fr;
-  gap: clamp(8px, 1.6vh, 16px);
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  grid-template-rows: auto minmax(0, 0.46fr) minmax(0, 0.42fr) minmax(0, 0.22fr);
+  grid-template-areas:
+    'top top'
+    'needs payment'
+    'tickets payment'
+    'history history';
+  gap: clamp(6px, 1.2vh, 12px);
 }
 
 .game-top {
   border-bottom: none;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
+  grid-area: top;
+  grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.28fr) minmax(0, 0.27fr);
 }
 
 .game-top .stat-card,
@@ -16,7 +23,7 @@
 
 .game-top .stat-card .value,
 .game-top .timer {
-  font-size: clamp(18px, 2.6vh, 30px);
+  font-size: var(--font-display);
 }
 
 .needs-panel,
@@ -26,7 +33,7 @@
 .action-panel {
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 1.2vh, 12px);
+  gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
 }
 
@@ -34,10 +41,14 @@
   justify-content: center;
 }
 
+.needs-panel {
+  grid-area: needs;
+}
+
 .needs-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(8px, 1.4vh, 14px);
+  gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
 }
 
@@ -50,6 +61,7 @@
 }
 
 .tickets-panel {
+  grid-area: tickets;
   justify-content: space-between;
 }
 
@@ -58,7 +70,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-rows: 1fr;
-  gap: clamp(8px, 1.6vh, 16px);
+  gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
 }
 
@@ -70,28 +82,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(4px, 0.8vh, 10px);
+  gap: clamp(3px, 0.6vh, 8px);
   text-align: center;
   border: none;
   border-radius: clamp(10px, 1.4vh, 18px);
-  padding: clamp(8px, 1.4vh, 14px);
+  padding: clamp(6px, 1vh, 12px);
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.25);
 }
 
 .ticket-btn .ticket-icon {
-  font-size: clamp(16px, 2.4vh, 26px);
+  font-size: var(--font-display);
 }
 
 .ticket-btn .sub {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: clamp(11px, 1.6vh, 16px);
+  font-size: var(--font-base);
 }
 
 .ticket-btn .ticket-price {
-  font-size: clamp(14px, 2vh, 22px);
+  font-size: var(--font-display);
 }
 
 .ticket-btn .bubble {
@@ -102,7 +114,7 @@
   border-radius: 999px;
   background: rgba(16, 24, 32, 0.75);
   color: #f4f7fb;
-  font-size: clamp(10px, 1.4vh, 14px);
+  font-size: var(--font-base);
   font-weight: 700;
 }
 
@@ -164,6 +176,10 @@
   color: #6ce5b1;
 }
 
+.change-panel {
+  grid-area: payment;
+}
+
 .change-panel[data-visible='false'] .currency-grid,
 .change-panel[data-visible='false'] .change-summary {
   opacity: 0.45;
@@ -178,13 +194,15 @@
   display: grid;
   grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-columns: 1fr;
-  gap: clamp(8px, 1.4vh, 14px);
+  gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
 }
 
 .coins-row {
   display: grid;
+  align-items: stretch;
   gap: inherit;
+  min-height: 0;
 }
 
 .coins-row.bills {
@@ -203,13 +221,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(2px, 0.6vh, 6px);
+  gap: clamp(2px, 0.5vh, 6px);
   border: none;
   background: #f6d186;
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.35);
   text-align: center;
-  padding: clamp(5px, 1vh, 10px);
+  padding: clamp(4px, 0.8vh, 8px);
 }
 
 .currency-btn.coin {
@@ -223,16 +241,16 @@
 }
 
 .currency-btn .denom-icon {
-  font-size: clamp(12px, 1.6vh, 18px);
+  font-size: var(--font-base);
   opacity: 0.7;
 }
 
 .currency-btn .denom-value {
-  font-size: clamp(14px, 1.9vh, 20px);
+  font-size: var(--font-display);
 }
 
 .currency-btn .denom-label {
-  font-size: clamp(10px, 1.3vh, 13px);
+  font-size: var(--font-base);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(16, 24, 32, 0.6);
@@ -278,14 +296,19 @@
   color: #1b1f24;
 }
 
+
 .history-row {
+  grid-area: history;
   display: grid;
-  grid-template-columns: minmax(0, 0.64fr) minmax(0, 0.36fr);
-  gap: clamp(8px, 1.6vh, 16px);
+  grid-template-columns: minmax(0, 0.66fr) minmax(0, 0.34fr);
+  gap: clamp(6px, 1.1vh, 12px);
   min-height: 0;
+  align-items: stretch;
 }
 
 .history-panel {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -294,32 +317,30 @@
 }
 
 .action-panel {
-  justify-content: space-between;
-  align-items: stretch;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: clamp(4px, 0.8vh, 10px);
+  justify-content: stretch;
 }
 
 .action-panel .btn {
   width: 100%;
+  min-height: 0;
 }
 
 @media (max-width: 1100px) {
-  .needs-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .grid-tickets {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .coins-row.bills {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .coins-row.coins {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .game-screen {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.42fr) minmax(0, 0.28fr) minmax(0, 0.24fr);
+    grid-template-areas:
+      'top'
+      'needs'
+      'tickets'
+      'payment'
+      'history';
   }
 
   .history-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.4fr);
   }
 }
