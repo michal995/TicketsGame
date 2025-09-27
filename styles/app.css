@@ -211,8 +211,8 @@ body,
 .btn {
   border: none;
   border-radius: var(--radius-md);
-  padding: clamp(6px, 1vh, 12px) clamp(10px, 1.6vh, 16px);
-  font-size: var(--font-base);
+  padding: clamp(5px, 0.9vh, 10px) clamp(8px, 1.4vh, 14px);
+  font-size: clamp(12px, 1.6vh, 18px);
   font-weight: 700;
   background: var(--surface-subtle);
   color: var(--text-primary);

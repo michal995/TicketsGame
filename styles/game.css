@@ -1,7 +1,4 @@
 .game-screen {
-
-  --ticket-scale: 0.7;
-  --currency-scale: 0.45;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
 
@@ -73,57 +70,56 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: clamp(4px, 0.8vh, 10px);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(4px, 0.7vh, 9px);
   min-height: 0;
-  place-items: center;
+  align-content: stretch;
+  justify-items: stretch;
 }
 
 .ticket-btn {
   position: relative;
-  width: calc(100% * var(--ticket-scale));
-  height: calc(100% * var(--ticket-scale));
+  width: 100%;
+  max-width: clamp(96px, 19vw, 140px);
+  aspect-ratio: 5 / 6;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  gap: calc(clamp(3px, 0.6vh, 8px) * var(--ticket-scale));
+  gap: clamp(3px, 0.7vh, 8px);
   text-align: center;
   border: none;
-  border-radius: calc(clamp(10px, 1.4vh, 18px) * var(--ticket-scale));
-  padding: calc(clamp(6px, 1vh, 12px) * var(--ticket-scale));
-
+  border-radius: clamp(10px, 1.3vh, 16px);
+  padding: clamp(7px, 1.2vh, 11px) clamp(6px, 1.1vh, 9px);
   color: #101820;
-  box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0.35vh 1vh rgba(0, 0, 0, 0.25);
   margin: 0 auto;
 }
 
 .ticket-btn .ticket-icon {
-  font-size: var(--font-display);
+  font-size: clamp(18px, 3vh, 28px);
 }
 
 .ticket-btn .sub {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: var(--font-base);
+  font-size: clamp(11px, 1.5vh, 15px);
 }
 
 .ticket-btn .ticket-price {
-  font-size: var(--font-display);
+  font-size: clamp(14px, 2vh, 20px);
 }
 
 .ticket-btn .bubble {
   position: absolute;
-  top: calc(clamp(4px, 0.7vh, 8px) * var(--ticket-scale));
-  right: calc(clamp(4px, 0.8vh, 8px) * var(--ticket-scale));
-  padding: calc(clamp(3px, 0.5vh, 6px) * var(--ticket-scale))
-    calc(clamp(6px, 1vh, 10px) * var(--ticket-scale));
+  top: clamp(6px, 1vh, 9px);
+  right: clamp(6px, 1vh, 9px);
+  padding: clamp(2px, 0.5vh, 5px) clamp(5px, 0.9vh, 8px);
   border-radius: 999px;
   background: rgba(16, 24, 32, 0.75);
   color: #f4f7fb;
-  font-size: var(--font-base);
+  font-size: clamp(10px, 1.4vh, 14px);
   font-weight: 700;
 }
 
@@ -203,18 +199,17 @@
   display: grid;
   grid-template-rows: repeat(2, minmax(0, 1fr));
   grid-template-columns: 1fr;
-  gap: clamp(4px, 0.8vh, 10px);
+  gap: clamp(4px, 0.8vh, 9px);
   min-height: 0;
   justify-items: center;
+  align-content: center;
 }
 
 .coins-row {
   display: grid;
   align-items: stretch;
-
   justify-items: center;
-
-  gap: inherit;
+  gap: clamp(4px, 0.8vh, 9px);
   min-height: 0;
 }
 
@@ -228,46 +223,45 @@
 
 .currency-btn {
   position: relative;
-  width: calc(100% * var(--currency-scale));
+  width: 100%;
+  max-width: clamp(88px, 16vw, 140px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  gap: calc(clamp(2px, 0.5vh, 6px) * var(--currency-scale));
-
+  gap: clamp(2px, 0.6vh, 6px);
   border: none;
   background: #f6d186;
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.35);
   text-align: center;
-
-  padding: calc(clamp(4px, 0.8vh, 8px) * var(--currency-scale));
+  padding: clamp(5px, 1vh, 9px) clamp(6px, 1.1vh, 10px);
   margin: 0 auto;
-
 }
 
 .currency-btn.coin {
   aspect-ratio: 1 / 1;
   border-radius: 50%;
+  max-width: clamp(56px, 10vw, 88px);
 }
 
 .currency-btn.bill {
   aspect-ratio: 7 / 4;
-  border-radius: calc(clamp(10px, 1.2vh, 16px) * var(--currency-scale));
+  border-radius: clamp(9px, 1.1vh, 14px);
+  max-width: clamp(100px, 18vw, 156px);
 }
 
 .currency-btn .denom-icon {
-  font-size: var(--font-base);
+  font-size: clamp(11px, 1.5vh, 14px);
   opacity: 0.7;
 }
 
 .currency-btn .denom-value {
-  font-size: var(--font-display);
+  font-size: clamp(13px, 1.9vh, 18px);
 }
 
 .currency-btn .denom-label {
-  font-size: var(--font-base);
+  font-size: clamp(10px, 1.4vh, 13px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(16, 24, 32, 0.6);
@@ -318,7 +312,7 @@
   grid-area: history;
   display: grid;
   grid-template-columns: minmax(0, 0.66fr) minmax(0, 0.34fr);
-  gap: clamp(6px, 1.1vh, 12px);
+  gap: clamp(4px, 0.8vh, 9px);
   min-height: 0;
   align-items: stretch;
 }
@@ -327,6 +321,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vh, 12px);
 }
 
 .history-list {
@@ -336,13 +331,15 @@
 .action-panel {
   display: grid;
   grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: clamp(4px, 0.8vh, 10px);
+  gap: clamp(4px, 0.7vh, 8px);
   justify-content: stretch;
+  padding: clamp(6px, 1vh, 11px) clamp(8px, 1.4vh, 12px);
 }
 
 .action-panel .btn {
   width: 100%;
   min-height: 0;
+  font-size: clamp(12px, 1.6vh, 18px);
 }
 
 @media (max-width: 1100px) {
