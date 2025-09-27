@@ -1,11 +1,11 @@
-
 .game-screen {
-  grid-template-rows: 0.13fr 0.62fr 0.25fr;
+  grid-template-rows: 0.14fr 0.17fr 0.36fr 0.22fr 0.11fr;
+  gap: clamp(8px, 1.6vh, 16px);
 }
 
 .game-top {
   border-bottom: none;
-  grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.28fr) minmax(0, 0.36fr);
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
 }
 
 .game-top .stat-card,
@@ -16,21 +16,7 @@
 
 .game-top .stat-card .value,
 .game-top .timer {
-  font-size: clamp(22px, 3.2vw, 34px);
-}
-
-.game-content {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(10px, 1.6vw, 18px);
-  min-height: 0;
-}
-
-.game-column {
-  display: grid;
-  grid-template-rows: minmax(0, 0.42fr) minmax(0, 0.58fr);
-  gap: clamp(10px, 1.2vh, 14px);
-  min-height: 0;
+  font-size: clamp(18px, 2.6vh, 30px);
 }
 
 .needs-panel,
@@ -40,14 +26,18 @@
 .action-panel {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1vh, 12px);
+  gap: clamp(6px, 1.2vh, 12px);
   min-height: 0;
+}
+
+.hud-panel {
+  justify-content: center;
 }
 
 .needs-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(8px, 1vh, 12px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vh, 14px);
   min-height: 0;
 }
 
@@ -63,71 +53,56 @@
   justify-content: space-between;
 }
 
-
-.tickets-track {
+.grid-tickets {
   flex: 1;
-  display: flex;
-  gap: clamp(10px, 1.4vw, 16px);
-  align-items: stretch;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: clamp(4px, 0.6vh, 8px);
-  scroll-snap-type: x proximity;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: clamp(8px, 1.6vh, 16px);
+  min-height: 0;
 }
-
-.tickets-track::-webkit-scrollbar {
-  height: clamp(4px, 0.6vh, 6px);
-}
-
-.tickets-track::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-}
-
 
 .ticket-btn {
   position: relative;
-  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(4px, 0.8vh, 8px);
+  gap: clamp(4px, 0.8vh, 10px);
   text-align: center;
   border: none;
-  border-radius: var(--radius-md);
-  padding: clamp(8px, 1.2vh, 12px);
-  width: clamp(100px, 15vw, 150px);
-  height: min(15vh, 22vw);
+  border-radius: clamp(10px, 1.4vh, 18px);
+  padding: clamp(8px, 1.4vh, 14px);
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.25);
-  scroll-snap-align: center;
 }
 
 .ticket-btn .ticket-icon {
-  font-size: clamp(18px, 2.8vw, 26px);
+  font-size: clamp(16px, 2.4vh, 26px);
 }
 
 .ticket-btn .sub {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: clamp(11px, 1.2vw, 14px);
+  font-size: clamp(11px, 1.6vh, 16px);
 }
 
 .ticket-btn .ticket-price {
-  font-size: clamp(16px, 2.2vw, 22px);
+  font-size: clamp(14px, 2vh, 22px);
 }
 
 .ticket-btn .bubble {
   position: absolute;
-  top: clamp(4px, 0.6vh, 8px);
-  right: clamp(4px, 0.8vw, 8px);
-  padding: clamp(3px, 0.5vh, 6px) clamp(6px, 1vw, 10px);
+  top: clamp(4px, 0.7vh, 8px);
+  right: clamp(4px, 0.8vh, 8px);
+  padding: clamp(3px, 0.5vh, 6px) clamp(6px, 1vh, 10px);
   border-radius: 999px;
   background: rgba(16, 24, 32, 0.75);
   color: #f4f7fb;
-  font-size: clamp(11px, 1.2vw, 14px);
+  font-size: clamp(10px, 1.4vh, 14px);
   font-weight: 700;
 }
 
@@ -170,7 +145,7 @@
 .change-summary {
   display: inline-flex;
   align-items: baseline;
-  gap: clamp(6px, 0.8vw, 10px);
+  gap: clamp(4px, 1vh, 10px);
 }
 
 .change-value {
@@ -200,49 +175,82 @@
 
 .currency-grid {
   flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: space-evenly;
-  gap: clamp(10px, 1.4vw, 16px);
-  padding-block: clamp(4px, 0.6vh, 8px);
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+  gap: clamp(8px, 1.4vh, 14px);
+  min-height: 0;
+}
+
+.coins-row {
+  display: grid;
+  gap: inherit;
+}
+
+.coins-row.bills {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.coins-row.coins {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .currency-btn {
   position: relative;
-  display: grid;
-  place-items: center;
-  gap: clamp(2px, 0.4vh, 4px);
-  width: min(9vh, 9vw);
-  height: min(9vh, 9vw);
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 0.6vh, 6px);
   border: none;
   background: #f6d186;
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.35);
   text-align: center;
-  padding: clamp(5px, 0.7vh, 8px);
+  padding: clamp(5px, 1vh, 10px);
+}
+
+.currency-btn.coin {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+
+.currency-btn.bill {
+  aspect-ratio: 7 / 4;
+  border-radius: clamp(10px, 1.2vh, 16px);
 }
 
 .currency-btn .denom-icon {
-  font-size: clamp(14px, 2vw, 18px);
-  opacity: 0.65;
+  font-size: clamp(12px, 1.6vh, 18px);
+  opacity: 0.7;
 }
 
 .currency-btn .denom-value {
-  font-size: clamp(15px, 2.2vw, 20px);
+  font-size: clamp(14px, 1.9vh, 20px);
 }
 
 .currency-btn .denom-label {
-  font-size: clamp(11px, 1.2vw, 14px);
+  font-size: clamp(10px, 1.3vh, 13px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(16, 24, 32, 0.6);
 }
 
-.currency-btn.skin-blue {
-  background: #70c2ff;
-  color: #0b1c2c;
+.currency-btn.skin-bill {
+  background: linear-gradient(160deg, #7fd4ff 0%, #b3e7ff 100%);
+  color: #082033;
+}
+
+.currency-btn.skin-bill-alt {
+  background: linear-gradient(160deg, #8fe3c1 0%, #b9f0d7 100%);
+  color: #0f2a25;
+}
+
+.currency-btn.skin-bill-soft {
+  background: linear-gradient(160deg, #ffe59f 0%, #fff1c4 100%);
+  color: #2a1f0c;
 }
 
 .currency-btn.skin-gold {
@@ -270,10 +278,10 @@
   color: #1b1f24;
 }
 
-.bottom-bar {
+.history-row {
   display: grid;
-  grid-template-columns: minmax(0, 0.68fr) minmax(0, 0.32fr);
-  gap: clamp(10px, 1.6vw, 18px);
+  grid-template-columns: minmax(0, 0.64fr) minmax(0, 0.36fr);
+  gap: clamp(8px, 1.6vh, 16px);
   min-height: 0;
 }
 
@@ -296,30 +304,22 @@
 
 @media (max-width: 1100px) {
   .needs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-tickets {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .coins-row.bills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .coins-row.coins {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .history-row {
     grid-template-columns: 1fr;
-  }
-
-  .ticket-btn {
-    width: clamp(90px, 24vw, 150px);
-  }
-}
-
-@media (max-width: 900px) {
-  .game-screen {
-    grid-template-rows: 0.16fr 0.6fr 0.24fr;
-  }
-
-  .game-content {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-  }
-
-  .game-column {
-    grid-template-rows: minmax(0, 0.5fr) minmax(0, 0.5fr);
-  }
-
-  .bottom-bar {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 0.7fr) minmax(0, 0.3fr);
   }
 }

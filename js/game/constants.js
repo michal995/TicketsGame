@@ -9,14 +9,21 @@ export const ALL_TICKETS = [
   { name: 'Tourist', price: 1.5, className: 't-tourist', icon: '🧭' },
 ];
 
-export const DENOMINATIONS = [
-  { value: 2, type: 'coin', skin: 'blue', label: 'Express coin', icon: '②', toggleKey: 'allowTwo' },
-  { value: 1, type: 'coin', skin: 'gold', label: 'Dollar coin', icon: '①' },
-  { value: 0.5, type: 'coin', skin: 'silver', label: 'Half coin', icon: '◎' },
+export const BILLS = [
+  { value: 5, type: 'bill', skin: 'bill', label: '$5 bill', icon: '⑤' },
+  { value: 2, type: 'bill', skin: 'bill-alt', label: '$2 bill', icon: '②', toggleKey: 'allowTwo' },
+  { value: 1, type: 'bill', skin: 'bill-soft', label: '$1 bill', icon: '①' },
+];
+
+export const COINS = [
+  { value: 0.5, type: 'coin', skin: 'gold', label: 'Half dollar', icon: '◎' },
+  { value: 0.2, type: 'coin', skin: 'silver', label: 'Twenty cents', icon: '◑' },
   { value: 0.1, type: 'coin', skin: 'bronze', label: 'Dime', icon: '◉' },
   { value: 0.05, type: 'coin', skin: 'bronze-dark', label: 'Nickel', icon: '◍' },
   { value: 0.01, type: 'coin', skin: 'bronze-soft', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
 ];
+
+export const DENOMINATIONS = [...BILLS, ...COINS];
 
 export const COIN_TOGGLES = {
   allowTwo: true,
