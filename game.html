@@ -13,7 +13,7 @@
 </head>
 <body class="app-body">
   <main class="app-screen game-screen" role="main">
-    <header class="top-bar game-bar">
+    <header class="top-bar game-top">
       <div class="brand">
         <span class="logo" aria-hidden="true">🚌</span>
         <div class="brand-text">
@@ -31,52 +31,65 @@
       </div>
     </header>
 
-    <section class="info-panels" aria-live="polite">
-      <div class="info-stack">
-        <article class="info-card">
-          <span class="label">Passenger needs</span>
-          <span class="value" id="need">—</span>
-        </article>
-        <article class="info-card" id="paysCard">
-          <span class="label">Pays</span>
-          <span class="value" id="pays">—</span>
-        </article>
-      </div>
-      <article class="info-card">
-        <span class="label">Tickets value</span>
-        <span class="value" id="fare">$0.00</span>
-      </article>
-      <article class="info-card">
-        <span class="label">Selected value</span>
-        <span class="value" id="picked">$0.00</span>
-      </article>
-    </section>
+    <section class="game-content" aria-label="Passenger needs and payment tools">
+      <div class="game-column column-left">
+        <section class="panel needs-panel" aria-label="Passenger needs">
+          <div class="panel-header">
+            <span class="panel-title">Passenger Needs</span>
+          </div>
+          <div class="needs-grid">
+            <article class="info-card">
+              <span class="label">Needs</span>
+              <span class="value" id="need">—</span>
+            </article>
+            <article class="info-card" id="paysCard">
+              <span class="label">Pays</span>
+              <span class="value" id="pays">—</span>
+            </article>
+            <article class="info-card">
+              <span class="label">Tickets value</span>
+              <span class="value" id="fare">$0.00</span>
+            </article>
+            <article class="info-card">
+              <span class="label">Selected value</span>
+              <span class="value" id="picked">$0.00</span>
+            </article>
+          </div>
+        </section>
 
-    <section class="tickets-panel" aria-label="Tickets">
-      <div class="panel-header">
-        <span class="panel-title">Tickets</span>
-        <button class="btn ghost" id="clearTickets" type="button">Clear</button>
+        <section class="panel tickets-panel" aria-label="Tickets">
+          <div class="panel-header">
+            <span class="panel-title">Tickets</span>
+          </div>
+          <div class="tickets-track" id="tickets"></div>
+        </section>
       </div>
-      <div class="ticket-grid" id="tickets"></div>
-    </section>
 
-    <section class="change-panel" aria-label="Change" data-visible="false">
-      <div class="panel-header">
-        <span class="panel-title">Change</span>
-        <div class="change-summary">
-          <span class="label" id="changeLabel">Change</span>
-          <span class="change-value" id="remain">$?</span>
+      <section class="panel change-panel pay" aria-label="Change" data-visible="false">
+        <div class="panel-header">
+          <span class="panel-title">Change</span>
+          <div class="change-summary">
+            <span class="label" id="changeLabel">Change</span>
+            <span class="change-value" id="remain">$?</span>
+          </div>
         </div>
-      </div>
-      <div class="currency-grid" id="coins"></div>
+        <div class="currency-grid" id="coins"></div>
+      </section>
     </section>
 
-    <section class="history-panel" aria-label="History">
-      <div class="panel-header">
-        <span class="panel-title">History</span>
+    <footer class="bottom-bar game-bottom" aria-label="Round history and actions">
+      <section class="panel history-panel" aria-label="History">
+        <div class="panel-header">
+          <span class="panel-title">History</span>
+        </div>
+        <div class="history-list" id="history"></div>
+      </section>
+      <div class="panel action-panel" role="group" aria-label="Game controls">
+        <button class="btn ghost" id="clearTickets" type="button">Clear</button>
+        <button class="btn secondary" id="restartGame" type="button">Restart</button>
+        <button class="btn secondary" id="menuButton" type="button">Menu</button>
       </div>
-      <div class="history-list" id="history"></div>
-    </section>
+    </footer>
   </main>
 
   <div class="overlay" id="overlay" role="alertdialog" aria-modal="true" aria-hidden="true">
