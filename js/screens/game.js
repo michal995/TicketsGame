@@ -22,7 +22,6 @@ const elements = {
   remainEl: document.getElementById('remain'),
   ticketsWrap: document.getElementById('tickets'),
   coinsWrap: document.getElementById('coins'),
-  historyList: document.getElementById('history'),
   changeWrap: document.querySelector('.pay'),
 };
 
@@ -32,8 +31,7 @@ const overlayElements = {
 };
 
 const clearButton = document.getElementById('clearTickets');
-const restartButton = document.getElementById('restartGame');
-const menuButton = document.getElementById('menuButton');
+const closeButton = document.getElementById('closeGame');
 
 let roundActive = false;
 let finishing = false;
@@ -163,15 +161,8 @@ if (clearButton) {
   });
 }
 
-if (restartButton) {
-  restartButton.addEventListener('click', () => {
-    stopRound();
-    window.location.reload();
-  });
-}
-
-if (menuButton) {
-  menuButton.addEventListener('click', () => {
+if (closeButton) {
+  closeButton.addEventListener('click', () => {
     stopRound();
     navigateToMenu();
   });

@@ -1,19 +1,20 @@
 .game-screen {
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(0, 0.38fr) repeat(2, minmax(0, 0.31fr));
 
   grid-template-areas:
-    'top top'
-    'needs payment'
-    'tickets payment'
-    'history history';
+    'top'
+    'needs'
+    'tickets'
+    'payment';
   gap: clamp(4px, 0.8vh, 9px);
 }
 
 .game-top {
   border-bottom: none;
   grid-area: top;
-  grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.28fr) minmax(0, 0.27fr);
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.22fr) minmax(0, 0.22fr) auto;
+  align-items: center;
 }
 
 .game-top .stat-card,
@@ -61,6 +62,7 @@
   opacity: 0.45;
 }
 
+
 .tickets-panel {
   grid-area: tickets;
   justify-content: space-between;
@@ -68,18 +70,18 @@
 
 .grid-tickets {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: clamp(3px, 0.6vh, 7px);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: clamp(3px, 0.7vh, 10px);
   min-height: 0;
-  align-content: stretch;
-  justify-items: stretch;
+  flex-wrap: nowrap;
 }
 
 .ticket-btn {
   position: relative;
-  width: 100%;
+  width: auto;
+  flex: 0 1 clamp(40px, 8vw, 64px);
   max-width: clamp(40px, 8vw, 64px);
   aspect-ratio: 5 / 6;
   display: flex;
@@ -93,7 +95,12 @@
   padding: clamp(3px, 0.6vh, 6px) clamp(3px, 0.6vh, 5px);
   color: #101820;
   box-shadow: 0 0.22vh 0.7vh rgba(0, 0, 0, 0.25);
-  margin: 0 auto;
+  margin: 0;
+}
+
+.ticket-btn.is-inactive {
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .ticket-btn .ticket-icon {
@@ -196,34 +203,18 @@
 
 .currency-grid {
   flex: 1;
-  display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-template-columns: 1fr;
-  gap: clamp(3px, 0.6vh, 7px);
-  min-height: 0;
-  justify-items: center;
-  align-content: center;
-}
-
-.coins-row {
-  display: grid;
+  display: flex;
   align-items: stretch;
-  justify-items: center;
-  gap: clamp(3px, 0.6vh, 7px);
+  justify-content: space-between;
+  gap: clamp(3px, 0.7vh, 10px);
   min-height: 0;
-}
-
-.coins-row.bills {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.coins-row.coins {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  flex-wrap: nowrap;
 }
 
 .currency-btn {
   position: relative;
-  width: 100%;
+  width: auto;
+  flex: 0 1 clamp(36px, 7vw, 60px);
   max-width: clamp(36px, 7vw, 60px);
   display: flex;
   flex-direction: column;
@@ -236,7 +227,7 @@
   box-shadow: 0 0.22vh 0.7vh rgba(0, 0, 0, 0.35);
   text-align: center;
   padding: clamp(2px, 0.4vh, 4px) clamp(3px, 0.6vh, 5px);
-  margin: 0 auto;
+  margin: 0;
 }
 
 .currency-btn.coin {
@@ -249,6 +240,7 @@
   aspect-ratio: 7 / 4;
   border-radius: clamp(6px, 0.9vh, 10px);
   max-width: clamp(52px, 10vw, 84px);
+  flex-basis: clamp(52px, 10vw, 84px);
 }
 
 .currency-btn .denom-icon {
@@ -308,53 +300,8 @@
 }
 
 
-.history-row {
-  grid-area: history;
-  display: grid;
-  grid-template-columns: minmax(0, 0.66fr) minmax(0, 0.34fr);
-  gap: clamp(3px, 0.6vh, 7px);
-  min-height: 0;
-  align-items: stretch;
-}
-
-.history-panel {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: clamp(4px, 0.7vh, 8px) clamp(5px, 0.9vh, 9px);
-}
-
-.history-list {
-  flex: 1;
-}
-
-.action-panel {
-  display: grid;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: clamp(3px, 0.6vh, 6px);
-  justify-content: stretch;
-  padding: clamp(4px, 0.7vh, 8px) clamp(5px, 0.9vh, 9px);
-}
-
-.action-panel .btn {
-  width: 100%;
-  min-height: 0;
-  font-size: clamp(9px, 1.3vh, 14px);
-}
-
 @media (max-width: 1100px) {
-  .game-screen {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.42fr) minmax(0, 0.28fr) minmax(0, 0.24fr);
-    grid-template-areas:
-      'top'
-      'needs'
-      'tickets'
-      'payment'
-      'history';
-  }
-
-  .history-row {
-    grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.4fr);
+  .game-top {
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 0.24fr) minmax(0, 0.24fr) auto;
   }
 }

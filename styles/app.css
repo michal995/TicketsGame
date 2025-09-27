@@ -29,6 +29,8 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 body {
@@ -39,11 +41,6 @@ body {
   color: var(--text-primary);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
-}
-
-body,
-.app-screen {
-  touch-action: manipulation;
 }
 
 .app-body {
@@ -208,6 +205,11 @@ body,
   text-transform: uppercase;
 }
 
+.panel-header .btn {
+  padding: clamp(4px, 0.7vh, 8px) clamp(8px, 1.4vh, 12px);
+  font-size: clamp(10px, 1.4vh, 15px);
+}
+
 .btn {
   border: none;
   border-radius: var(--radius-md);
@@ -219,6 +221,18 @@ body,
   box-shadow: var(--shadow-soft);
   cursor: pointer;
   transition: transform 0.16s ease, box-shadow 0.16s ease;
+  touch-action: manipulation;
+}
+
+.btn.icon {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  width: clamp(28px, 3vh, 36px);
+  height: clamp(28px, 3vh, 36px);
+  font-size: clamp(18px, 2.4vh, 24px);
+  line-height: 1;
+  border-radius: var(--radius-md);
 }
 
 .btn:active {
