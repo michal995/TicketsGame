@@ -60,30 +60,38 @@ export function rollBusConfig() {
 
 export function rollRequest(available) {
   const pool = shuffle(available);
-  const minTypes = Math.min(2, pool.length);
-  const maxTypes = Math.min(7, pool.length);
-  const desired = clampInt(triangularInt(minTypes, maxTypes, Math.min(5, maxTypes)), minTypes, maxTypes);
+  const request = { Normal: 1, Kid: 1 };
+  const included = new Set(Object.keys(request));
+  const totalTickets = clampInt(triangularInt(2, 8, 5), 2, 8);
+  let remaining = totalTickets - included.size;
 
-  const requestTickets = [];
-  const remaining = [...pool];
+  const optionalCandidates = pool.filter((ticket) => !ALWAYS_INCLUDED.has(ticket.name));
 
-  for (let i = remaining.length - 1; i >= 0; i -= 1) {
-    const ticket = remaining[i];
-    if (ALWAYS_INCLUDED.has(ticket.name) && !requestTickets.some((item) => item.name === ticket.name)) {
-      requestTickets.push(ticket);
-      remaining.splice(i, 1);
+  for (let i = 0; i < optionalCandidates.length && remaining > 0; i += 1) {
+    if (Math.random() < 0.55) {
+      const ticket = optionalCandidates.splice(i, 1)[0];
+      request[ticket.name] = 1;
+      included.add(ticket.name);
+      remaining -= 1;
+      i -= 1;
     }
   }
 
-  while (requestTickets.length < desired && remaining.length) {
-    requestTickets.push(remaining.shift());
+  while (remaining > 0) {
+    const nextIndex = optionalCandidates.findIndex((ticket) => !included.has(ticket.name));
+    if (nextIndex !== -1 && Math.random() < 0.35) {
+      const ticket = optionalCandidates.splice(nextIndex, 1)[0];
+      request[ticket.name] = 1;
+      included.add(ticket.name);
+      remaining -= 1;
+      continue;
+    }
+    const names = Array.from(included);
+    const pick = names[Math.floor(Math.random() * names.length)];
+    request[pick] += 1;
+    remaining -= 1;
   }
 
-  const request = {};
-  requestTickets.forEach((ticket) => {
-    const count = clampInt(triangularInt(2, 7, 4), 2, 7);
-    request[ticket.name] = count;
-  });
   return request;
 }
 

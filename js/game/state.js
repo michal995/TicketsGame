@@ -16,6 +16,7 @@ function baseRoundState(timeLimit) {
     available: [],
     request: {},
     ticketTotal: 0,
+    ticketCount: 0,
     pays: 0,
     changeDue: 0,
     selectedTickets: {},
@@ -26,6 +27,8 @@ function baseRoundState(timeLimit) {
     history: [],
     showChange: false,
     showPays: false,
+    roundStartTime: 0,
+    roundBonuses: [],
   };
 }
 

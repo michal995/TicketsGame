@@ -13,6 +13,7 @@ startSession(player, mode);
 
 const elements = {
   scoreDisplay: document.getElementById('score'),
+  scoreCard: document.getElementById('score')?.closest('.stat-card') || null,
   timerDisplay: document.getElementById('timer'),
   needEl: document.getElementById('need'),
   paysEl: document.getElementById('pays'),
@@ -85,9 +86,12 @@ function maybeFinishRound() {
   const changeSettled = SESSION.changeDue === 0 ? SESSION.inserted === 0 : remainingChange <= 0.01;
   if (ticketsMatch && noExtraTickets && changeSettled) {
     finishing = true;
-    finishRound(elements, roundHandlers, 'completed');
     roundActive = false;
-    finishing = false;
+    Promise.resolve(finishRound(elements, roundHandlers, 'completed'))
+      .catch((error) => console.error(error))
+      .finally(() => {
+        finishing = false;
+      });
   }
 }
 
@@ -95,8 +99,11 @@ function handleTimeout() {
   if (!roundActive) return;
   finishing = true;
   roundActive = false;
-  finishRound(elements, roundHandlers, 'timeout');
-  finishing = false;
+  Promise.resolve(finishRound(elements, roundHandlers, 'timeout'))
+    .catch((error) => console.error(error))
+    .finally(() => {
+      finishing = false;
+    });
 }
 
 function handleProceed() {

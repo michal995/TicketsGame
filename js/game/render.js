@@ -181,6 +181,7 @@ export function renderHistory(session, elements) {
 export function showOverlay(overlayElements, content) {
   const { overlay, box } = overlayElements;
   box.innerHTML = '';
+  let countdownValueEl = null;
 
   const title = document.createElement('div');
   title.className = 'title';
@@ -218,6 +219,37 @@ export function showOverlay(overlayElements, content) {
     box.appendChild(list);
   }
 
+  if (content.bonuses?.length) {
+    const bonuses = document.createElement('div');
+    bonuses.className = 'bonus-list';
+    content.bonuses.forEach((bonus) => {
+      const tag = document.createElement('span');
+      tag.className = 'bonus-tag';
+      tag.innerHTML = `
+        <span>${bonus.label}</span>
+        <span class="value">+${bonus.points} pts</span>
+      `;
+      bonuses.appendChild(tag);
+    });
+    box.appendChild(bonuses);
+  }
+
+  if (content.body instanceof Node) {
+    box.appendChild(content.body);
+  }
+
+  if (typeof content.countdown === 'number') {
+    const countdownRow = document.createElement('div');
+    countdownRow.className = 'countdown-row';
+    const label = document.createElement('span');
+    label.textContent = content.countdownLabel || 'Next passenger in…';
+    countdownValueEl = document.createElement('span');
+    countdownValueEl.className = 'value';
+    countdownValueEl.textContent = String(content.countdown);
+    countdownRow.append(label, countdownValueEl);
+    box.appendChild(countdownRow);
+  }
+
   if (content.actions?.length) {
     content.actions.forEach((action) => {
       const button = document.createElement('button');
@@ -231,6 +263,10 @@ export function showOverlay(overlayElements, content) {
 
   overlay.classList.add('show');
   overlay.setAttribute('aria-hidden', 'false');
+
+  if (typeof content.onRender === 'function') {
+    content.onRender({ overlay, box, countdownEl: countdownValueEl });
+  }
 }
 
 export function hideOverlay(overlay) {
