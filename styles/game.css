@@ -1,8 +1,10 @@
 .game-screen {
+
   --ticket-scale: 0.7;
   --currency-scale: 0.45;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
+
   grid-template-areas:
     'top top'
     'needs payment'
@@ -85,11 +87,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   gap: calc(clamp(3px, 0.6vh, 8px) * var(--ticket-scale));
   text-align: center;
   border: none;
   border-radius: calc(clamp(10px, 1.4vh, 18px) * var(--ticket-scale));
   padding: calc(clamp(6px, 1vh, 12px) * var(--ticket-scale));
+
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.25);
   margin: 0 auto;
@@ -207,7 +211,9 @@
 .coins-row {
   display: grid;
   align-items: stretch;
+
   justify-items: center;
+
   gap: inherit;
   min-height: 0;
 }
@@ -227,14 +233,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   gap: calc(clamp(2px, 0.5vh, 6px) * var(--currency-scale));
+
   border: none;
   background: #f6d186;
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.35);
   text-align: center;
+
   padding: calc(clamp(4px, 0.8vh, 8px) * var(--currency-scale));
   margin: 0 auto;
+
 }
 
 .currency-btn.coin {
