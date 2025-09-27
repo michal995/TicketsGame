@@ -12,10 +12,10 @@
   --radius-sm: clamp(6px, 0.8vh, 12px);
   --radius-md: clamp(9px, 1.2vh, 16px);
   --radius-lg: clamp(12px, 1.6vh, 22px);
-  --font-base: clamp(12px, 1.6vh, 18px);
-  --font-heading: clamp(13px, 1.9vh, 20px);
-  --font-display: clamp(16px, 2.4vh, 26px);
-  --font-huge: clamp(18px, 3vh, 34px);
+  --font-base: clamp(12px, 1.8vh, 20px);
+  --font-heading: var(--font-base);
+  --font-display: var(--font-base);
+  --font-huge: var(--font-base);
 }
 
 *,
@@ -58,10 +58,10 @@ body,
 .app-screen {
   width: 100vw;
   height: 100vh;
-  padding: clamp(12px, 2.2vh, 28px) clamp(14px, 2.8vh, 32px);
+  padding: clamp(10px, 1.8vh, 22px) clamp(12px, 2.4vh, 26px);
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: clamp(8px, 1.6vh, 16px);
+  gap: clamp(6px, 1.2vh, 12px);
   background: var(--bg);
   overflow: hidden;
 }
@@ -74,25 +74,25 @@ body,
   display: grid;
   grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.3fr) minmax(0, 0.25fr);
   align-items: center;
-  gap: clamp(8px, 1.6vh, 18px);
-  padding-bottom: clamp(4px, 0.8vh, 10px);
+  gap: clamp(6px, 1.2vh, 12px);
+  padding-bottom: clamp(4px, 0.7vh, 8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: clamp(8px, 1.4vh, 18px);
+  gap: clamp(6px, 1.1vh, 12px);
 }
 
 .logo {
   display: grid;
   place-items: center;
-  width: clamp(32px, 4.6vh, 56px);
-  height: clamp(32px, 4.6vh, 56px);
-  border-radius: clamp(10px, 1.4vh, 18px);
+  width: clamp(26px, 3.6vh, 44px);
+  height: clamp(26px, 3.6vh, 44px);
+  border-radius: clamp(8px, 1.2vh, 14px);
   background: rgba(255, 209, 102, 0.14);
-  font-size: clamp(16px, 2.8vh, 32px);
+  font-size: var(--font-base);
 }
 
 .brand-text {
@@ -111,7 +111,7 @@ body,
 
 .subtitle,
 .menu-subtitle {
-  font-size: clamp(10px, 1.3vh, 14px);
+  font-size: var(--font-base);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -152,7 +152,7 @@ body,
 .value,
 .denom-value,
 .ticket-price {
-  font-size: clamp(16px, 2.4vh, 26px);
+  font-size: var(--font-display);
 }
 
 .panel,
@@ -167,13 +167,13 @@ body,
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
-  padding: clamp(10px, 1.6vh, 16px) clamp(12px, 2.2vh, 20px);
+  padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.8vh, 16px);
 }
 
 .info-card {
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.8vh, 10px);
+  gap: clamp(3px, 0.7vh, 8px);
   justify-content: center;
 }
 
@@ -182,7 +182,7 @@ body,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(4px, 0.8vh, 10px);
+  gap: clamp(3px, 0.7vh, 8px);
 }
 
 .timer-card {
@@ -193,12 +193,12 @@ body,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: clamp(6px, 1.2vh, 12px);
-  margin-bottom: clamp(4px, 0.7vh, 9px);
+  gap: clamp(4px, 0.8vh, 10px);
+  margin-bottom: clamp(3px, 0.6vh, 8px);
 }
 
 .panel-title {
-  font-size: clamp(12px, 1.6vh, 16px);
+  font-size: var(--font-heading);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -206,8 +206,8 @@ body,
 .btn {
   border: none;
   border-radius: var(--radius-md);
-  padding: clamp(8px, 1.4vh, 14px) clamp(12px, 2.4vh, 20px);
-  font-size: clamp(12px, 1.6vh, 18px);
+  padding: clamp(6px, 1vh, 12px) clamp(10px, 1.6vh, 16px);
+  font-size: var(--font-base);
   font-weight: 700;
   background: var(--surface-subtle);
   color: var(--text-primary);
@@ -274,19 +274,19 @@ button:focus-visible {
 .history-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.6vh, 8px);
+  gap: clamp(3px, 0.6vh, 6px);
   overflow-y: auto;
-  padding-right: clamp(2px, 0.4vh, 6px);
+  padding-right: clamp(2px, 0.3vh, 4px);
 }
 
 .history-list .item {
   background: var(--surface-subtle);
   border-radius: var(--radius-sm);
-  padding: clamp(6px, 1vh, 10px) clamp(8px, 1.6vh, 12px);
+  padding: clamp(5px, 0.9vh, 9px) clamp(7px, 1.3vh, 10px);
   display: flex;
   justify-content: space-between;
-  gap: clamp(4px, 0.8vh, 10px);
-  font-size: clamp(11px, 1.5vh, 16px);
+  gap: clamp(3px, 0.6vh, 8px);
+  font-size: var(--font-base);
 }
 
 .menu-screen {
