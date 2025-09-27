@@ -1,6 +1,10 @@
 .game-screen {
+
+  --ticket-scale: 0.7;
+  --currency-scale: 0.45;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  grid-template-rows: auto minmax(0, 0.46fr) minmax(0, 0.42fr) minmax(0, 0.22fr);
+  grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.32fr) minmax(0, 0.26fr);
+
   grid-template-areas:
     'top top'
     'needs payment'
@@ -72,23 +76,27 @@
   grid-auto-rows: 1fr;
   gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
+  place-items: center;
 }
 
 .ticket-btn {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: calc(100% * var(--ticket-scale));
+  height: calc(100% * var(--ticket-scale));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(3px, 0.6vh, 8px);
+
+  gap: calc(clamp(3px, 0.6vh, 8px) * var(--ticket-scale));
   text-align: center;
   border: none;
-  border-radius: clamp(10px, 1.4vh, 18px);
-  padding: clamp(6px, 1vh, 12px);
+  border-radius: calc(clamp(10px, 1.4vh, 18px) * var(--ticket-scale));
+  padding: calc(clamp(6px, 1vh, 12px) * var(--ticket-scale));
+
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
 }
 
 .ticket-btn .ticket-icon {
@@ -108,9 +116,10 @@
 
 .ticket-btn .bubble {
   position: absolute;
-  top: clamp(4px, 0.7vh, 8px);
-  right: clamp(4px, 0.8vh, 8px);
-  padding: clamp(3px, 0.5vh, 6px) clamp(6px, 1vh, 10px);
+  top: calc(clamp(4px, 0.7vh, 8px) * var(--ticket-scale));
+  right: calc(clamp(4px, 0.8vh, 8px) * var(--ticket-scale));
+  padding: calc(clamp(3px, 0.5vh, 6px) * var(--ticket-scale))
+    calc(clamp(6px, 1vh, 10px) * var(--ticket-scale));
   border-radius: 999px;
   background: rgba(16, 24, 32, 0.75);
   color: #f4f7fb;
@@ -196,11 +205,15 @@
   grid-template-columns: 1fr;
   gap: clamp(4px, 0.8vh, 10px);
   min-height: 0;
+  justify-items: center;
 }
 
 .coins-row {
   display: grid;
   align-items: stretch;
+
+  justify-items: center;
+
   gap: inherit;
   min-height: 0;
 }
@@ -215,19 +228,23 @@
 
 .currency-btn {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: calc(100% * var(--currency-scale));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(2px, 0.5vh, 6px);
+
+  gap: calc(clamp(2px, 0.5vh, 6px) * var(--currency-scale));
+
   border: none;
   background: #f6d186;
   color: #101820;
   box-shadow: 0 0.4vh 1.2vh rgba(0, 0, 0, 0.35);
   text-align: center;
-  padding: clamp(4px, 0.8vh, 8px);
+
+  padding: calc(clamp(4px, 0.8vh, 8px) * var(--currency-scale));
+  margin: 0 auto;
+
 }
 
 .currency-btn.coin {
@@ -237,7 +254,7 @@
 
 .currency-btn.bill {
   aspect-ratio: 7 / 4;
-  border-radius: clamp(10px, 1.2vh, 16px);
+  border-radius: calc(clamp(10px, 1.2vh, 16px) * var(--currency-scale));
 }
 
 .currency-btn .denom-icon {

@@ -58,7 +58,12 @@ body,
 .app-screen {
   width: 100vw;
   height: 100vh;
-  padding: clamp(10px, 1.8vh, 22px) clamp(12px, 2.4vh, 26px);
+
+  --app-pad-x: clamp(12px, 2.4vh, 26px);
+  padding: clamp(10px, 1.8vh, 22px) var(--app-pad-x);
+  padding-left: calc(var(--app-pad-x) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--app-pad-x) + env(safe-area-inset-right, 0px));
+
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: clamp(6px, 1.2vh, 12px);
