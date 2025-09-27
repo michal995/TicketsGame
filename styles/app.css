@@ -9,13 +9,13 @@
   --text-muted: #92a4b8;
   --accent: #ffd166;
   --shadow-soft: 0 0.8vh 2vh rgba(0, 0, 0, 0.35);
-  --radius-sm: clamp(8px, 0.7vw, 12px);
-  --radius-md: clamp(12px, 1vw, 16px);
-  --radius-lg: clamp(16px, 1.4vw, 22px);
-  --font-base: clamp(14px, 2vw, 20px);
-  --font-heading: clamp(18px, 2.4vw, 26px);
-  --font-display: clamp(24px, 3.2vw, 32px);
-  --font-huge: clamp(30px, 4.2vw, 44px);
+  --radius-sm: clamp(6px, 0.8vh, 12px);
+  --radius-md: clamp(9px, 1.2vh, 16px);
+  --radius-lg: clamp(12px, 1.6vh, 22px);
+  --font-base: clamp(12px, 1.6vh, 18px);
+  --font-heading: clamp(13px, 1.9vh, 20px);
+  --font-display: clamp(16px, 2.4vh, 26px);
+  --font-huge: clamp(18px, 3vh, 34px);
 }
 
 *,
@@ -58,10 +58,10 @@ body,
 .app-screen {
   width: 100vw;
   height: 100vh;
-  padding: clamp(10px, 1.6vh, 18px) clamp(14px, 2.4vw, 26px);
+  padding: clamp(12px, 2.2vh, 28px) clamp(14px, 2.8vh, 32px);
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: clamp(10px, 1.2vh, 16px);
+  gap: clamp(8px, 1.6vh, 16px);
   background: var(--bg);
   overflow: hidden;
 }
@@ -74,31 +74,31 @@ body,
   display: grid;
   grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.3fr) minmax(0, 0.25fr);
   align-items: center;
-  gap: clamp(10px, 1.6vw, 18px);
-  padding-bottom: clamp(4px, 0.6vh, 8px);
+  gap: clamp(8px, 1.6vh, 18px);
+  padding-bottom: clamp(4px, 0.8vh, 10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: clamp(8px, 1.4vw, 18px);
+  gap: clamp(8px, 1.4vh, 18px);
 }
 
 .logo {
   display: grid;
   place-items: center;
-  width: clamp(36px, 4.8vw, 52px);
-  height: clamp(36px, 4.8vw, 52px);
-  border-radius: 16px;
+  width: clamp(32px, 4.6vh, 56px);
+  height: clamp(32px, 4.6vh, 56px);
+  border-radius: clamp(10px, 1.4vh, 18px);
   background: rgba(255, 209, 102, 0.14);
-  font-size: clamp(20px, 3.2vw, 30px);
+  font-size: clamp(16px, 2.8vh, 32px);
 }
 
 .brand-text {
   display: flex;
   flex-direction: column;
-  gap: clamp(2px, 0.4vh, 6px);
+  gap: clamp(2px, 0.6vh, 6px);
 }
 
 .title,
@@ -111,7 +111,7 @@ body,
 
 .subtitle,
 .menu-subtitle {
-  font-size: clamp(12px, 1.4vw, 16px);
+  font-size: clamp(10px, 1.3vh, 14px);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -152,7 +152,7 @@ body,
 .value,
 .denom-value,
 .ticket-price {
-  font-size: clamp(18px, 2.6vw, 28px);
+  font-size: clamp(16px, 2.4vh, 26px);
 }
 
 .panel,
@@ -167,13 +167,13 @@ body,
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
-  padding: clamp(10px, 1.4vh, 14px) clamp(14px, 2.2vw, 20px);
+  padding: clamp(10px, 1.6vh, 16px) clamp(12px, 2.2vh, 20px);
 }
 
 .info-card {
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 0.8vh, 10px);
+  gap: clamp(4px, 0.8vh, 10px);
   justify-content: center;
 }
 
@@ -182,7 +182,7 @@ body,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(6px, 0.8vh, 10px);
+  gap: clamp(4px, 0.8vh, 10px);
 }
 
 .timer-card {
@@ -193,12 +193,12 @@ body,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: clamp(8px, 1.2vw, 14px);
-  margin-bottom: clamp(4px, 0.6vh, 8px);
+  gap: clamp(6px, 1.2vh, 12px);
+  margin-bottom: clamp(4px, 0.7vh, 9px);
 }
 
 .panel-title {
-  font-size: clamp(14px, 2vw, 20px);
+  font-size: clamp(12px, 1.6vh, 16px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -206,8 +206,8 @@ body,
 .btn {
   border: none;
   border-radius: var(--radius-md);
-  padding: clamp(8px, 1.2vh, 12px) clamp(14px, 2.2vw, 20px);
-  font-size: var(--font-base);
+  padding: clamp(8px, 1.4vh, 14px) clamp(12px, 2.4vh, 20px);
+  font-size: clamp(12px, 1.6vh, 18px);
   font-weight: 700;
   background: var(--surface-subtle);
   color: var(--text-primary);
@@ -256,7 +256,7 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-md);
   background: var(--surface-subtle);
-  padding: clamp(8px, 1.2vh, 12px) clamp(12px, 2vw, 18px);
+  padding: clamp(8px, 1.2vh, 12px) clamp(10px, 2vh, 18px);
   color: var(--text-primary);
 }
 
@@ -276,17 +276,17 @@ button:focus-visible {
   flex-direction: column;
   gap: clamp(4px, 0.6vh, 8px);
   overflow-y: auto;
-  padding-right: clamp(2px, 0.4vw, 6px);
+  padding-right: clamp(2px, 0.4vh, 6px);
 }
 
 .history-list .item {
   background: var(--surface-subtle);
   border-radius: var(--radius-sm);
-  padding: clamp(6px, 1vh, 10px) clamp(8px, 1.2vw, 12px);
+  padding: clamp(6px, 1vh, 10px) clamp(8px, 1.6vh, 12px);
   display: flex;
   justify-content: space-between;
-  gap: clamp(4px, 0.8vw, 10px);
-  font-size: var(--font-base);
+  gap: clamp(4px, 0.8vh, 10px);
+  font-size: clamp(11px, 1.5vh, 16px);
 }
 
 .menu-screen {

@@ -54,10 +54,13 @@ export function renderTickets(session, elements, handlers) {
 
 export function renderCoins(session, elements, handlers) {
   const { coinsWrap } = elements;
-  const fragment = document.createDocumentFragment();
-
   const denominations =
     typeof handlers.getAvailableCoins === 'function' ? handlers.getAvailableCoins() : handlers.availableCoins;
+
+  const billsRow = document.createElement('div');
+  billsRow.className = 'coins-row bills';
+  const coinsRow = document.createElement('div');
+  coinsRow.className = 'coins-row coins';
 
   denominations.forEach((denomination) => {
     const button = document.createElement('button');
@@ -74,9 +77,17 @@ export function renderCoins(session, elements, handlers) {
       <span class="denom-label">${denomination.label}</span>
     `;
     button.addEventListener('click', () => handlers.onInsertCoin(denomination.value));
-    fragment.appendChild(button);
+    if (denomination.type === 'bill') {
+      billsRow.appendChild(button);
+    } else {
+      coinsRow.appendChild(button);
+    }
   });
 
+  const fragment = document.createDocumentFragment();
+  fragment.append(billsRow, coinsRow);
+
+  coinsWrap.classList.add('grid-coins');
   coinsWrap.replaceChildren(fragment);
 }
 
