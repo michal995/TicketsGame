@@ -99,8 +99,16 @@
 }
 
 .ticket-btn.is-inactive {
-  opacity: 0.35;
   pointer-events: none;
+  opacity: 1;
+  background: linear-gradient(160deg, #4d5565 0%, #2d323d 100%);
+  color: #e5e8ef;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.ticket-btn.is-inactive .sub,
+.ticket-btn.is-inactive .ticket-price {
+  color: #f5f7fb;
 }
 
 .ticket-btn .ticket-icon {
@@ -132,6 +140,10 @@
 
 .ticket-btn:disabled {
   opacity: 0.45;
+}
+
+.ticket-btn.is-inactive:disabled {
+  opacity: 1;
 }
 
 .ticket-btn.t-normal {
@@ -197,10 +209,6 @@
   opacity: 0.45;
 }
 
-.change-panel[data-visible='false'] .currency-grid {
-  pointer-events: none;
-}
-
 .currency-grid {
   flex: 1;
   display: flex;
@@ -233,14 +241,23 @@
 .currency-btn.coin {
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  max-width: clamp(30px, 5.4vw, 44px);
+  max-width: clamp(45px, 8.1vw, 66px);
+  flex: 0 1 clamp(45px, 8.1vw, 66px);
+  flex-basis: clamp(45px, 8.1vw, 66px);
+  background: radial-gradient(circle at 30% 30%, #fff2c2 0%, #ffd76f 48%, #f3a73b 100%);
+  color: #2f1a05;
+  box-shadow: 0 0.4vh 1.2vh rgba(255, 199, 86, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
 .currency-btn.bill {
   aspect-ratio: 7 / 4;
   border-radius: clamp(6px, 0.9vh, 10px);
   max-width: clamp(52px, 10vw, 84px);
+  flex: 0 1 clamp(52px, 10vw, 84px);
   flex-basis: clamp(52px, 10vw, 84px);
+  background: linear-gradient(160deg, #7fd4a4 0%, #2f7a56 100%);
+  color: #0f2418;
+  box-shadow: 0 0.4vh 1.1vh rgba(16, 61, 41, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .currency-btn .denom-icon {
@@ -259,44 +276,64 @@
   color: rgba(16, 24, 32, 0.6);
 }
 
-.currency-btn.skin-bill {
-  background: linear-gradient(160deg, #7fd4ff 0%, #b3e7ff 100%);
-  color: #082033;
-}
-
-.currency-btn.skin-bill-alt {
-  background: linear-gradient(160deg, #8fe3c1 0%, #b9f0d7 100%);
-  color: #0f2a25;
-}
-
+.currency-btn.skin-bill,
+.currency-btn.skin-bill-alt,
 .currency-btn.skin-bill-soft {
-  background: linear-gradient(160deg, #ffe59f 0%, #fff1c4 100%);
-  color: #2a1f0c;
+  background: linear-gradient(160deg, #7fd4a4 0%, #2f7a56 100%);
+  color: #0f2418;
 }
 
-.currency-btn.skin-gold {
-  background: #ffd166;
-  color: #1b1f24;
-}
-
-.currency-btn.skin-silver {
-  background: #dce6f5;
-  color: #1b1f24;
-}
-
-.currency-btn.skin-bronze {
-  background: #f0b27a;
-  color: #1b1f24;
-}
-
-.currency-btn.skin-bronze-dark {
-  background: #d99863;
-  color: #1b1f24;
-}
-
+.currency-btn.skin-gold,
+.currency-btn.skin-silver,
+.currency-btn.skin-bronze,
+.currency-btn.skin-bronze-dark,
 .currency-btn.skin-bronze-soft {
-  background: #f7c89c;
-  color: #1b1f24;
+  background: radial-gradient(circle at 30% 30%, #fff2c2 0%, #ffd76f 48%, #f3a73b 100%);
+  color: #2f1a05;
+}
+
+.currency-btn.coin .denom-label {
+  color: rgba(47, 26, 5, 0.6);
+}
+
+.currency-btn.bill .denom-label {
+  color: rgba(15, 36, 24, 0.55);
+}
+
+.score-bonus-toast {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -100%);
+  background: rgba(255, 214, 102, 0.18);
+  color: #ffe9a3;
+  padding: clamp(4px, 0.6vh, 6px) clamp(8px, 1.1vh, 12px);
+  border-radius: 999px;
+  font-size: clamp(11px, 1.4vh, 15px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: scoreBonusFloat 0.9s ease forwards;
+  box-shadow: 0 0.4vh 1.1vh rgba(255, 209, 102, 0.35);
+}
+
+@keyframes scoreBonusFloat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10%) scale(0.8);
+    text-shadow: 0 0 0 rgba(255, 224, 130, 0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1.05);
+    text-shadow: 0 0 12px rgba(255, 224, 130, 0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -140%) scale(0.9);
+    text-shadow: 0 0 0 rgba(255, 224, 130, 0.4);
+  }
 }
 
 

@@ -187,6 +187,10 @@ body {
   gap: clamp(3px, 0.7vh, 8px);
 }
 
+.stat-card {
+  position: relative;
+}
+
 .timer-card {
   background: var(--surface-strong);
 }
@@ -450,6 +454,49 @@ button:focus-visible {
   justify-content: space-between;
   align-items: center;
   gap: clamp(6px, 1vw, 12px);
+}
+
+.overlay-box .bonus-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 0.8vh, 10px);
+}
+
+.overlay-box .bonus-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(4px, 0.6vh, 6px);
+  padding: clamp(4px, 0.6vh, 6px) clamp(8px, 1vh, 12px);
+  border-radius: 999px;
+  background: rgba(111, 226, 184, 0.18);
+  color: #9ef1d2;
+  font-size: clamp(11px, 1.4vh, 15px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.overlay-box .bonus-tag .value {
+  color: #6ce5b1;
+}
+
+.overlay-box .countdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(6px, 0.8vh, 10px);
+  padding: clamp(6px, 0.8vh, 10px) clamp(8px, 1vh, 12px);
+  border-radius: var(--radius-md);
+  background: rgba(255, 209, 102, 0.12);
+  color: #ffe6a6;
+  font-size: clamp(12px, 1.6vh, 18px);
+  font-weight: 600;
+}
+
+.overlay-box .countdown-row .value {
+  font-size: clamp(16px, 2vh, 22px);
+  font-weight: 700;
+  color: #ffd166;
 }
 
 @media (max-width: 900px) {

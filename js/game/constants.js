@@ -11,16 +11,16 @@ export const ALL_TICKETS = [
 
 export const BILLS = [
   { value: 5, type: 'bill', skin: 'bill', label: '$5 bill', icon: '⑤' },
-  { value: 2, type: 'bill', skin: 'bill-alt', label: '$2 bill', icon: '②', toggleKey: 'allowTwo' },
-  { value: 1, type: 'bill', skin: 'bill-soft', label: '$1 bill', icon: '①' },
+  { value: 2, type: 'bill', skin: 'bill', label: '$2 bill', icon: '②', toggleKey: 'allowTwo' },
+  { value: 1, type: 'bill', skin: 'bill', label: '$1 bill', icon: '①' },
 ];
 
 export const COINS = [
   { value: 0.5, type: 'coin', skin: 'gold', label: 'Half dollar', icon: '◎' },
-  { value: 0.2, type: 'coin', skin: 'silver', label: 'Twenty cents', icon: '◑' },
-  { value: 0.1, type: 'coin', skin: 'bronze', label: 'Dime', icon: '◉' },
-  { value: 0.05, type: 'coin', skin: 'bronze-dark', label: 'Nickel', icon: '◍' },
-  { value: 0.01, type: 'coin', skin: 'bronze-soft', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
+  { value: 0.2, type: 'coin', skin: 'gold', label: 'Twenty cents', icon: '◑' },
+  { value: 0.1, type: 'coin', skin: 'gold', label: 'Dime', icon: '◉' },
+  { value: 0.05, type: 'coin', skin: 'gold', label: 'Nickel', icon: '◍' },
+  { value: 0.01, type: 'coin', skin: 'gold', label: 'Penny', icon: '∙', toggleKey: 'allowOneCent' },
 ];
 
 export const DENOMINATIONS = [...BILLS, ...COINS];
