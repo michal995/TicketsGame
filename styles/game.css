@@ -1,102 +1,104 @@
 .game-screen {
-  display: grid;
-  grid-template-rows: 0.14fr 0.19fr 0.23fr 0.23fr 0.21fr;
-  gap: clamp(8px, 1vh, 16px);
+  grid-template-rows: 0.14fr 0.62fr 0.24fr;
 }
 
-.game-screen .top-bar {
+.game-top {
   border-bottom: none;
+  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.2fr) minmax(0, 0.4fr);
 }
 
-.game-bar .stat-card {
-  justify-content: center;
-  max-width: clamp(180px, 22vw, 220px);
-  width: 100%;
+.game-top .stat-card,
+.game-top .timer-card {
+  align-self: stretch;
+  text-align: left;
 }
 
-.game-bar .stat-card .label {
-  letter-spacing: 0.12em;
-}
-
-.game-bar .stat-card .value,
-.game-bar .timer {
+.game-top .stat-card .value,
+.game-top .timer {
   font-size: clamp(26px, 4vw, 44px);
 }
 
-.info-panels {
+.game-content {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-  gap: clamp(8px, 1vh, 14px);
-  align-items: stretch;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+  min-height: 0;
 }
 
-.info-stack {
+.game-column {
   display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: clamp(8px, 1vh, 12px);
+  grid-template-rows: minmax(0, 0.45fr) minmax(0, 0.55fr);
+  gap: clamp(12px, 1.6vh, 18px);
+  min-height: 0;
 }
 
-.info-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(6px, 0.8vh, 10px);
-  padding: clamp(12px, 1.8vh, 18px) clamp(14px, 2.6vw, 20px);
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-}
-
-.info-card .value {
-  font-size: clamp(22px, 3.2vw, 34px);
-  line-height: 1.1;
-  color: var(--text-primary);
-}
-
-.info-card .label {
-  letter-spacing: 0.1em;
-}
-
+.needs-panel,
 .tickets-panel,
 .change-panel,
-.history-panel {
+.history-panel,
+.action-panel {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1vh, 14px);
-  padding: clamp(12px, 1.8vh, 18px) clamp(14px, 2.6vw, 20px);
+  gap: clamp(10px, 1.4vh, 16px);
+  min-height: 0;
 }
 
-.tickets-panel .panel-header,
-.change-panel .panel-header,
-.history-panel .panel-header {
-  margin-bottom: clamp(4px, 0.6vh, 6px);
-}
-
-.ticket-grid {
-  flex: 1;
+.needs-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: clamp(8px, 1vh, 12px);
-  align-content: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vh, 16px);
+  min-height: 0;
+}
+
+.needs-grid .info-card {
+  min-height: 0;
+}
+
+.info-card.is-muted {
+  opacity: 0.45;
+}
+
+.tickets-panel {
+  justify-content: space-between;
+}
+
+.tickets-track {
+  flex: 1;
+  display: flex;
+  gap: clamp(12px, 2vw, 18px);
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: clamp(6px, 0.8vh, 10px);
+  scroll-snap-type: x proximity;
+}
+
+.tickets-track::-webkit-scrollbar {
+  height: clamp(6px, 0.8vh, 8px);
+}
+
+.tickets-track::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
 }
 
 .ticket-btn {
   position: relative;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(4px, 0.6vh, 8px);
+  gap: clamp(6px, 1vh, 10px);
   text-align: center;
   border: none;
   border-radius: var(--radius-md);
-  padding: clamp(10px, 1.6vh, 14px);
-  width: 100%;
-  height: 100%;
+  padding: clamp(10px, 1.6vh, 16px);
+  width: clamp(120px, 18vw, 180px);
+  height: min(18vh, 26vw);
   color: #101820;
-  background: #9ad1d4;
   box-shadow: 0 0.6vh 1.6vh rgba(0, 0, 0, 0.25);
+  scroll-snap-align: center;
 }
 
 .ticket-btn .ticket-icon {
@@ -135,7 +137,7 @@
 }
 
 .ticket-btn.t-kid {
-  background: #ffb5e8;
+  background: #c3f584;
 }
 
 .ticket-btn.t-luggage {
@@ -143,7 +145,7 @@
 }
 
 .ticket-btn.t-senior {
-  background: #c3f584;
+  background: #ffd6e0;
 }
 
 .ticket-btn.t-disabled {
@@ -151,15 +153,15 @@
 }
 
 .ticket-btn.t-stroller {
-  background: #ffd6e0;
-}
-
-.ticket-btn.t-bike {
   background: #b8e1ff;
 }
 
-.ticket-btn.t-tourist {
+.ticket-btn.t-bike {
   background: #e7c6ff;
+}
+
+.ticket-btn.t-tourist {
+  background: #ffb5e8;
 }
 
 .change-summary {
@@ -186,7 +188,7 @@
 
 .change-panel[data-visible='false'] .currency-grid,
 .change-panel[data-visible='false'] .change-summary {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .change-panel[data-visible='false'] .currency-grid {
@@ -195,11 +197,12 @@
 
 .currency-grid {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: clamp(8px, 1vh, 12px);
-  align-items: center;
-  justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-evenly;
+  gap: clamp(12px, 2vw, 18px);
+  padding-block: clamp(6px, 0.8vh, 12px);
 }
 
 .currency-btn {
@@ -207,8 +210,8 @@
   display: grid;
   place-items: center;
   gap: clamp(2px, 0.4vh, 4px);
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: min(10vh, 10vw);
+  height: min(10vh, 10vw);
   border-radius: 50%;
   border: none;
   background: #f6d186;
@@ -224,7 +227,7 @@
 }
 
 .currency-btn .denom-value {
-  font-size: clamp(18px, 2.8vw, 26px);
+  font-size: clamp(16px, 2.6vw, 24px);
 }
 
 .currency-btn .denom-label {
@@ -235,7 +238,7 @@
 }
 
 .currency-btn.skin-blue {
-  background: #4da3ff;
+  background: #70c2ff;
   color: #0b1c2c;
 }
 
@@ -264,8 +267,11 @@
   color: #1b1f24;
 }
 
-.currency-btn:hover {
-  filter: brightness(1.05);
+.bottom-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 0.3fr);
+  gap: clamp(12px, 2vw, 24px);
+  min-height: 0;
 }
 
 .history-panel {
@@ -276,19 +282,41 @@
   flex: 1;
 }
 
-@media (max-width: 900px) {
-  .info-panels {
+.action-panel {
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.action-panel .btn {
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .needs-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, minmax(0, 1fr));
   }
 
-  .info-stack {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: none;
+  .ticket-btn {
+    width: clamp(120px, 26vw, 200px);
+  }
+}
+
+@media (max-width: 900px) {
+  .game-screen {
+    grid-template-rows: 0.16fr 0.6fr 0.24fr;
   }
 
-  .ticket-grid,
-  .currency-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .game-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-column {
+    grid-template-rows: minmax(0, 0.5fr) minmax(0, 0.5fr);
+  }
+
+  .bottom-bar {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 0.7fr) minmax(0, 0.3fr);
   }
 }

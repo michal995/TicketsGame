@@ -32,6 +32,8 @@ const overlayElements = {
 };
 
 const clearButton = document.getElementById('clearTickets');
+const restartButton = document.getElementById('restartGame');
+const menuButton = document.getElementById('menuButton');
 
 let roundActive = false;
 let finishing = false;
@@ -158,6 +160,20 @@ if (clearButton) {
     if (!roundActive) return;
     clearTickets(SESSION);
     syncUI();
+  });
+}
+
+if (restartButton) {
+  restartButton.addEventListener('click', () => {
+    stopRound();
+    window.location.reload();
+  });
+}
+
+if (menuButton) {
+  menuButton.addEventListener('click', () => {
+    stopRound();
+    navigateToMenu();
   });
 }
 
