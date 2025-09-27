@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
   <title>Ticket Rush PRO — Game</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -29,6 +32,9 @@
         <span class="label">Timer</span>
         <span class="timer" id="timer">20 s</span>
       </div>
+      <button class="btn icon ghost" id="closeGame" type="button" aria-label="Exit to menu">
+        ×
+      </button>
     </header>
 
     <section class="panel needs-panel hud-panel" aria-label="Passenger needs">
@@ -58,6 +64,7 @@
     <section class="panel tickets-panel" aria-label="Tickets">
       <div class="panel-header">
         <span class="panel-title">Tickets</span>
+        <button class="btn ghost" id="clearTickets" type="button">Clear</button>
       </div>
       <div class="grid-tickets" id="tickets"></div>
     </section>
@@ -71,20 +78,6 @@
         </div>
       </div>
       <div class="currency-grid grid-coins" id="coins"></div>
-    </section>
-
-    <section class="history-row" aria-label="Round history and actions">
-      <section class="panel history-panel" aria-label="History">
-        <div class="panel-header">
-          <span class="panel-title">History</span>
-        </div>
-        <div class="history-list" id="history"></div>
-      </section>
-      <div class="panel action-panel" role="group" aria-label="Game controls">
-        <button class="btn ghost" id="clearTickets" type="button">Clear</button>
-        <button class="btn secondary" id="restartGame" type="button">Restart</button>
-        <button class="btn secondary" id="menuButton" type="button">Menu</button>
-      </div>
     </section>
   </main>
 

@@ -1,3 +1,5 @@
+import { ALL_TICKETS } from './constants.js';
+
 const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -21,15 +23,26 @@ function formatRequest(request) {
 
 export function renderTickets(session, elements, handlers) {
   const { ticketsWrap } = elements;
+  if (!ticketsWrap) {
+    return;
+  }
+
+  const availableByName = new Map(session.available.map((ticket) => [ticket.name, ticket]));
   const fragment = document.createDocumentFragment();
 
-  session.available.forEach((ticket) => {
+  ALL_TICKETS.forEach((definition) => {
+    const ticket = availableByName.get(definition.name) || definition;
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `btn ticket-btn ticket ${ticket.className}`;
     const count = session.selectedTickets[ticket.name] || 0;
     const need = session.request[ticket.name] || 0;
-    if (need > 0 && count >= need) {
+    const isAvailable = availableByName.has(definition.name);
+
+    if (!isAvailable) {
+      button.classList.add('is-inactive');
+      button.disabled = true;
+    } else if (need > 0 && count >= need) {
       button.disabled = true;
     }
 
@@ -40,11 +53,13 @@ export function renderTickets(session, elements, handlers) {
       <div class="ticket-price">${formatMoney(ticket.price)}</div>
     `;
 
-    button.addEventListener('click', () => handlers.onAddTicket(ticket.name));
-    button.addEventListener('contextmenu', (event) => {
-      event.preventDefault();
-      handlers.onRemoveTicket(ticket.name);
-    });
+    if (isAvailable) {
+      button.addEventListener('click', () => handlers.onAddTicket(ticket.name));
+      button.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        handlers.onRemoveTicket(ticket.name);
+      });
+    }
 
     fragment.appendChild(button);
   });
@@ -54,13 +69,13 @@ export function renderTickets(session, elements, handlers) {
 
 export function renderCoins(session, elements, handlers) {
   const { coinsWrap } = elements;
+  if (!coinsWrap) {
+    return;
+  }
   const denominations =
     typeof handlers.getAvailableCoins === 'function' ? handlers.getAvailableCoins() : handlers.availableCoins;
 
-  const billsRow = document.createElement('div');
-  billsRow.className = 'coins-row bills';
-  const coinsRow = document.createElement('div');
-  coinsRow.className = 'coins-row coins';
+  const fragment = document.createDocumentFragment();
 
   denominations.forEach((denomination) => {
     const button = document.createElement('button');
@@ -77,15 +92,8 @@ export function renderCoins(session, elements, handlers) {
       <span class="denom-label">${denomination.label}</span>
     `;
     button.addEventListener('click', () => handlers.onInsertCoin(denomination.value));
-    if (denomination.type === 'bill') {
-      billsRow.appendChild(button);
-    } else {
-      coinsRow.appendChild(button);
-    }
+    fragment.appendChild(button);
   });
-
-  const fragment = document.createDocumentFragment();
-  fragment.append(billsRow, coinsRow);
 
   coinsWrap.classList.add('grid-coins');
   coinsWrap.replaceChildren(fragment);
@@ -147,6 +155,9 @@ export function updateHud(session, elements) {
 
 export function renderHistory(session, elements) {
   const { historyList } = elements;
+  if (!historyList) {
+    return;
+  }
   if (!session.history.length) {
     historyList.innerHTML = '';
     return;
