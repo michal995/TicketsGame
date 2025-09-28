@@ -46,8 +46,8 @@ export const LAYOUTS = {
 };
 
 export const GAME_MODES = {
-  TB1: { label: 'Top/Bottom 1', timeLimit: 20, description: 'Classic rush with single passenger focus.' },
-  TB2: { label: 'Top/Bottom 2', timeLimit: 25, description: 'Longer time window and bigger groups.' },
+  TB1: { label: 'Vertical 1', timeLimit: 20, description: 'Classic rush with single passenger focus.' },
+  TB2: { label: 'Vertical 2', timeLimit: 25, description: 'Longer time window and bigger groups.' },
   HR1: { label: 'Horizontal 1', timeLimit: 18, description: 'Quick-fire requests, perfect for warm-ups.' },
   HR2: { label: 'Horizontal 2', timeLimit: 22, description: 'Balanced challenge with varied passengers.' },
 };
