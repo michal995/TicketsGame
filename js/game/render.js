@@ -1,4 +1,5 @@
 import { ALL_TICKETS } from './constants.js';
+import { animateScoreValue, applyScoreVisual, applyTimerVisual, highlightPays } from './effects.js';
 
 const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -54,10 +55,10 @@ export function renderTickets(session, elements, handlers) {
     `;
 
     if (isAvailable) {
-      button.addEventListener('click', () => handlers.onAddTicket(ticket.name));
+      button.addEventListener('click', (event) => handlers.onAddTicket(ticket.name, event));
       button.addEventListener('contextmenu', (event) => {
         event.preventDefault();
-        handlers.onRemoveTicket(ticket.name);
+        handlers.onRemoveTicket(ticket.name, event);
       });
     }
 
@@ -91,17 +92,29 @@ export function renderCoins(session, elements, handlers) {
       <span class="denom-value">${formatMoney(denomination.value)}</span>
       <span class="denom-label">${denomination.label}</span>
     `;
-    button.addEventListener('click', () => handlers.onInsertCoin(denomination.value));
+    const locked = !session.canPay;
+    button.disabled = locked;
+    button.tabIndex = locked ? -1 : 0;
+    button.setAttribute('aria-disabled', locked ? 'true' : 'false');
+    button.classList.toggle('is-locked', locked);
+    button.addEventListener('click', (event) => {
+      if (button.disabled) {
+        return;
+      }
+      handlers.onInsertCoin(denomination.value, event);
+    });
     fragment.appendChild(button);
   });
 
   coinsWrap.classList.add('grid-coins');
+  coinsWrap.dataset.locked = !session.canPay ? 'true' : 'false';
   coinsWrap.replaceChildren(fragment);
 }
 
 export function updateHud(session, elements) {
   const { scoreDisplay, needEl, paysEl, fareEl, pickedEl, remainEl, timerDisplay, changeWrap, paysCard } = elements;
-  scoreDisplay.textContent = Math.max(0, Math.round(session.score));
+  animateScoreValue(scoreDisplay, session.score);
+  applyScoreVisual(scoreDisplay, session.score);
   needEl.textContent = formatRequest(session.request);
   if (session.showPays) {
     paysEl.textContent = formatMoney(session.pays);
@@ -109,6 +122,13 @@ export function updateHud(session, elements) {
   } else {
     paysEl.textContent = '—';
     paysCard?.classList.add('is-muted');
+  }
+  if (paysCard) {
+    paysCard.dataset.state = session.payFlashShown ? 'complete' : 'pending';
+  }
+  if (session.payFlashPending && paysCard) {
+    highlightPays(paysCard);
+    session.payFlashPending = false;
   }
   fareEl.textContent = formatMoney(session.ticketTotal);
   pickedEl.textContent = formatMoney(session.selectedTotal);
@@ -150,7 +170,7 @@ export function updateHud(session, elements) {
       remainEl.removeAttribute('data-state');
     }
   }
-  timerDisplay.textContent = `${Math.max(0, Math.ceil(session.timeLeft))} s`;
+  applyTimerVisual(timerDisplay, session.timeLeft);
 }
 
 export function renderHistory(session, elements) {
