@@ -1,17 +1,17 @@
 import { GAME_MODES, DEFAULT_MODE, LAYOUTS, DEFAULT_LAYOUT } from '../game/constants.js';
-import { rememberUser, getUsers, rememberLayout, getPreferredLayout } from '../storage/db.js';
+import { rememberUser, getUsers } from '../storage/db.js';
 
-const LAYOUT_LABELS = {
-  [LAYOUTS.TOP_BOTTOM]: 'Top/Bottom',
-  [LAYOUTS.LEFT_RIGHT]: 'Left/Right',
+const MODE_LAYOUTS = {
+  TB1: LAYOUTS.TOP_BOTTOM,
+  TB2: LAYOUTS.TOP_BOTTOM,
+  HR1: LAYOUTS.LEFT_RIGHT,
+  HR2: LAYOUTS.LEFT_RIGHT,
 };
 
 export function initMenuScreen({ onStart, onLayoutChange } = {}) {
   const nameInput = document.getElementById('playerName');
   const modeSelect = document.getElementById('modeSelect');
   const startButton = document.getElementById('startBtn');
-  const layoutSelect = document.getElementById('layoutSelect');
-
   function populatePlayers() {
     const list = document.getElementById('players');
     if (!list || !nameInput) {
@@ -43,33 +43,12 @@ export function initMenuScreen({ onStart, onLayoutChange } = {}) {
     return value === LAYOUTS.LEFT_RIGHT || value === LAYOUTS.TOP_BOTTOM ? value : DEFAULT_LAYOUT;
   }
 
-  function populateLayouts() {
-    if (!layoutSelect) {
-      return;
-    }
-    if (!layoutSelect.children.length) {
-      Object.values(LAYOUTS).forEach((value) => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = LAYOUT_LABELS[value] ?? value;
-        layoutSelect.appendChild(option);
-      });
-    }
-    const preferred = normalizeLayout(getPreferredLayout());
-    layoutSelect.value = preferred;
-    notifyLayoutChange(layoutSelect.value);
-  }
-
-  function getSelectedLayout() {
-    if (!layoutSelect) {
-      return DEFAULT_LAYOUT;
-    }
-    return normalizeLayout(layoutSelect.value);
+  function getLayoutForMode(mode) {
+    return normalizeLayout(MODE_LAYOUTS[mode] || DEFAULT_LAYOUT);
   }
 
   function notifyLayoutChange(value) {
     const layout = normalizeLayout(value);
-    rememberLayout(layout);
     if (typeof onLayoutChange === 'function') {
       onLayoutChange(layout);
     }
@@ -87,17 +66,17 @@ export function initMenuScreen({ onStart, onLayoutChange } = {}) {
   function startGame() {
     const nick = nameInput?.value.trim() || 'Guest';
     const mode = getSelectedMode();
-    const layout = getSelectedLayout();
+    const layout = getLayoutForMode(mode);
     rememberUser(nick);
-    rememberLayout(layout);
     if (typeof onStart === 'function') {
       onStart({ player: nick, mode, layout });
     }
   }
 
   populateModes();
-  populateLayouts();
   populatePlayers();
+
+  notifyLayoutChange(getLayoutForMode(getSelectedMode()));
 
   startButton?.addEventListener('click', startGame);
   nameInput?.addEventListener('keydown', (event) => {
@@ -107,8 +86,9 @@ export function initMenuScreen({ onStart, onLayoutChange } = {}) {
     }
   });
 
-  layoutSelect?.addEventListener('change', (event) => {
-    notifyLayoutChange(event.target?.value || DEFAULT_LAYOUT);
+  modeSelect?.addEventListener('change', (event) => {
+    const selectedMode = event.target?.value || DEFAULT_MODE;
+    notifyLayoutChange(getLayoutForMode(selectedMode));
   });
 
   return {
@@ -122,10 +102,11 @@ export function initMenuScreen({ onStart, onLayoutChange } = {}) {
       if (modeSelect && mode && GAME_MODES[mode]) {
         modeSelect.value = mode;
       }
-      if (layoutSelect && layout) {
+      if (layout) {
         const resolved = normalizeLayout(layout);
-        layoutSelect.value = resolved;
         notifyLayoutChange(resolved);
+      } else {
+        notifyLayoutChange(getLayoutForMode(getSelectedMode()));
       }
     },
     refreshPlayers: populatePlayers,
