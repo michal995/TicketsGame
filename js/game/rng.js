@@ -41,7 +41,7 @@ function roundToCents(value) {
 
 export function rollBusConfig() {
   const minTypes = 2;
-  const maxTypes = Math.min(7, ALL_TICKETS.length);
+  const maxTypes = Math.min(6, ALL_TICKETS.length);
   const desired = clampInt(triangularInt(minTypes, maxTypes, 4), minTypes, maxTypes);
 
   const base = ALL_TICKETS.filter((ticket) => ALWAYS_INCLUDED.has(ticket.name));

@@ -3,6 +3,7 @@ import { SESSION, startSession, endSession } from '../game/state.js';
 import { startRound, finishRound, stopRound } from '../game/round.js';
 import { addTicket, removeTicket, clearTickets, insertCoin } from '../game/actions.js';
 import { renderTickets, renderCoins, updateHud, renderHistory, showOverlay, hideOverlay } from '../game/render.js';
+import { playClickFeedback, animateFlyToScore } from '../game/effects.js';
 import { recordScore } from '../storage/db.js';
 
 const params = new URLSearchParams(window.location.search);
@@ -38,15 +39,27 @@ let roundActive = false;
 let finishing = false;
 
 const ticketHandlers = {
-  onAddTicket: (name) => {
+  onAddTicket: (name, event) => {
     if (!roundActive) return;
-    if (addTicket(SESSION, name)) {
+    const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    if (button) {
+      playClickFeedback(button);
+    }
+    const added = addTicket(SESSION, name);
+    if (added && button && elements.scoreDisplay) {
+      animateFlyToScore(button, elements.scoreDisplay);
+    }
+    if (added) {
       syncUI();
     }
   },
-  onRemoveTicket: (name) => {
+  onRemoveTicket: (name, event) => {
     if (!roundActive) return;
+    const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
     if (removeTicket(SESSION, name)) {
+      if (button) {
+        playClickFeedback(button);
+      }
       syncUI();
     }
   },
@@ -54,10 +67,18 @@ const ticketHandlers = {
 
 const coinHandlers = {
   getAvailableCoins: () => getAvailableDenominations(SESSION.coinOptions),
-  onInsertCoin: (value) => {
+  onInsertCoin: (value, event) => {
     if (!roundActive) return;
-    insertCoin(SESSION, value);
-    syncUI();
+    const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
+    if (button) {
+      playClickFeedback(button);
+    }
+    if (insertCoin(SESSION, value)) {
+      if (button && elements.scoreDisplay) {
+        animateFlyToScore(button, elements.scoreDisplay);
+      }
+      syncUI();
+    }
   },
 };
 
@@ -66,7 +87,21 @@ function navigateToMenu() {
 }
 
 function syncUI() {
+  const requestEntries = Object.entries(SESSION.request);
+  const ticketsMatch = requestEntries.every(([name, count]) => (SESSION.selectedTickets[name] || 0) === count);
+  const noExtraTickets = Object.keys(SESSION.selectedTickets).every(
+    (name) => (SESSION.request[name] || 0) === SESSION.selectedTickets[name]
+  );
+  const ticketsComplete = requestEntries.length > 0 && ticketsMatch && noExtraTickets;
+  SESSION.canPay = ticketsComplete;
+  if (!ticketsComplete) {
+    SESSION.payFlashPending = false;
+  } else if (SESSION.changeDue === 0 && !SESSION.payFlashShown) {
+    SESSION.payFlashPending = true;
+    SESSION.payFlashShown = true;
+  }
   renderTickets(SESSION, elements, ticketHandlers);
+  renderCoins(SESSION, elements, coinHandlers);
   updateHud(SESSION, elements);
   renderHistory(SESSION, elements);
   maybeFinishRound();

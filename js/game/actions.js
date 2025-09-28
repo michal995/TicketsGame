@@ -50,6 +50,8 @@ export function removeTicket(session, ticketName) {
     delete session.selectedTickets[ticketName];
   }
   session.selectedTotal = round(session.selectedTotal - ticket.price);
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   if (session.selectedTotal <= 0) {
     session.showPays = false;
   }
@@ -61,11 +63,15 @@ export function clearTickets(session) {
   session.selectedTickets = {};
   session.selectedTotal = 0;
   session.showPays = false;
+  session.canPay = false;
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   logHistory(session, 'Cleared tickets', '$0.00');
 }
 
 export function insertCoin(session, value) {
   const roundedValue = round(value);
+  const previousInserted = session.inserted;
   session.coinsUsed[roundedValue] = (session.coinsUsed[roundedValue] || 0) + 1;
   session.inserted = round(session.inserted + roundedValue);
   const formatted = currency.format(roundedValue);
@@ -73,6 +79,21 @@ export function insertCoin(session, value) {
     session.showChange = true;
   }
   logHistory(session, 'Returned', `+${formatted}`);
+
+  const changeDue = Number(session.changeDue) || 0;
+  const wasSettled =
+    changeDue === 0
+      ? previousInserted === 0
+      : Math.abs(changeDue - previousInserted) < 0.01 || previousInserted > changeDue;
+  const nowSettled =
+    changeDue === 0
+      ? session.inserted === 0
+      : Math.abs(changeDue - session.inserted) < 0.01 || session.inserted > changeDue;
+
+  if (!wasSettled && nowSettled) {
+    session.payFlashPending = true;
+    session.payFlashShown = true;
+  }
   return true;
 }
 
@@ -80,5 +101,7 @@ export function resetCoins(session) {
   session.coinsUsed = {};
   session.inserted = 0;
   session.showChange = false;
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   logHistory(session, 'Change cleared', '$0.00');
 }
