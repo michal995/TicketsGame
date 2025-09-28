@@ -6,34 +6,33 @@ import { renderTickets, renderCoins, updateHud, renderHistory, showOverlay, hide
 import { playClickFeedback, flyScoreLabel, applyCorrectFeedback, applyErrorFeedback } from '../game/effects.js';
 import { recordScore } from '../storage/db.js';
 
-const params = new URLSearchParams(window.location.search);
-const player = params.get('player') || 'Guest';
-const mode = params.get('mode');
-
-startSession(player, mode);
+let initialized = false;
+let menuCallback = null;
 
 const elements = {
-  scoreDisplay: document.getElementById('score'),
-  scoreCard: document.getElementById('score')?.closest('.stat-card') || null,
-  timerDisplay: document.getElementById('timer'),
-  needEl: document.getElementById('need'),
-  paysEl: document.getElementById('pays'),
-  paysCard: document.getElementById('paysCard'),
-  fareEl: document.getElementById('fare'),
-  pickedEl: document.getElementById('picked'),
-  remainEl: document.getElementById('remain'),
-  ticketsWrap: document.getElementById('tickets'),
-  coinsWrap: document.getElementById('coins'),
-  changeWrap: document.querySelector('.pay'),
+  scoreDisplay: null,
+  scoreCard: null,
+  timerDisplay: null,
+  needEl: null,
+  paysEl: null,
+  paysCard: null,
+  fareEl: null,
+  pickedEl: null,
+  remainEl: null,
+  ticketsWrap: null,
+  coinsWrap: null,
+  changeWrap: null,
+  modeLabel: null,
 };
 
 const overlayElements = {
-  overlay: document.getElementById('overlay'),
-  box: document.getElementById('overlayBox'),
+  overlay: null,
+  box: null,
 };
 
-const clearButton = document.getElementById('clearTickets');
-const closeButton = document.getElementById('closeGame');
+let roundHandlers = null;
+let clearButton = null;
+let closeButton = null;
 
 let roundActive = false;
 let finishing = false;
@@ -47,7 +46,10 @@ const currency = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 });
 
-const getNow = () => (typeof performance !== 'undefined' && typeof performance.now === 'function' ? performance.now() : Date.now());
+const getNow = () =>
+  (typeof performance !== 'undefined' && typeof performance.now === 'function'
+    ? performance.now()
+    : Date.now());
 
 function formatPoints(points) {
   const absolute = Math.abs(points);
@@ -196,7 +198,8 @@ const coinHandlers = {
     }
 
     const epsilon = 0.009;
-    const overpay = result.changeDue === 0 ? result.inserted > epsilon : result.inserted - result.changeDue > epsilon;
+    const overpay =
+      result.changeDue === 0 ? result.inserted > epsilon : result.inserted - result.changeDue > epsilon;
 
     if (overpay) {
       if (button) {
@@ -240,68 +243,13 @@ const coinHandlers = {
   },
 };
 
-function navigateToMenu() {
-  window.location.href = 'index.html';
-}
-
-function resumeGame() {
-  hideOverlay(overlayElements.overlay);
-  paused = false;
-  roundActive = true;
-  resumeCountdown(elements);
-  syncUI();
-}
-
-function restartGame() {
-  const { player, mode } = SESSION;
-  hideOverlay(overlayElements.overlay);
-  paused = false;
-  finishing = false;
-  stopRound();
-  startSession(player, mode);
-  roundActive = true;
-  startRound(elements, roundHandlers);
-}
-
-function exitToMenu() {
-  hideOverlay(overlayElements.overlay);
-  paused = false;
-  stopRound();
-  navigateToMenu();
-}
-
-function showPauseOverlay() {
-  if (paused || finishing || !roundActive) {
+function updateModeLabel(modeValue) {
+  if (!elements.modeLabel) {
     return;
   }
-  paused = true;
-  roundActive = false;
-  pauseCountdown();
-
-  const stats = document.createElement('div');
-  stats.className = 'pause-stats';
-  const roundLabel = Math.max(SESSION.round, 1);
-  stats.innerHTML = `
-    <div class="pause-row">
-      <span class="pause-label">Score</span>
-      <span class="pause-value">${Math.round(SESSION.score)} pts</span>
-    </div>
-    <div class="pause-row">
-      <span class="pause-label">Time left</span>
-      <span class="pause-value">${Math.max(0, Math.ceil(SESSION.timeLeft))} s</span>
-    </div>
-  `;
-
-  showOverlay(overlayElements, {
-    title: 'Game paused',
-    subtitle: `Round ${roundLabel}/${SESSION.totalRounds}`,
-    body: stats,
-    actions: [
-      { label: 'Resume game', onSelect: resumeGame },
-      { label: 'Restart game', onSelect: restartGame },
-      { label: 'Main menu', onSelect: exitToMenu },
-    ],
-  });
+  const activeMode = modeValue && GAME_MODES[modeValue] ? modeValue : SESSION.mode;
+  const label = activeMode && GAME_MODES[activeMode] ? GAME_MODES[activeMode].label : '';
+  elements.modeLabel.textContent = label;
 }
 
 function syncUI() {
@@ -381,16 +329,13 @@ function showSessionSummary() {
     {
       label: 'Play again',
       onSelect: () => {
-        hideOverlay(overlayElements.overlay);
-        startSession(summary.player, summary.mode);
-        roundActive = true;
-        startRound(elements, roundHandlers);
-        renderCoins(SESSION, elements, coinHandlers);
+        stopGameSession();
+        beginSession(summary.player, summary.mode);
       },
     },
     {
       label: 'Back to Menu',
-      onSelect: navigateToMenu,
+      onSelect: () => navigateToMenu({ player: summary.player, mode: summary.mode }),
     },
   ];
 
@@ -403,32 +348,155 @@ function showSessionSummary() {
   });
 }
 
-const roundHandlers = {
-  overlayElements,
-  ticketHandlers,
-  coinHandlers,
-  onTimeout: handleTimeout,
-  onProceed: handleProceed,
-  onExit: navigateToMenu,
-};
+function resumeGame() {
+  hideOverlay(overlayElements.overlay);
+  paused = false;
+  roundActive = true;
+  resumeCountdown(elements);
+  syncUI();
+}
 
-if (clearButton) {
-  clearButton.addEventListener('click', () => {
-    if (!roundActive || paused) return;
-    clearTickets(SESSION);
-    resetCoinProgress();
-    syncUI();
+function restartGame() {
+  const { player, mode } = SESSION;
+  stopGameSession();
+  beginSession(player, mode);
+}
+
+function stopGameSession({ keepOverlay = false } = {}) {
+  stopRound();
+  roundActive = false;
+  paused = false;
+  finishing = false;
+  if (!keepOverlay) {
+    hideOverlay(overlayElements.overlay);
+  }
+}
+
+function beginSession(player, mode) {
+  startSession(player, mode);
+  updateModeLabel(SESSION.mode);
+  resetCoinProgress();
+  hideOverlay(overlayElements.overlay);
+  paused = false;
+  finishing = false;
+  roundActive = true;
+  renderCoins(SESSION, elements, coinHandlers);
+  startRound(elements, roundHandlers);
+}
+
+function startGameSession({ player, mode }) {
+  stopGameSession();
+  beginSession(player, mode);
+}
+
+function navigateToMenu(details) {
+  const payload =
+    details || (SESSION.player ? { player: SESSION.player, mode: SESSION.mode } : undefined);
+  stopGameSession();
+  if (typeof menuCallback === 'function') {
+    menuCallback(payload);
+  }
+}
+
+function exitToMenu() {
+  navigateToMenu({ player: SESSION.player, mode: SESSION.mode });
+}
+
+function showPauseOverlay() {
+  if (paused || finishing || !roundActive) {
+    return;
+  }
+  paused = true;
+  roundActive = false;
+  pauseCountdown();
+
+  const stats = document.createElement('div');
+  stats.className = 'pause-stats';
+  const roundLabel = Math.max(SESSION.round, 1);
+  stats.innerHTML = `
+    <div class="pause-row">
+      <span class="pause-label">Score</span>
+      <span class="pause-value">${Math.round(SESSION.score)} pts</span>
+    </div>
+    <div class="pause-row">
+      <span class="pause-label">Time left</span>
+      <span class="pause-value">${Math.max(0, Math.ceil(SESSION.timeLeft))} s</span>
+    </div>
+  `;
+
+  showOverlay(overlayElements, {
+    title: 'Game paused',
+    subtitle: `Round ${roundLabel}/${SESSION.totalRounds}`,
+    body: stats,
+    actions: [
+      { label: 'Resume game', onSelect: resumeGame },
+      { label: 'Restart game', onSelect: restartGame },
+      { label: 'Main menu', onSelect: exitToMenu },
+    ],
   });
 }
 
-if (closeButton) {
-  closeButton.addEventListener('click', showPauseOverlay);
+function handleClearTickets() {
+  if (!roundActive || paused) {
+    return;
+  }
+  clearTickets(SESSION);
+  resetCoinProgress();
+  syncUI();
 }
 
-window.addEventListener('beforeunload', () => {
-  stopRound();
-});
+export function initGameScreen({ onNavigateToMenu } = {}) {
+  menuCallback = typeof onNavigateToMenu === 'function' ? onNavigateToMenu : null;
 
-renderCoins(SESSION, elements, coinHandlers);
-roundActive = true;
-startRound(elements, roundHandlers);
+  if (!initialized) {
+    elements.scoreDisplay = document.getElementById('score');
+    elements.scoreCard = document.getElementById('score')?.closest('.stat-card') || null;
+    elements.timerDisplay = document.getElementById('timer');
+    elements.needEl = document.getElementById('need');
+    elements.paysEl = document.getElementById('pays');
+    elements.paysCard = document.getElementById('paysCard');
+    elements.fareEl = document.getElementById('fare');
+    elements.pickedEl = document.getElementById('picked');
+    elements.remainEl = document.getElementById('remain');
+    elements.ticketsWrap = document.getElementById('tickets');
+    elements.coinsWrap = document.getElementById('coins');
+    elements.changeWrap = document.querySelector('.pay');
+    elements.modeLabel = document.getElementById('modeLabel');
+
+    overlayElements.overlay = document.getElementById('overlay');
+    overlayElements.box = document.getElementById('overlayBox');
+
+    clearButton = document.getElementById('clearTickets');
+    closeButton = document.getElementById('closeGame');
+
+    clearButton?.addEventListener('click', handleClearTickets);
+    closeButton?.addEventListener('click', showPauseOverlay);
+
+    window.addEventListener('beforeunload', () => {
+      stopRound();
+    });
+
+    roundHandlers = {
+      overlayElements,
+      ticketHandlers,
+      coinHandlers,
+      onTimeout: handleTimeout,
+      onProceed: handleProceed,
+      onExit: () => navigateToMenu(),
+    };
+
+    initialized = true;
+  } else if (roundHandlers) {
+    roundHandlers.overlayElements = overlayElements;
+    roundHandlers.ticketHandlers = ticketHandlers;
+    roundHandlers.coinHandlers = coinHandlers;
+    roundHandlers.onTimeout = handleTimeout;
+    roundHandlers.onProceed = handleProceed;
+    roundHandlers.onExit = () => navigateToMenu();
+  }
+
+  return {
+    start: startGameSession,
+    stop: stopGameSession,
+  };
+}

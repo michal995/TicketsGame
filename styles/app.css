@@ -68,6 +68,10 @@ body {
   overflow: hidden;
 }
 
+.app-screen.is-hidden {
+  display: none !important;
+}
+
 .app-screen > * {
   min-width: 0;
 }
