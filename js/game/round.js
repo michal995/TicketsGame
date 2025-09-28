@@ -2,6 +2,7 @@ import { SESSION, resetRoundState } from './state.js';
 import { GAME_MODES } from './constants.js';
 import { rollBusConfig, rollRequest, fareOf, rollPayment } from './rng.js';
 import { renderTickets, renderCoins, updateHud, renderHistory, showOverlay, hideOverlay } from './render.js';
+import { flyScoreLabel } from './effects.js';
 
 const currency = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -19,30 +20,48 @@ function formatMoney(value) {
 const getNow = () => (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now());
 const toCents = (value) => Math.round(Math.max(0, value) * 100);
 
-function countTickets(request) {
-  return Object.values(request).reduce((sum, count) => sum + count, 0);
+const NEGATIVE_SIGN = '\u2013';
+
+function formatPoints(points) {
+  const absolute = Math.abs(points);
+  if (points > 0) {
+    return `+${absolute}`;
+  }
+  if (points < 0) {
+    return `${NEGATIVE_SIGN}${absolute}`;
+  }
+  return '0';
 }
 
-function minimalDenominationCount(amount, denominations = []) {
-  const cents = toCents(amount);
-  if (cents === 0) {
+function logBonusHistory(label, points) {
+  SESSION.history.push({ message: label, value: `${formatPoints(points)} pts` });
+}
+
+function awardBonus({ id, label, points, text }, elements) {
+  if (!points) {
     return 0;
   }
-  const values = Array.from(new Set(denominations.map((item) => toCents(item.value)))).filter((value) => value > 0);
-  if (!values.length) {
-    return Number.POSITIVE_INFINITY;
+  SESSION.roundEvents.push({ type: 'bonus', label, points });
+  SESSION.roundBonuses.push({ id, label, points });
+  SESSION.roundScore += points;
+  SESSION.score += points;
+  logBonusHistory(label, points);
+  updateHud(SESSION, elements);
+  const source = elements.scoreCard || elements.scoreDisplay;
+  if (source && elements.scoreDisplay) {
+    flyScoreLabel({
+      source,
+      target: elements.scoreDisplay,
+      text: text ?? `+${label}`,
+      tone: 'bonus',
+      duration: 840,
+    });
   }
-  values.sort((a, b) => a - b);
-  const dp = new Array(cents + 1).fill(Number.POSITIVE_INFINITY);
-  dp[0] = 0;
-  for (const value of values) {
-    for (let i = value; i <= cents; i += 1) {
-      if (dp[i - value] + 1 < dp[i]) {
-        dp[i] = dp[i - value] + 1;
-      }
-    }
-  }
-  return dp[cents];
+  return points;
+}
+
+function countTickets(request) {
+  return Object.values(request).reduce((sum, count) => sum + count, 0);
 }
 
 let timerId = null;
@@ -93,53 +112,6 @@ function requestsMatch(request, selected) {
   return selectedKeys.every((name) => (request[name] || 0) === selected[name]);
 }
 
-function getScoreAnchor(elements) {
-  if (typeof HTMLElement === 'undefined') {
-    return null;
-  }
-  if (elements.scoreCard instanceof HTMLElement) {
-    return elements.scoreCard;
-  }
-  if (elements.scoreDisplay instanceof HTMLElement) {
-    return elements.scoreDisplay.closest('.stat-card');
-  }
-  return null;
-}
-
-function showBonusToast(anchor, text) {
-  return new Promise((resolve) => {
-    if (!anchor) {
-      resolve();
-      return;
-    }
-    const toast = document.createElement('div');
-    toast.className = 'score-bonus-toast';
-    toast.textContent = text;
-    anchor.appendChild(toast);
-    const cleanup = () => {
-      toast.removeEventListener('animationend', cleanup);
-      toast.remove();
-      resolve();
-    };
-    toast.addEventListener('animationend', cleanup, { once: true });
-  });
-}
-
-async function applyBonuses(bonuses, elements) {
-  if (!bonuses.length) {
-    return 0;
-  }
-  const anchor = getScoreAnchor(elements);
-  let total = 0;
-  for (const bonus of bonuses) {
-    await showBonusToast(anchor, bonus.toast || `+${bonus.label}`);
-    SESSION.score = Math.max(0, SESSION.score + bonus.points);
-    updateHud(SESSION, elements);
-    total += bonus.points;
-  }
-  return total;
-}
-
 export function startRound(elements, handlers) {
   resetRoundState();
   SESSION.round += 1;
@@ -155,6 +127,12 @@ export function startRound(elements, handlers) {
   SESSION.ticketCount = countTickets(SESSION.request);
   SESSION.roundStartTime = getNow();
   SESSION.roundBonuses = [];
+  SESSION.roundScore = 0;
+  SESSION.roundEvents = [];
+  SESSION.ticketsPhaseComplete = false;
+  SESSION.ticketsPhaseCompletedAt = 0;
+  SESSION.payFlashPending = false;
+  SESSION.payFlashShown = false;
 
   hideOverlay(handlers.overlayElements.overlay);
 
@@ -166,115 +144,75 @@ export function startRound(elements, handlers) {
   startCountdown(elements, handlers.onTimeout);
 }
 
-const BONUS_POINTS = {
-  speed: 35,
-  perfect: 40,
-  time: 20,
-};
-
 export async function finishRound(elements, handlers, reason) {
   clearTimer();
   clearOverlayCountdown();
   renderHistory(SESSION, elements);
   updateHud(SESSION, elements);
 
-  const perfectTickets = requestsMatch(SESSION.request, SESSION.selectedTickets);
-  const ticketValueMatch = Math.abs(SESSION.selectedTotal - SESSION.ticketTotal) < 0.01;
+  const completed = reason === 'completed';
+  const ticketsMatch = requestsMatch(SESSION.request, SESSION.selectedTickets);
+  const ticketCount = SESSION.ticketCount || countTickets(SESSION.request);
+  const elapsedSeconds = Math.max(0, (getNow() - (SESSION.roundStartTime || getNow())) / 1000);
+  const ticketPhaseSeconds = SESSION.ticketsPhaseCompletedAt
+    ? Math.max(0, (SESSION.ticketsPhaseCompletedAt - (SESSION.roundStartTime || SESSION.ticketsPhaseCompletedAt)) / 1000)
+    : Number.POSITIVE_INFINITY;
   const changeDelta = roundValue(SESSION.inserted - SESSION.changeDue);
+  const changeExact = Math.abs(changeDelta) < 0.01;
   const totalCoinsUsed = Object.values(SESSION.coinsUsed).reduce((sum, count) => sum + count, 0);
   const uniqueCoinsUsed = Object.keys(SESSION.coinsUsed).filter((key) => SESSION.coinsUsed[key] > 0).length;
-  const availableDenoms =
-    typeof handlers.coinHandlers?.getAvailableCoins === 'function'
-      ? handlers.coinHandlers.getAvailableCoins()
-      : handlers.coinHandlers?.availableCoins || [];
-  const changeExact = Math.abs(changeDelta) < 0.01;
-  const minimalCount = minimalDenominationCount(SESSION.changeDue, availableDenoms);
-  const perfectChangeCombo = changeExact && Number.isFinite(minimalCount) && totalCoinsUsed === minimalCount;
-  const elapsedSeconds = Math.max(0, (getNow() - (SESSION.roundStartTime || getNow())) / 1000);
-  const ticketCount = SESSION.ticketCount || countTickets(SESSION.request);
 
-  let basePoints = 0;
-  if (perfectTickets) {
-    basePoints += 70;
-  } else if (ticketValueMatch) {
-    basePoints += 30;
-  } else {
-    basePoints -= 20;
+  SESSION.roundBonuses = [];
+
+  if (completed) {
+    if (ticketCount > 0 && Number.isFinite(ticketPhaseSeconds) && ticketPhaseSeconds < ticketCount * 0.75) {
+      awardBonus({ id: 'speed', label: 'Speed Bonus!', points: 20, text: '+Speed Bonus!' }, elements);
+    }
+    if (changeExact && totalCoinsUsed >= 3) {
+      awardBonus({ id: 'perfect', label: 'Perfect Change!', points: 15, text: '+Perfect Change!' }, elements);
+    }
+    if (SESSION.timeLeft > 5) {
+      awardBonus({ id: 'time', label: 'Time Bonus!', points: 10, text: '+Time Bonus!' }, elements);
+    }
   }
 
-  if (perfectChangeCombo) {
-    basePoints += 30;
-  } else if (changeExact) {
-    basePoints += 12;
-  } else if (changeDelta > 0) {
-    basePoints += 6;
-  } else {
-    basePoints -= 30;
-  }
+  renderHistory(SESSION, elements);
 
-  basePoints += Math.round(SESSION.timeLeft / 2);
-
-  SESSION.score = Math.max(0, SESSION.score + basePoints);
-  updateHud(SESSION, elements);
-
-  const completed = reason === 'completed';
-  const bonuses = [];
-
-  if (completed && ticketCount > 0 && elapsedSeconds < ticketCount * 0.75) {
-    bonuses.push({ id: 'speed', label: 'Speed Bonus!', toast: '+Speed Bonus!', points: BONUS_POINTS.speed });
-  }
-
-  if (completed && perfectChangeCombo) {
-    bonuses.push({ id: 'perfect', label: 'Perfect Change!', toast: '+Perfect Change!', points: BONUS_POINTS.perfect });
-  }
-
-  if (completed && SESSION.timeLeft > 5) {
-    bonuses.push({ id: 'time', label: 'Time Bonus!', toast: '+Time Bonus!', points: BONUS_POINTS.time });
-  }
-
-  SESSION.roundBonuses = bonuses.map((bonus) => ({ id: bonus.id, label: bonus.label, points: bonus.points }));
-
-  const bonusPoints = await applyBonuses(bonuses, elements);
-  const totalPoints = basePoints + bonusPoints;
+  const totalPoints = SESSION.roundScore;
+  const remainingTime = Math.max(0, Math.round(SESSION.timeLeft));
+  const changeLabel = changeExact
+    ? SESSION.changeDue > 0
+      ? 'Exact change'
+      : 'No change due'
+    : changeDelta > 0
+    ? `${formatMoney(changeDelta)} extra`
+    : `${formatMoney(Math.abs(changeDelta))} short`;
 
   const details = [
-    {
-      label: 'Tickets',
-      value: perfectTickets ? 'Perfect match' : ticketValueMatch ? 'Value matched' : 'Mismatch',
-    },
-    {
-      label: 'Change',
-      value: changeExact
-        ? perfectChangeCombo
-          ? 'Perfect change'
-          : 'Exact'
-        : changeDelta > 0
-        ? `${formatMoney(changeDelta)} extra`
-        : `${formatMoney(Math.abs(changeDelta))} missing`,
-    },
-    {
-      label: 'Time left',
-      value: `${Math.round(SESSION.timeLeft)} s`,
-    },
-    {
-      label: 'Coins used',
-      value: `${totalCoinsUsed} (${uniqueCoinsUsed} types)`,
-    },
+    { label: 'Tickets', value: ticketsMatch ? 'All served' : 'Needs review' },
+    { label: 'Change', value: changeLabel },
+    { label: 'Coins used', value: `${totalCoinsUsed} (${uniqueCoinsUsed} types)` },
+    { label: 'Time left', value: `${remainingTime} s` },
   ];
+
+  if (reason === 'overpay') {
+    details.unshift({ label: 'Penalty', value: 'Change exceeded' });
+  } else if (reason === 'timeout') {
+    details.unshift({ label: 'Penalty', value: 'Time expired' });
+  }
 
   SESSION.roundSummaries.push({
     round: SESSION.round,
     points: totalPoints,
-    basePoints,
     bonuses: [...SESSION.roundBonuses],
-    perfectTickets,
-    ticketValueMatch,
-    changeDelta,
+    reason,
     timeLeft: SESSION.timeLeft,
     elapsedSeconds,
-    reason,
     coinsUsed: totalCoinsUsed,
     ticketCount,
+    changeDelta,
+    ticketsComplete: ticketsMatch,
+    events: [...SESSION.roundEvents],
   });
 
   const overlayCountdown = 5;
@@ -297,9 +235,16 @@ export async function finishRound(elements, handlers, reason) {
     handlers.onExit();
   };
 
+  let subtitle = 'Round finished';
+  if (reason === 'timeout') {
+    subtitle = 'Time is up!';
+  } else if (reason === 'overpay') {
+    subtitle = 'Change exceeded!';
+  }
+
   const overlayContent = {
     title: `Round ${SESSION.round}/${SESSION.totalRounds}`,
-    subtitle: reason === 'timeout' ? 'Time is up!' : 'Round finished',
+    subtitle,
     points: totalPoints,
     details,
     bonuses: SESSION.roundBonuses,
