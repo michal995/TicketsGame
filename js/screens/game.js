@@ -1,6 +1,6 @@
 import { GAME_MODES, getAvailableDenominations } from '../game/constants.js';
 import { SESSION, startSession, endSession } from '../game/state.js';
-import { startRound, finishRound, stopRound } from '../game/round.js';
+import { startRound, finishRound, stopRound, pauseCountdown, resumeCountdown } from '../game/round.js';
 import { addTicket, removeTicket, clearTickets, insertCoin } from '../game/actions.js';
 import { renderTickets, renderCoins, updateHud, renderHistory, showOverlay, hideOverlay } from '../game/render.js';
 import { playClickFeedback, flyScoreLabel, applyCorrectFeedback, applyErrorFeedback } from '../game/effects.js';
@@ -37,6 +37,7 @@ const closeButton = document.getElementById('closeGame');
 
 let roundActive = false;
 let finishing = false;
+let paused = false;
 
 const NEGATIVE_SIGN = '\u2013';
 const currency = new Intl.NumberFormat('en-US', {
@@ -131,7 +132,7 @@ function getScoreSourceFallback() {
 
 const ticketHandlers = {
   onAddTicket: (name, event) => {
-    if (!roundActive) return;
+    if (!roundActive || paused) return;
     const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
     const result = addTicket(SESSION, name);
     if (result.success) {
@@ -167,7 +168,7 @@ const ticketHandlers = {
     syncUI();
   },
   onRemoveTicket: (name, event) => {
-    if (!roundActive) return;
+    if (!roundActive || paused) return;
     const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
     const result = removeTicket(SESSION, name);
     if (result.success) {
@@ -183,7 +184,7 @@ const ticketHandlers = {
 const coinHandlers = {
   getAvailableCoins: () => getAvailableDenominations(SESSION.coinOptions),
   onInsertCoin: (value, event) => {
-    if (!roundActive) return;
+    if (!roundActive || paused) return;
     const button = event?.currentTarget instanceof HTMLElement ? event.currentTarget : null;
     if (button) {
       playClickFeedback(button);
@@ -243,17 +244,79 @@ function navigateToMenu() {
   window.location.href = 'index.html';
 }
 
+function resumeGame() {
+  hideOverlay(overlayElements.overlay);
+  paused = false;
+  roundActive = true;
+  resumeCountdown(elements);
+  syncUI();
+}
+
+function restartGame() {
+  const { player, mode } = SESSION;
+  hideOverlay(overlayElements.overlay);
+  paused = false;
+  finishing = false;
+  stopRound();
+  startSession(player, mode);
+  roundActive = true;
+  startRound(elements, roundHandlers);
+}
+
+function exitToMenu() {
+  hideOverlay(overlayElements.overlay);
+  paused = false;
+  stopRound();
+  navigateToMenu();
+}
+
+function showPauseOverlay() {
+  if (paused || finishing || !roundActive) {
+    return;
+  }
+  paused = true;
+  roundActive = false;
+  pauseCountdown();
+
+  const stats = document.createElement('div');
+  stats.className = 'pause-stats';
+  const roundLabel = Math.max(SESSION.round, 1);
+  stats.innerHTML = `
+    <div class="pause-row">
+      <span class="pause-label">Score</span>
+      <span class="pause-value">${Math.round(SESSION.score)} pts</span>
+    </div>
+    <div class="pause-row">
+      <span class="pause-label">Time left</span>
+      <span class="pause-value">${Math.max(0, Math.ceil(SESSION.timeLeft))} s</span>
+    </div>
+  `;
+
+  showOverlay(overlayElements, {
+    title: 'Game paused',
+    subtitle: `Round ${roundLabel}/${SESSION.totalRounds}`,
+    body: stats,
+    actions: [
+      { label: 'Resume game', onSelect: resumeGame },
+      { label: 'Restart game', onSelect: restartGame },
+      { label: 'Main menu', onSelect: exitToMenu },
+    ],
+  });
+}
+
 function syncUI() {
   ensureTicketPhaseState();
   renderTickets(SESSION, elements, ticketHandlers);
   renderCoins(SESSION, elements, coinHandlers);
   updateHud(SESSION, elements);
   renderHistory(SESSION, elements);
-  maybeFinishRound();
+  if (!paused) {
+    maybeFinishRound();
+  }
 }
 
 function maybeFinishRound() {
-  if (!roundActive || finishing) {
+  if (!roundActive || finishing || paused) {
     return;
   }
   if (!SESSION.ticketsPhaseComplete) {
@@ -351,7 +414,7 @@ const roundHandlers = {
 
 if (clearButton) {
   clearButton.addEventListener('click', () => {
-    if (!roundActive) return;
+    if (!roundActive || paused) return;
     clearTickets(SESSION);
     resetCoinProgress();
     syncUI();
@@ -359,10 +422,7 @@ if (clearButton) {
 }
 
 if (closeButton) {
-  closeButton.addEventListener('click', () => {
-    stopRound();
-    navigateToMenu();
-  });
+  closeButton.addEventListener('click', showPauseOverlay);
 }
 
 window.addEventListener('beforeunload', () => {
