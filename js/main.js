@@ -26,7 +26,7 @@ let menuControls;
 const gameControls = initGameScreen({
   onNavigateToMenu: (details = {}) => {
     showMenu();
-    if (details.player || details.mode) {
+    if (details.player || details.mode || details.layout) {
       menuControls?.setValues(details);
     }
     menuControls?.refreshPlayers();
@@ -35,9 +35,12 @@ const gameControls = initGameScreen({
 });
 
 menuControls = initMenuScreen({
-  onStart: ({ player, mode }) => {
+  onStart: ({ player, mode, layout }) => {
     showGame();
-    gameControls.start({ player, mode });
+    gameControls.start({ player, mode, layout });
+  },
+  onLayoutChange: (layout) => {
+    gameControls.applyLayout?.(layout);
   },
 });
 

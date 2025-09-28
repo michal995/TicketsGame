@@ -40,6 +40,11 @@ export function getAvailableDenominations(overrides = {}) {
   });
 }
 
+export const LAYOUTS = {
+  TOP_BOTTOM: 'top-bottom',
+  LEFT_RIGHT: 'left-right',
+};
+
 export const GAME_MODES = {
   TB1: { label: 'Top/Bottom 1', timeLimit: 20, description: 'Classic rush with single passenger focus.' },
   TB2: { label: 'Top/Bottom 2', timeLimit: 25, description: 'Longer time window and bigger groups.' },
@@ -48,4 +53,5 @@ export const GAME_MODES = {
 };
 
 export const DEFAULT_MODE = 'TB1';
+export const DEFAULT_LAYOUT = LAYOUTS.TOP_BOTTOM;
 export const TOTAL_ROUNDS = 5;

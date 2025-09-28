@@ -92,6 +92,7 @@ export function renderCoins(session, elements, handlers) {
     }
     button.className = classes.join(' ');
     button.dataset.value = String(denomination.value);
+    button.dataset.kind = denomination.type;
     button.innerHTML = `
       <span class="denom-icon" aria-hidden="true">${denomination.icon ?? ''}</span>
       <span class="denom-value">${formatMoney(denomination.value)}</span>

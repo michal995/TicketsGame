@@ -1,4 +1,4 @@
-import { GAME_MODES, DEFAULT_MODE, TOTAL_ROUNDS, COIN_TOGGLES } from './constants.js';
+import { GAME_MODES, DEFAULT_MODE, TOTAL_ROUNDS, COIN_TOGGLES, DEFAULT_LAYOUT, LAYOUTS } from './constants.js';
 
 function defaultCoinOptions() {
   return { ...COIN_TOGGLES };
@@ -42,6 +42,7 @@ function baseRoundState(timeLimit) {
 export const SESSION = {
   player: 'Guest',
   mode: DEFAULT_MODE,
+  layout: DEFAULT_LAYOUT,
   round: 0,
   totalRounds: TOTAL_ROUNDS,
   score: 0,
@@ -50,13 +51,16 @@ export const SESSION = {
   ...baseRoundState(GAME_MODES[DEFAULT_MODE].timeLimit),
 };
 
-export function startSession(player, mode) {
+export function startSession(player, mode, layout) {
   const safePlayer = player?.trim() || 'Guest';
   const resolvedMode = resolveMode(mode);
   const timeLimit = GAME_MODES[resolvedMode].timeLimit;
+  const resolvedLayout =
+    layout === LAYOUTS.LEFT_RIGHT || layout === LAYOUTS.TOP_BOTTOM ? layout : DEFAULT_LAYOUT;
 
   SESSION.player = safePlayer;
   SESSION.mode = resolvedMode;
+  SESSION.layout = resolvedLayout;
   SESSION.round = 0;
   SESSION.score = 0;
   SESSION.roundSummaries = [];
@@ -64,6 +68,7 @@ export function startSession(player, mode) {
   SESSION.coinOptions = defaultCoinOptions();
 
   Object.assign(SESSION, baseRoundState(timeLimit));
+  SESSION.layout = resolvedLayout;
 
   return SESSION;
 }

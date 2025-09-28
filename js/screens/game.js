@@ -1,4 +1,4 @@
-import { GAME_MODES, getAvailableDenominations } from '../game/constants.js';
+import { GAME_MODES, getAvailableDenominations, LAYOUTS, DEFAULT_LAYOUT } from '../game/constants.js';
 import { SESSION, startSession, endSession } from '../game/state.js';
 import { startRound, finishRound, stopRound, pauseCountdown, resumeCountdown } from '../game/round.js';
 import { addTicket, removeTicket, clearTickets, insertCoin } from '../game/actions.js';
@@ -10,6 +10,7 @@ let initialized = false;
 let menuCallback = null;
 
 const elements = {
+  root: null,
   scoreDisplay: null,
   scoreCard: null,
   timerDisplay: null,
@@ -60,6 +61,18 @@ function formatPoints(points) {
     return `${NEGATIVE_SIGN}${absolute}`;
   }
   return '0';
+}
+
+function normalizeLayout(value) {
+  return value === LAYOUTS.LEFT_RIGHT || value === LAYOUTS.TOP_BOTTOM ? value : DEFAULT_LAYOUT;
+}
+
+function applyLayoutSetting(layout) {
+  const resolved = normalizeLayout(layout ?? SESSION.layout);
+  SESSION.layout = resolved;
+  if (elements.root) {
+    elements.root.dataset.layout = resolved;
+  }
 }
 
 function logScoreEvent(message, points) {
@@ -330,12 +343,13 @@ function showSessionSummary() {
       label: 'Play again',
       onSelect: () => {
         stopGameSession();
-        beginSession(summary.player, summary.mode);
+        beginSession(summary.player, summary.mode, SESSION.layout);
       },
     },
     {
       label: 'Back to Menu',
-      onSelect: () => navigateToMenu({ player: summary.player, mode: summary.mode }),
+      onSelect: () =>
+        navigateToMenu({ player: summary.player, mode: summary.mode, layout: SESSION.layout }),
     },
   ];
 
@@ -357,9 +371,9 @@ function resumeGame() {
 }
 
 function restartGame() {
-  const { player, mode } = SESSION;
+  const { player, mode, layout } = SESSION;
   stopGameSession();
-  beginSession(player, mode);
+  beginSession(player, mode, layout);
 }
 
 function stopGameSession({ keepOverlay = false } = {}) {
@@ -372,8 +386,10 @@ function stopGameSession({ keepOverlay = false } = {}) {
   }
 }
 
-function beginSession(player, mode) {
-  startSession(player, mode);
+function beginSession(player, mode, layout = SESSION.layout) {
+  const resolvedLayout = normalizeLayout(layout);
+  startSession(player, mode, resolvedLayout);
+  applyLayoutSetting(resolvedLayout);
   updateModeLabel(SESSION.mode);
   resetCoinProgress();
   hideOverlay(overlayElements.overlay);
@@ -384,14 +400,17 @@ function beginSession(player, mode) {
   startRound(elements, roundHandlers);
 }
 
-function startGameSession({ player, mode }) {
+function startGameSession({ player, mode, layout }) {
   stopGameSession();
-  beginSession(player, mode);
+  beginSession(player, mode, layout ?? SESSION.layout);
 }
 
 function navigateToMenu(details) {
   const payload =
-    details || (SESSION.player ? { player: SESSION.player, mode: SESSION.mode } : undefined);
+    details ||
+    (SESSION.player
+      ? { player: SESSION.player, mode: SESSION.mode, layout: SESSION.layout }
+      : undefined);
   stopGameSession();
   if (typeof menuCallback === 'function') {
     menuCallback(payload);
@@ -399,7 +418,7 @@ function navigateToMenu(details) {
 }
 
 function exitToMenu() {
-  navigateToMenu({ player: SESSION.player, mode: SESSION.mode });
+  navigateToMenu({ player: SESSION.player, mode: SESSION.mode, layout: SESSION.layout });
 }
 
 function showPauseOverlay() {
@@ -448,6 +467,8 @@ function handleClearTickets() {
 export function initGameScreen({ onNavigateToMenu } = {}) {
   menuCallback = typeof onNavigateToMenu === 'function' ? onNavigateToMenu : null;
 
+  elements.root = elements.root || document.getElementById('game-screen');
+
   if (!initialized) {
     elements.scoreDisplay = document.getElementById('score');
     elements.scoreCard = document.getElementById('score')?.closest('.stat-card') || null;
@@ -495,8 +516,11 @@ export function initGameScreen({ onNavigateToMenu } = {}) {
     roundHandlers.onExit = () => navigateToMenu();
   }
 
+  applyLayoutSetting(SESSION.layout);
+
   return {
     start: startGameSession,
     stop: stopGameSession,
+    applyLayout: applyLayoutSetting,
   };
 }
