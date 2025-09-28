@@ -67,6 +67,7 @@ function countTickets(request) {
 let timerId = null;
 let overlayIntervalId = null;
 let overlayTimeoutId = null;
+let countdownHandler = null;
 
 function clearTimer() {
   if (timerId) {
@@ -86,20 +87,40 @@ function clearOverlayCountdown() {
   }
 }
 
-function startCountdown(elements, onTimeout) {
-  const duration = GAME_MODES[SESSION.mode].timeLimit;
-  SESSION.timeLeft = duration;
-  updateHud(SESSION, elements);
-
+function scheduleCountdown(elements) {
   clearTimer();
   timerId = setInterval(() => {
     SESSION.timeLeft = Math.max(0, SESSION.timeLeft - 1);
     updateHud(SESSION, elements);
     if (SESSION.timeLeft <= 0) {
       clearTimer();
-      onTimeout();
+      if (typeof countdownHandler === 'function') {
+        countdownHandler();
+      }
     }
   }, 1000);
+}
+
+export function startCountdown(elements, onTimeout, { reset = true } = {}) {
+  countdownHandler = onTimeout;
+  if (reset) {
+    const duration = GAME_MODES[SESSION.mode].timeLimit;
+    SESSION.timeLeft = duration;
+  }
+  updateHud(SESSION, elements);
+  scheduleCountdown(elements);
+}
+
+export function pauseCountdown() {
+  clearTimer();
+}
+
+export function resumeCountdown(elements) {
+  if (!countdownHandler || SESSION.timeLeft <= 0) {
+    return;
+  }
+  updateHud(SESSION, elements);
+  scheduleCountdown(elements);
 }
 
 function requestsMatch(request, selected) {
@@ -283,4 +304,5 @@ export async function finishRound(elements, handlers, reason) {
 export function stopRound() {
   clearTimer();
   clearOverlayCountdown();
+  countdownHandler = null;
 }

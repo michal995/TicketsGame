@@ -499,6 +499,31 @@ button:focus-visible {
   color: #ffd166;
 }
 
+.overlay-box .pause-stats {
+  display: grid;
+  gap: clamp(8px, 1vh, 12px);
+}
+
+.overlay-box .pause-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(6px, 0.8vh, 10px);
+}
+
+.overlay-box .pause-label {
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--font-base);
+}
+
+.overlay-box .pause-value {
+  font-size: clamp(18px, 2.2vh, 24px);
+  font-weight: 700;
+  color: #ffd166;
+}
+
 @media (max-width: 900px) {
   .top-bar {
     grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.2fr) minmax(0, 0.2fr);

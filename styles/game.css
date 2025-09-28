@@ -256,7 +256,6 @@
   grid-area: payment;
 }
 
-.change-panel[data-visible='false'] .currency-grid,
 .change-panel[data-visible='false'] .change-summary {
   opacity: 0.45;
 }
