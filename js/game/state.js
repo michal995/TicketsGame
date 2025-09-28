@@ -27,6 +27,11 @@ function baseRoundState(timeLimit) {
     history: [],
     showChange: false,
     showPays: false,
+    payRevealPending: false,
+    payRevealShown: false,
+    canPay: false,
+    payFlashPending: false,
+    payFlashShown: false,
     roundStartTime: 0,
     roundBonuses: [],
   };

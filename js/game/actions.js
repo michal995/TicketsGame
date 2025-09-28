@@ -29,9 +29,6 @@ export function addTicket(session, ticketName) {
   }
   session.selectedTickets[ticketName] = current + 1;
   session.selectedTotal = round(session.selectedTotal + ticket.price);
-  if (!session.showPays) {
-    session.showPays = true;
-  }
   logHistory(session, `Added ${ticket.name}`, `+${currency.format(ticket.price)}`);
   return true;
 }
@@ -50,9 +47,8 @@ export function removeTicket(session, ticketName) {
     delete session.selectedTickets[ticketName];
   }
   session.selectedTotal = round(session.selectedTotal - ticket.price);
-  if (session.selectedTotal <= 0) {
-    session.showPays = false;
-  }
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   logHistory(session, `Removed ${ticket.name}`, `-${currency.format(ticket.price)}`);
   return true;
 }
@@ -61,18 +57,53 @@ export function clearTickets(session) {
   session.selectedTickets = {};
   session.selectedTotal = 0;
   session.showPays = false;
+  session.payRevealPending = false;
+  session.payRevealShown = false;
+  session.canPay = false;
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   logHistory(session, 'Cleared tickets', '$0.00');
 }
 
 export function insertCoin(session, value) {
+  if (!session.canPay) {
+    return false;
+  }
   const roundedValue = round(value);
+  const changeDue = Number(session.changeDue) || 0;
+  const totalIfInserted = round(session.inserted + roundedValue);
+
+  if (changeDue <= 0 && roundedValue > 0) {
+    return false;
+  }
+
+  if (changeDue > 0 && totalIfInserted - changeDue > 0.009) {
+    return false;
+  }
+
+  const previousInserted = session.inserted;
   session.coinsUsed[roundedValue] = (session.coinsUsed[roundedValue] || 0) + 1;
-  session.inserted = round(session.inserted + roundedValue);
+  session.inserted = totalIfInserted;
   const formatted = currency.format(roundedValue);
   if (!session.showChange) {
     session.showChange = true;
   }
   logHistory(session, 'Returned', `+${formatted}`);
+
+  const updatedChangeDue = Number(session.changeDue) || 0;
+  const wasSettled =
+    updatedChangeDue === 0
+      ? previousInserted === 0
+      : Math.abs(updatedChangeDue - previousInserted) < 0.01 || previousInserted > updatedChangeDue;
+  const nowSettled =
+    updatedChangeDue === 0
+      ? session.inserted === 0
+      : Math.abs(updatedChangeDue - session.inserted) < 0.01 || session.inserted > updatedChangeDue;
+
+  if (!wasSettled && nowSettled) {
+    session.payFlashPending = true;
+    session.payFlashShown = true;
+  }
   return true;
 }
 
@@ -80,5 +111,7 @@ export function resetCoins(session) {
   session.coinsUsed = {};
   session.inserted = 0;
   session.showChange = false;
+  session.payFlashShown = false;
+  session.payFlashPending = false;
   logHistory(session, 'Change cleared', '$0.00');
 }
