@@ -1,65 +1,79 @@
 import { GAME_MODES, DEFAULT_MODE } from '../game/constants.js';
 import { rememberUser, getUsers } from '../storage/db.js';
 
-const nameInput = document.getElementById('playerName');
-const modeSelect = document.getElementById('modeSelect');
-const startButton = document.getElementById('startBtn');
-const closeMenuButton = document.getElementById('closeMenu');
+export function initMenuScreen({ onStart } = {}) {
+  const nameInput = document.getElementById('playerName');
+  const modeSelect = document.getElementById('modeSelect');
+  const startButton = document.getElementById('startBtn');
 
-function populatePlayers() {
-  const users = getUsers();
-  if (!users.length || !nameInput) {
-    return;
+  function populatePlayers() {
+    const list = document.getElementById('players');
+    if (!list || !nameInput) {
+      return;
+    }
+    const users = getUsers();
+    list.innerHTML = users.map((user) => `<option value="${user}"></option>`).join('');
+    nameInput.setAttribute('list', 'players');
   }
-  nameInput.setAttribute('list', 'players');
-  let dataList = document.getElementById('players');
-  if (!dataList) {
-    dataList = document.createElement('datalist');
-    dataList.id = 'players';
-    document.body.appendChild(dataList);
+
+  function populateModes() {
+    if (!modeSelect) {
+      return;
+    }
+    if (!modeSelect.children.length) {
+      Object.entries(GAME_MODES).forEach(([value, config]) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = config.label;
+        modeSelect.appendChild(option);
+      });
+    }
+    if (!modeSelect.value) {
+      modeSelect.value = DEFAULT_MODE;
+    }
   }
-  dataList.innerHTML = users.map((user) => `<option value="${user}"></option>`).join('');
-}
 
-function populateModes() {
-  Object.entries(GAME_MODES).forEach(([value, config]) => {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = config.label;
-    modeSelect.appendChild(option);
-  });
-  modeSelect.value = DEFAULT_MODE;
-}
+  function getSelectedMode() {
+    if (!modeSelect) {
+      return DEFAULT_MODE;
+    }
+    return modeSelect.value && GAME_MODES[modeSelect.value]
+      ? modeSelect.value
+      : DEFAULT_MODE;
+  }
 
-function startGame() {
-  const nick = nameInput.value.trim() || 'Guest';
-  const mode = modeSelect.value || DEFAULT_MODE;
-  rememberUser(nick);
-  const url = new URL('game.html', window.location.href);
-  url.searchParams.set('player', nick);
-  url.searchParams.set('mode', mode);
-  window.location.href = url.toString();
-}
+  function startGame() {
+    const nick = nameInput?.value.trim() || 'Guest';
+    const mode = getSelectedMode();
+    rememberUser(nick);
+    if (typeof onStart === 'function') {
+      onStart({ player: nick, mode });
+    }
+  }
 
-if (modeSelect && startButton) {
   populateModes();
   populatePlayers();
-  startButton.addEventListener('click', startGame);
+
+  startButton?.addEventListener('click', startGame);
   nameInput?.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       startGame();
     }
   });
-}
 
-if (closeMenuButton) {
-  closeMenuButton.addEventListener('click', () => {
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-    const fallback = new URL('index.html', window.location.href);
-    window.location.href = fallback.toString();
-  });
+  return {
+    focus() {
+      nameInput?.focus();
+    },
+    setValues({ player, mode } = {}) {
+      if (nameInput && typeof player === 'string' && player.length) {
+        nameInput.value = player;
+      }
+      if (modeSelect && mode && GAME_MODES[mode]) {
+        modeSelect.value = mode;
+      }
+    },
+    refreshPlayers: populatePlayers,
+  };
 }
