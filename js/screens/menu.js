@@ -4,6 +4,7 @@ import { rememberUser, getUsers } from '../storage/db.js';
 const nameInput = document.getElementById('playerName');
 const modeSelect = document.getElementById('modeSelect');
 const startButton = document.getElementById('startBtn');
+const closeMenuButton = document.getElementById('closeMenu');
 
 function populatePlayers() {
   const users = getUsers();
@@ -49,5 +50,16 @@ if (modeSelect && startButton) {
       event.preventDefault();
       startGame();
     }
+  });
+}
+
+if (closeMenuButton) {
+  closeMenuButton.addEventListener('click', () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    const fallback = new URL('index.html', window.location.href);
+    window.location.href = fallback.toString();
   });
 }
