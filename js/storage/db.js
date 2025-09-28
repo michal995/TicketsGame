@@ -8,6 +8,9 @@ function defaultStore() {
       gamesPlayed: 0,
       bestScore: 0,
     },
+    preferences: {
+      layout: 'top-bottom',
+    },
   };
 }
 
@@ -18,9 +21,14 @@ function loadStore() {
       return defaultStore();
     }
     const parsed = JSON.parse(raw);
+    const defaults = defaultStore();
     return {
-      ...defaultStore(),
+      ...defaults,
       ...parsed,
+      preferences: {
+        ...defaults.preferences,
+        ...(parsed?.preferences || {}),
+      },
     };
   } catch (error) {
     console.warn('TicketsGame: unable to read localStorage, resetting.', error);
@@ -62,4 +70,19 @@ export function recordScore(entry) {
 export function getStats() {
   const store = loadStore();
   return { ...store.stats };
+}
+
+export function rememberLayout(layout) {
+  const store = loadStore();
+  store.preferences = store.preferences || {};
+  if (layout) {
+    store.preferences.layout = layout === 'left-right' ? 'left-right' : 'top-bottom';
+    saveStore(store);
+  }
+}
+
+export function getPreferredLayout() {
+  const store = loadStore();
+  const layout = store.preferences?.layout;
+  return layout === 'left-right' ? 'left-right' : 'top-bottom';
 }

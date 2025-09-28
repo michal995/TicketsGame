@@ -10,6 +10,15 @@
   gap: clamp(4px, 0.8vh, 9px);
 }
 
+.game-screen[data-layout='left-right'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto minmax(0, 0.32fr) minmax(0, 1fr);
+  grid-template-areas:
+    'top top'
+    'needs needs'
+    'tickets payment';
+}
+
 .game-top {
   border-bottom: none;
   grid-area: top;
@@ -105,6 +114,10 @@
   justify-content: space-between;
 }
 
+.game-screen[data-layout='left-right'] .tickets-panel {
+  justify-content: flex-start;
+}
+
 .grid-tickets {
   flex: 1;
   display: flex;
@@ -113,6 +126,15 @@
   gap: clamp(3px, 0.7vh, 10px);
   min-height: 0;
   flex-wrap: nowrap;
+}
+
+.game-screen[data-layout='left-right'] .grid-tickets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(3px, 0.8vh, 12px);
+  justify-items: stretch;
+  align-items: stretch;
 }
 
 .ticket-btn {
@@ -133,6 +155,12 @@
   color: #000;
   box-shadow: 0 0.22vh 0.7vh rgba(0, 0, 0, 0.25);
   margin: 0;
+}
+
+.game-screen[data-layout='left-right'] .grid-tickets .ticket-btn {
+  width: 100%;
+  max-width: none;
+  flex: 1 1 auto;
 }
 
 .ticket-btn.is-inactive {
@@ -256,6 +284,10 @@
   grid-area: payment;
 }
 
+.game-screen[data-layout='left-right'] .change-panel {
+  align-self: stretch;
+}
+
 .change-panel[data-visible='false'] .change-summary {
   opacity: 0.45;
 }
@@ -268,6 +300,50 @@
   gap: clamp(3px, 0.7vh, 10px);
   min-height: 0;
   flex-wrap: nowrap;
+}
+
+.game-screen[data-layout='left-right'] .grid-coins {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: clamp(4px, 0.9vh, 12px);
+  padding: clamp(2px, 0.6vh, 6px);
+}
+
+.game-screen[data-layout='left-right'] .grid-coins .currency-btn {
+  flex: 1 1 calc(33.333% - clamp(4px, 0.9vh, 12px));
+  max-width: none;
+}
+
+.game-screen[data-layout='left-right'] .grid-coins .currency-btn[data-kind='bill'] {
+  order: 0;
+  flex: 1 1 calc(33.333% - clamp(4px, 0.9vh, 12px));
+}
+
+.game-screen[data-layout='left-right'] .grid-coins .currency-btn[data-kind='coin'] {
+  order: 1;
+  flex: 1 1 calc(20% - clamp(4px, 0.9vh, 12px));
+  max-width: clamp(32px, 5.6vw, 46px);
+  padding: clamp(1px, 0.3vh, 3px) clamp(2px, 0.45vh, 4px);
+}
+
+@media (max-width: 720px) {
+  .game-screen[data-layout='left-right'] {
+    grid-template-rows: auto minmax(0, 0.36fr) minmax(0, 1fr);
+  }
+
+  .game-screen[data-layout='left-right'] .grid-coins .currency-btn[data-kind='bill'],
+  .game-screen[data-layout='left-right'] .grid-coins .currency-btn[data-kind='coin'] {
+    flex: 1 1 calc(25% - clamp(4px, 0.9vh, 12px));
+  }
+
+  .game-screen[data-layout='left-right'] .grid-coins .currency-btn[data-kind='coin'] {
+    max-width: calc(25% - clamp(4px, 0.9vh, 12px));
+  }
+
+  .game-screen[data-layout='left-right'] .grid-coins {
+    justify-content: flex-start;
+  }
 }
 
 .currency-btn {
