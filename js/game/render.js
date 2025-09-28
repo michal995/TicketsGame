@@ -43,8 +43,13 @@ export function renderTickets(session, elements, handlers) {
     if (!isAvailable) {
       button.classList.add('is-inactive');
       button.disabled = true;
-    } else if (need > 0 && count >= need) {
-      button.disabled = true;
+    } else if (need > 0) {
+      const filled = count >= need;
+      button.classList.toggle('is-filled', filled);
+      button.setAttribute('aria-pressed', filled ? 'true' : 'false');
+    } else {
+      button.classList.remove('is-filled');
+      button.removeAttribute('aria-pressed');
     }
 
     button.innerHTML = `

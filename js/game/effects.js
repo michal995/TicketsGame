@@ -94,9 +94,9 @@ export function animateScoreValue(element, value) {
     return;
   }
 
-  const target = Math.max(0, Math.round(Number(value) || 0));
+  const target = Math.round(Number(value) || 0);
   const currentText = element.dataset.displayValue ?? element.textContent ?? '0';
-  const current = Math.max(0, Math.round(toNumber(currentText, 0)));
+  const current = Math.round(toNumber(currentText, 0));
 
   if (current === target) {
     element.dataset.displayValue = String(target);
@@ -175,4 +175,67 @@ export function highlightPays(cardElement) {
     cardElement.removeEventListener('animationend', handleEnd);
   };
   cardElement.addEventListener('animationend', handleEnd);
+}
+
+export function flyScoreLabel({ source, target, text, tone = 'positive', duration = 720 }) {
+  if (!(source instanceof HTMLElement) || !(target instanceof HTMLElement)) {
+    return;
+  }
+  if (typeof document === 'undefined') {
+    return;
+  }
+
+  const sourceRect = source.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const label = document.createElement('div');
+  label.className = 'flying-score-label';
+  label.dataset.tone = tone;
+  label.textContent = text;
+  label.style.position = 'fixed';
+  label.style.left = `${sourceRect.left + sourceRect.width / 2}px`;
+  label.style.top = `${sourceRect.top + sourceRect.height / 2}px`;
+  label.style.transform = 'translate(-50%, -50%)';
+  label.style.pointerEvents = 'none';
+  document.body.appendChild(label);
+
+  const deltaX = targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
+  const deltaY = targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+
+  const animation = label.animate(
+    [
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+      {
+        transform: `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.6)`,
+        opacity: 0,
+      },
+    ],
+    { duration, easing: 'cubic-bezier(0.24, 0.74, 0.44, 0.98)' }
+  );
+
+  const cleanup = () => {
+    label.remove();
+  };
+
+  animation.addEventListener('finish', cleanup, { once: true });
+  animation.addEventListener('cancel', cleanup, { once: true });
+}
+
+function applyFeedbackClass(element, className) {
+  if (!(element instanceof HTMLElement)) {
+    return;
+  }
+  element.classList.add(className);
+  const handleEnd = () => {
+    element.classList.remove(className);
+    element.removeEventListener('animationend', handleEnd);
+  };
+  element.addEventListener('animationend', handleEnd);
+}
+
+export function applyCorrectFeedback(element) {
+  applyFeedbackClass(element, 'is-correct');
+}
+
+export function applyErrorFeedback(element) {
+  applyFeedbackClass(element, 'is-error');
 }

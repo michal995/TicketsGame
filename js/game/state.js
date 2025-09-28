@@ -32,6 +32,10 @@ function baseRoundState(timeLimit) {
     payFlashShown: false,
     roundStartTime: 0,
     roundBonuses: [],
+    ticketsPhaseComplete: false,
+    ticketsPhaseCompletedAt: 0,
+    roundScore: 0,
+    roundEvents: [],
   };
 }
 
