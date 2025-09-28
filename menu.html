@@ -4,18 +4,22 @@
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
   <title>Ticket Rush PRO — Menu</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="stylesheet" href="styles/app.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
   <script type="module" src="js/main.js" defer></script>
   <script type="module" src="js/screens/menu.js" defer></script>
 </head>
 <body class="app-body">
   <main class="app-screen menu-screen" role="main">
     <header class="top-bar menu-top">
+      <button class="btn icon ghost menu-close" id="closeMenu" type="button" aria-label="Back to game">
+        ×
+      </button>
       <div class="brand">
         <span class="logo" aria-hidden="true">🚌</span>
         <div class="brand-text">
@@ -28,8 +32,13 @@
       </div>
     </header>
 
-    <section class="menu-content">
-      <div class="menu-center">
+    <section class="menu-content" aria-labelledby="menuTitle">
+      <div class="menu-stack">
+        <div class="menu-intro">
+          <h1 class="menu-title" id="menuTitle">Ready for the rush?</h1>
+          <p class="menu-copy">Set your nickname and choose a mode to jump right into the action.</p>
+        </div>
+
         <form class="menu-form" aria-label="Start a new game" onsubmit="return false;">
           <label class="input-field" for="playerName">
             <span class="field-label">Nickname</span>
@@ -48,10 +57,11 @@
             <select id="modeSelect" name="mode"></select>
           </label>
         </form>
+
         <div class="menu-actions">
-          <button class="btn primary start-btn" id="startBtn" type="button">Start game</button>
+          <button class="btn primary start-btn" id="startBtn" type="button">Start Game</button>
           <div class="menu-secondary" role="group" aria-label="Additional options">
-            <button class="btn secondary" type="button">Modes</button>
+            <button class="btn secondary" type="button">Game Modes</button>
             <button class="btn secondary" type="button">Settings</button>
           </div>
         </div>
