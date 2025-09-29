@@ -130,12 +130,12 @@
 
 .game-screen[data-layout='left-right'] .grid-tickets {
   display: grid;
-  grid-template-columns: repeat(4, minmax(auto, clamp(40px, 8vw, 64px)));
-  grid-auto-rows: minmax(0, auto);
-  gap: clamp(3px, 0.8vh, 12px);
-  justify-content: center;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(5px, 1vh, 14px);
+  justify-content: stretch;
   align-content: flex-start;
-  justify-items: center;
+  justify-items: stretch;
+  align-items: start;
 }
 
 .ticket-btn {
@@ -159,9 +159,9 @@
 }
 
 .game-screen[data-layout='left-right'] .grid-tickets .ticket-btn {
-  width: auto;
-  max-width: clamp(40px, 8vw, 64px);
-  justify-self: center;
+  width: 100%;
+  max-width: none;
+  justify-self: stretch;
 }
 
 .ticket-btn.is-inactive {
