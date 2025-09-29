@@ -29,16 +29,22 @@ export function renderTickets(session, elements, handlers) {
   }
 
   const availableByName = new Map(session.available.map((ticket) => [ticket.name, ticket]));
+  const isOptionTwoMode = typeof session.mode === 'string' && session.mode.endsWith('2');
   const fragment = document.createDocumentFragment();
 
   ALL_TICKETS.forEach((definition) => {
     const ticket = availableByName.get(definition.name) || definition;
+    const isAvailable = availableByName.has(definition.name);
+
+    if (isOptionTwoMode && !isAvailable) {
+      return;
+    }
+
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `btn ticket-btn ticket ${ticket.className}`;
     const count = session.selectedTickets[ticket.name] || 0;
     const need = session.request[ticket.name] || 0;
-    const isAvailable = availableByName.has(definition.name);
 
     if (!isAvailable) {
       button.classList.add('is-inactive');
